@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="scheduleapp.view_controller.FXMLCustomersController">
+   <children>
+      <AnchorPane layoutX="33.0" layoutY="29.0" prefHeight="620.0" prefWidth="834.0" />
+      <ButtonBar layoutX="30.0" layoutY="649.0" prefHeight="40.0" prefWidth="258.0">
+        <buttons>
+          <Button mnemonicParsing="false" text="Calendar" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="125.0" text="Customers" />
+        </buttons>
+      </ButtonBar>
+   </children>
+</AnchorPane>
