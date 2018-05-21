@@ -2,17 +2,131 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="scheduleapp.view_controller.FXMLCustomersController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCustomersController">
    <children>
-      <AnchorPane layoutX="33.0" layoutY="29.0" prefHeight="620.0" prefWidth="834.0" />
-      <ButtonBar layoutX="30.0" layoutY="649.0" prefHeight="40.0" prefWidth="258.0">
+      <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="258.0">
         <buttons>
-          <Button mnemonicParsing="false" text="Calendar" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="125.0" text="Customers" />
+          <Button mnemonicParsing="false" text="Calendar">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font></Button>
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="125.0" text="Customers">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font></Button>
         </buttons>
       </ButtonBar>
+      <TableView layoutX="250.0" layoutY="83.0" prefHeight="255.0" prefWidth="580.0">
+        <columns>
+          <TableColumn prefWidth="137.0" text="Name" />
+          <TableColumn prefWidth="148.0" text="Address" />
+            <TableColumn minWidth="0.0" prefWidth="106.0" text="Phone" />
+        </columns>
+      </TableView>
+      <TextField layoutX="346.0" layoutY="363.0">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </TextField>
+      <Label layoutX="280.0" layoutY="368.0" text="First">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="613.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
+         <font>
+            <Font name="Fira Sans Regular" size="13.0" />
+         </font>
+      </TextField>
+      <Label layoutX="548.0" layoutY="368.0" text="Last">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="346.0" layoutY="407.0" prefHeight="29.0" prefWidth="258.0">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </TextField>
+      <Label layoutX="280.0" layoutY="412.0" text="Address">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="344.0" layoutY="499.0">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </TextField>
+      <Label layoutX="272.0" layoutY="504.0" text="Phone">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="344.0" layoutY="454.0">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </TextField>
+      <Label layoutX="281.0" layoutY="459.0" text="City">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="606.0" layoutY="454.0">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </TextField>
+      <Label layoutX="538.0" layoutY="459.0" text="State">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <TextField layoutX="619.0" layoutY="499.0">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </TextField>
+      <Label layoutX="538.0" layoutY="504.0" text="Zip Code">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="450.0" layoutY="579.0" mnemonicParsing="false" text="Save">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="566.0" layoutY="579.0" mnemonicParsing="false" text="Delete">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Button>
+      <TextField layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="473.0" />
+      <Button layoutX="723.0" layoutY="42.0" mnemonicParsing="false" text="Search">
+         <font>
+            <Font name="Fira Sans Regular" size="13.0" />
+         </font>
+      </Button>
+      <Button layoutX="789.0" layoutY="42.0" mnemonicParsing="false" text="Add">
+         <font>
+            <Font name="Fira Sans Regular" size="13.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="32.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../Dropbox/repos/C195/ScheduleApp/src/scheduleapp/view_controller/images/contacts.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
