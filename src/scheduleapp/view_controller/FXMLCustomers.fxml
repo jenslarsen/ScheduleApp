@@ -37,7 +37,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="280.0" layoutY="368.0" text="First">
+      <Label layoutX="257.0" layoutY="368.0" text="First">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -57,7 +57,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="280.0" layoutY="412.0" text="Address">
+      <Label layoutX="254.0" layoutY="412.0" text="Address">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -77,7 +77,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="281.0" layoutY="459.0" text="City">
+      <Label layoutX="250.0" layoutY="459.0" text="City">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
