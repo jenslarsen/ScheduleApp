@@ -9,10 +9,17 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
@@ -42,4 +49,31 @@ public class FXMLLoginController extends Application {
     public static void main(String[] args) {
         launch(args);
     }  
+    
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private PasswordField loginPassword;
+
+    @FXML
+    private TextField loginUserName;
+
+    @FXML
+    private Label loginSignInText;
+
+    @FXML
+    private ChoiceBox<?> loginLocation;
+
+    @FXML
+    private RadioButton loginRadioEnglish;
+
+    @FXML
+    private RadioButton loginRadioFrench;
+    
+    @FXML
+    public void initialize() {
+        
+        // do init here?
+    }
 }
