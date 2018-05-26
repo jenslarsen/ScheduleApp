@@ -5,6 +5,9 @@
  */
 package scheduleapp.view_controller;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -31,24 +34,24 @@ public class FXMLLoginController extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Stage stage = primaryStage;
-        
+
         FXMLLoader mainController = new FXMLLoader();
-        
+
         mainController.setLocation(getClass().getResource("FXMLLogin.fxml"));
-        
+
         Parent root = mainController.load();
-        
+
         stage.setScene(new Scene(root));
-        
+
         stage.setTitle("Login");
         stage.setResizable(false);
         stage.show();
     }
-    
+
     public static void main(String[] args) {
         launch(args);
-    }  
-    
+    }
+
     @FXML
     private Button loginButton;
 
@@ -69,27 +72,30 @@ public class FXMLLoginController extends Application {
 
     @FXML
     private RadioButton loginRadioFrench;
-    
+
     @FXML
     public void initialize() {
-        
+
         // do init here?
     }
-    
+
     @FXML
-    void loginButtonClick(ActionEvent event) {        
+    void loginButtonClick(ActionEvent event) throws ClassNotFoundException {
         String userName = loginUserName.getText();
         String password = loginPassword.getText();
-        
-        if(userName.equals("") || password.equals("")) {
+
+        if (userName.equals("") || password.equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Unable to login");
             alert.setContentText("You must enter a username and password");
             alert.showAndWait();
+            return;
         }
-        
-        if(userName.equals("test") && password.equals("test")) {
+
+        connectToDatabase();
+
+        if (userName.equals("test") && password.equals("test")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText("Login");
@@ -102,5 +108,24 @@ public class FXMLLoginController extends Application {
             alert.setContentText("Username or password is incorrect");
             alert.showAndWait();
         }
+    }
+
+    void connectToDatabase() throws ClassNotFoundException {
+        Connection connection = null;
+        String driver = "com.mysql.cj.jdbc.Driver";
+        String database = "U04H9n";
+        String dbURL = "jdbc:mysql://52.206.157.109/" + database;
+        String dbUser = "U04H9n";
+        String dbPassword = "53688238693";
+        try {
+            Class.forName(driver);
+            connection = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+            System.out.println("Connected to database : " + database);
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            System.out.println("SQLState: " + e.getSQLState());
+            System.out.println("VendorError: " + e.getErrorCode());
+        }
+
     }
 }
