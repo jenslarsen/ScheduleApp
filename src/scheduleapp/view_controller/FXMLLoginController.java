@@ -5,13 +5,12 @@
  */
 package scheduleapp.view_controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,7 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
+ * FXML Login Controller class
  *
  * @author dasuperman
  */
@@ -75,5 +74,10 @@ public class FXMLLoginController extends Application {
     public void initialize() {
         
         // do init here?
+    }
+    
+    @FXML
+    void loginButtonClick(ActionEvent event) {
+        System.out.println("Login clicked!");
     }
 }
