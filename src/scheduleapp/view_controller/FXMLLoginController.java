@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -76,18 +77,30 @@ public class FXMLLoginController extends Application {
     }
     
     @FXML
-    void loginButtonClick(ActionEvent event) {
-        System.out.println("Login clicked!");
-        
+    void loginButtonClick(ActionEvent event) {        
         String userName = loginUserName.getText();
-        System.out.println("Username: " + userName);
         String password = loginPassword.getText();
-        System.out.println("Password: " + password);
+        
+        if(userName.equals("") || password.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Unable to login");
+            alert.setContentText("You must enter a username and password");
+            alert.showAndWait();
+        }
         
         if(userName.equals("test") && password.equals("test")) {
-            System.out.println("Login successful!");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Success");
+            alert.setHeaderText("Login");
+            alert.setContentText("You've successfully loggged in!");
+            alert.showAndWait();
         } else {
-            System.out.println("Login unsuccessful");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Unable to login");
+            alert.setContentText("Username or password is incorrect");
+            alert.showAndWait();
         }
     }
 }
