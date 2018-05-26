@@ -15,26 +15,27 @@
    <children>
       <AnchorPane layoutX="422.0" layoutY="87.0" prefHeight="497.0" prefWidth="433.0">
          <children>
-            <Button fx:id="loginButton" layoutX="186.0" layoutY="407.0" mnemonicParsing="false" onAction="#loginButtonClick" text="Login">
-               <font>
-                  <Font size="18.0" />
-               </font></Button>
-            <PasswordField fx:id="loginPassword" layoutX="59.0" layoutY="236.0" prefHeight="26.0" prefWidth="323.0" promptText="password">
-               <font>
-                  <Font name="Fira Sans Regular" size="13.0" />
-               </font>
-            </PasswordField>
             <TextField fx:id="loginUserName" layoutX="59.0" layoutY="185.0" prefHeight="27.0" prefWidth="323.0" promptText="username">
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font>
             </TextField>
+            <PasswordField fx:id="loginPassword" layoutX="59.0" layoutY="236.0" prefHeight="26.0" prefWidth="323.0" promptText="password">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font>
+            </PasswordField>
             <Label fx:id="loginSignInText" layoutX="169.0" layoutY="69.0" text="Sign in">
                <font>
                   <Font name="Fira Sans Light" size="29.0" />
                </font>
             </Label>
             <ChoiceBox fx:id="loginLocation" layoutX="59.0" layoutY="299.0" prefHeight="26.0" prefWidth="323.0" />
+            <Button fx:id="loginButton" layoutX="186.0" layoutY="407.0" mnemonicParsing="false" onAction="#loginButtonClick" text="Login">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
       <RadioButton fx:id="loginRadioEnglish" layoutX="107.0" layoutY="575.0" mnemonicParsing="false" text="English">
