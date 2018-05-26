@@ -7,7 +7,6 @@ package scheduleapp.view_controller;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +23,7 @@ import javafx.stage.Stage;
 /**
  * FXML Login Controller class
  *
- * @author dasuperman
+ * @author Jens Larsen
  */
 public class FXMLLoginController extends Application {
 
@@ -79,5 +78,16 @@ public class FXMLLoginController extends Application {
     @FXML
     void loginButtonClick(ActionEvent event) {
         System.out.println("Login clicked!");
+        
+        String userName = loginUserName.getText();
+        System.out.println("Username: " + userName);
+        String password = loginPassword.getText();
+        System.out.println("Password: " + password);
+        
+        if(userName.equals("test") && password.equals("test")) {
+            System.out.println("Login successful!");
+        } else {
+            System.out.println("Login unsuccessful");
+        }
     }
 }
