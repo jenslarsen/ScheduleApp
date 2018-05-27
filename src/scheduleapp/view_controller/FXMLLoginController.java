@@ -65,7 +65,7 @@ public class FXMLLoginController extends Application {
     private Label loginSignInText;
 
     @FXML
-    private ChoiceBox<?> loginLocation;
+    private ChoiceBox<String> loginLocation;
 
     @FXML
     private RadioButton loginRadioEnglish;
@@ -76,9 +76,11 @@ public class FXMLLoginController extends Application {
     @FXML
     public void initialize() {
 
-        // do init here?
+        // add locations
+        loginLocation.getItems().addAll("Paris", "New York", "London");
+        loginLocation.setValue("New York");
     }
-
+    
     @FXML
     void loginButtonClick(ActionEvent event) throws ClassNotFoundException {
         String userName = loginUserName.getText();
