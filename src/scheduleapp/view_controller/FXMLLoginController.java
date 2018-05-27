@@ -80,7 +80,7 @@ public class FXMLLoginController extends Application {
         loginLocation.getItems().addAll("Paris", "New York", "London");
         loginLocation.setValue("New York");
     }
-    
+
     @FXML
     void loginButtonClick(ActionEvent event) throws ClassNotFoundException {
         String userName = loginUserName.getText();
@@ -95,13 +95,17 @@ public class FXMLLoginController extends Application {
             return;
         }
 
+        // get the selected location
+        String location = loginLocation.getValue();
+
         connectToDatabase();
 
         if (userName.equals("test") && password.equals("test")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText("Login");
-            alert.setContentText("You've successfully loggged in!");
+            alert.setContentText("You've successfully loggged in to "
+                    + location + "!");
             alert.showAndWait();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
