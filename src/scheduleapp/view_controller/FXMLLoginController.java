@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 /**
@@ -79,6 +80,11 @@ public class FXMLLoginController extends Application {
         // add locations
         loginLocation.getItems().addAll("Paris", "New York", "London");
         loginLocation.setValue("New York");
+
+        // set up toggle group for language selection
+        ToggleGroup languageGroup = new ToggleGroup();
+        loginRadioEnglish.setToggleGroup(languageGroup);
+        loginRadioFrench.setToggleGroup(languageGroup);
     }
 
     @FXML
