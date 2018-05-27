@@ -78,7 +78,7 @@ public class FXMLLoginController extends Application {
     public void initialize() {
 
         // add locations
-        loginLocation.getItems().addAll("Paris", "New York", "London");
+        loginLocation.getItems().addAll("Phoenix", "New York", "London");
         loginLocation.setValue("New York");
 
         // set up toggle group for language selection
