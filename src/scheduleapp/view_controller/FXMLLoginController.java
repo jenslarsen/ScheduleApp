@@ -74,6 +74,8 @@ public class FXMLLoginController extends Application {
     @FXML
     private RadioButton loginRadioFrench;
 
+    private ToggleGroup languageGroup;
+
     @FXML
     public void initialize() {
 
@@ -82,15 +84,17 @@ public class FXMLLoginController extends Application {
         loginLocation.setValue("New York");
 
         // set up toggle group for language selection
-        ToggleGroup languageGroup = new ToggleGroup();
+        languageGroup = new ToggleGroup();
         loginRadioEnglish.setToggleGroup(languageGroup);
         loginRadioFrench.setToggleGroup(languageGroup);
+        loginRadioEnglish.setSelected(true);
     }
 
     @FXML
     void loginButtonClick(ActionEvent event) throws ClassNotFoundException {
         String userName = loginUserName.getText();
         String password = loginPassword.getText();
+        RadioButton selectedLanguage = (RadioButton) languageGroup.getSelectedToggle();
 
         if (userName.equals("") || password.equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -111,7 +115,7 @@ public class FXMLLoginController extends Application {
             alert.setTitle("Success");
             alert.setHeaderText("Login");
             alert.setContentText("You've successfully loggged in to "
-                    + location + "!");
+                    + location + " " + selectedLanguage.getText() + "!");
             alert.showAndWait();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
