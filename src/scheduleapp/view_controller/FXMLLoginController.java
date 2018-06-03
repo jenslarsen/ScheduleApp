@@ -5,9 +5,6 @@
  */
 package scheduleapp.view_controller;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -24,6 +21,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import scheduleapp.model.Datasource;
 
 /**
  * FXML Login Controller class
@@ -108,7 +106,11 @@ public class FXMLLoginController extends Application {
         // get the selected location
         String location = loginLocation.getValue();
 
-        connectToDatabase();
+        boolean open = Datasource.open();
+
+        if (!open) {
+            return;
+        }
 
         if (userName.equals("test") && password.equals("test")) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -124,24 +126,5 @@ public class FXMLLoginController extends Application {
             alert.setContentText("Username or password is incorrect");
             alert.showAndWait();
         }
-    }
-
-    void connectToDatabase() throws ClassNotFoundException {
-        Connection connection = null;
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String database = "U04H9n";
-        String dbURL = "jdbc:mysql://52.206.157.109/" + database;
-        String dbUser = "U04H9n";
-        String dbPassword = "53688238693";
-        try {
-            Class.forName(driver);
-            connection = DriverManager.getConnection(dbURL, dbUser, dbPassword);
-            System.out.println("Connected to database : " + database);
-        } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("VendorError: " + e.getErrorCode());
-        }
-
     }
 }

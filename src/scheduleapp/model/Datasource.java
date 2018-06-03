@@ -21,9 +21,9 @@ public class Datasource {
     public static final String DB_USERNAME = "U04H9n";
     public static final String DB_PASSWORD = "53688238693";
 
-    Connection connection = null;
+    private static Connection connection = null;
 
-    public boolean open() throws ClassNotFoundException {
+    public static boolean open() throws ClassNotFoundException {
 
         try {
             Class.forName(DB_DRIVER);
