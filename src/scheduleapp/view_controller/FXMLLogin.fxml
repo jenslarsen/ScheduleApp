@@ -24,7 +24,7 @@
                   <Font name="Fira Sans Regular" size="13.0" />
                </font>
             </PasswordField>
-            <Label fx:id="loginSignInText" layoutX="169.0" layoutY="69.0" text="Sign in">
+            <Label fx:id="loginSignInText" alignment="CENTER" layoutX="59.0" layoutY="69.0" prefHeight="36.0" prefWidth="323.0" text="Sign in">
                <font>
                   <Font name="Fira Sans Light" size="29.0" />
                </font>
