@@ -48,6 +48,9 @@ public class FXMLLoginController extends Application {
     }
 
     public static void main(String[] args) {
+
+        // uncomment this line to test French locale
+        // Locale.setDefault(new Locale("fr", "FR"));
         launch(args);
     }
 
