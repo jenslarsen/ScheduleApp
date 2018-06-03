@@ -59,7 +59,8 @@ public class Datasource {
         }
     }
 
-    public static boolean checkLogin(String username, String password) throws ClassNotFoundException, SQLException {
+    public static boolean checkLogin(String username, String password)
+            throws ClassNotFoundException, SQLException {
         boolean open = Datasource.open();
 
         if (!open) {
@@ -89,5 +90,9 @@ public class Datasource {
         statement.close();
         Datasource.close();
         return false;
+    }
+
+    public static void insertData() {
+
     }
 }
