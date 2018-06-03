@@ -5,6 +5,7 @@
  */
 package scheduleapp.view_controller;
 
+import java.sql.SQLException;
 import java.util.Locale;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -80,7 +81,7 @@ public class FXMLLoginController extends Application {
     }
 
     @FXML
-    void loginButtonClick(ActionEvent event) throws ClassNotFoundException {
+    void loginButtonClick(ActionEvent event) throws ClassNotFoundException, SQLException {
         String userName = loginUserName.getText();
         String password = loginPassword.getText();
 
@@ -93,16 +94,12 @@ public class FXMLLoginController extends Application {
             return;
         }
 
-        // get the selected location
+        // get the location
         String location = loginLocation.getValue();
 
-        boolean open = Datasource.open();
+        boolean loginSuccessful = Datasource.checkLogin(userName, password);
 
-        if (!open) {
-            return;
-        }
-
-        if (userName.equals("test") && password.equals("test")) {
+        if (loginSuccessful) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Success");
             alert.setHeaderText("Login");
