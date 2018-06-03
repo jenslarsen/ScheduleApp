@@ -5,6 +5,7 @@
  */
 package scheduleapp.view_controller;
 
+import java.util.Locale;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -17,9 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import scheduleapp.model.Datasource;
 
@@ -66,10 +65,14 @@ public class FXMLLoginController extends Application {
     @FXML
     private ChoiceBox<String> loginLocation;
 
-    private ToggleGroup languageGroup;
+    String language = null;
 
     @FXML
     public void initialize() {
+
+        // detect locale
+        Locale locale = Locale.getDefault();
+        language = locale.getLanguage();
 
         // add locations
         loginLocation.getItems().addAll("Phoenix", "New York", "London");
@@ -80,7 +83,6 @@ public class FXMLLoginController extends Application {
     void loginButtonClick(ActionEvent event) throws ClassNotFoundException {
         String userName = loginUserName.getText();
         String password = loginPassword.getText();
-        RadioButton selectedLanguage = (RadioButton) languageGroup.getSelectedToggle();
 
         if (userName.equals("") || password.equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -105,7 +107,7 @@ public class FXMLLoginController extends Application {
             alert.setTitle("Success");
             alert.setHeaderText("Login");
             alert.setContentText("You've successfully loggged in to "
-                    + location + " " + selectedLanguage.getText() + "!");
+                    + location + " " + language + "!");
             alert.showAndWait();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
