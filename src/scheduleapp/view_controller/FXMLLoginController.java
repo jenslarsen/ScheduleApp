@@ -66,12 +66,6 @@ public class FXMLLoginController extends Application {
     @FXML
     private ChoiceBox<String> loginLocation;
 
-    @FXML
-    private RadioButton loginRadioEnglish;
-
-    @FXML
-    private RadioButton loginRadioFrench;
-
     private ToggleGroup languageGroup;
 
     @FXML
@@ -80,12 +74,6 @@ public class FXMLLoginController extends Application {
         // add locations
         loginLocation.getItems().addAll("Phoenix", "New York", "London");
         loginLocation.setValue("New York");
-
-        // set up toggle group for language selection
-        languageGroup = new ToggleGroup();
-        loginRadioEnglish.setToggleGroup(languageGroup);
-        loginRadioFrench.setToggleGroup(languageGroup);
-        loginRadioEnglish.setSelected(true);
     }
 
     @FXML
