@@ -60,7 +60,7 @@ public class FXMLLoginController extends Application {
     @FXML
     private ChoiceBox<String> loginLocation;
 
-    String language = null;
+    String language = "en"; // english by default
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -82,7 +82,7 @@ public class FXMLLoginController extends Application {
     public static void main(String[] args) {
 
         // uncomment this line to test French locale
-        Locale.setDefault(new Locale("fr", "FR"));
+        //Locale.setDefault(new Locale("fr", "FR"));
         launch(args);
     }
 
