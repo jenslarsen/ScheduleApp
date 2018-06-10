@@ -25,6 +25,17 @@
                </font></Button>
         </buttons>
       </ButtonBar>
+      <TextField layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="473.0" />
+      <Button layoutX="723.0" layoutY="42.0" mnemonicParsing="false" text="Search">
+         <font>
+            <Font name="Fira Sans Regular" size="13.0" />
+         </font>
+      </Button>
+      <Button layoutX="789.0" layoutY="42.0" mnemonicParsing="false" text="Add">
+         <font>
+            <Font name="Fira Sans Regular" size="13.0" />
+         </font>
+      </Button>
       <TableView layoutX="250.0" layoutY="83.0" prefHeight="255.0" prefWidth="580.0">
         <columns>
           <TableColumn prefWidth="137.0" text="Name" />
@@ -37,71 +48,41 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="260.0" layoutY="368.0" text="First">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
       <TextField layoutX="615.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <Label layoutX="550.0" layoutY="368.0" text="Last">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
       <TextField layoutX="346.0" layoutY="407.0" prefHeight="29.0" prefWidth="258.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="260.0" layoutY="412.0" text="Address">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
-      <TextField layoutX="344.0" layoutY="544.0">
+      <TextField layoutX="345.0" layoutY="449.0" prefHeight="29.0" prefWidth="258.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="260.0" layoutY="549.0" text="Phone">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
       <TextField layoutX="344.0" layoutY="499.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="260.0" layoutY="504.0" text="City">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
       <TextField layoutX="615.0" layoutY="499.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="550.0" layoutY="504.0" text="State">
+      <TextField layoutX="344.0" layoutY="544.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
-      </Label>
+      </TextField>
       <TextField layoutX="615.0" layoutY="544.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="550.0" layoutY="549.0" text="Zip Code">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
       <Button layoutX="452.0" layoutY="603.0" mnemonicParsing="false" text="Save">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
@@ -112,27 +93,46 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Button>
-      <TextField layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="473.0" />
-      <Button layoutX="723.0" layoutY="42.0" mnemonicParsing="false" text="Search">
+      <Label layoutX="260.0" layoutY="368.0" text="First">
          <font>
-            <Font name="Fira Sans Regular" size="13.0" />
+            <Font name="Fira Sans Regular" size="15.0" />
          </font>
-      </Button>
-      <Button layoutX="789.0" layoutY="42.0" mnemonicParsing="false" text="Add">
+      </Label>
+      <Label layoutX="550.0" layoutY="368.0" text="Last">
          <font>
-            <Font name="Fira Sans Regular" size="13.0" />
+            <Font name="Fira Sans Regular" size="15.0" />
          </font>
-      </Button>
+      </Label>
+      <Label layoutX="260.0" layoutY="412.0" text="Address">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="260.0" layoutY="549.0" text="Phone">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="260.0" layoutY="504.0" text="City">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="550.0" layoutY="504.0" text="State">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="550.0" layoutY="549.0" text="Zip Code">
+         <font>
+            <Font name="Fira Sans Regular" size="15.0" />
+         </font>
+      </Label>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="32.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/contacts.png" />
          </image>
       </ImageView>
-      <TextField layoutX="345.0" layoutY="449.0" prefHeight="29.0" prefWidth="258.0">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </TextField>
       <Label layoutX="260.0" layoutY="454.0" text="Address 2">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
