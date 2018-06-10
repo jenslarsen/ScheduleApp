@@ -37,17 +37,17 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="257.0" layoutY="368.0" text="First">
+      <Label layoutX="260.0" layoutY="368.0" text="First">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="613.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
+      <TextField layoutX="615.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <Label layoutX="548.0" layoutY="368.0" text="Last">
+      <Label layoutX="550.0" layoutY="368.0" text="Last">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -57,7 +57,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="258.0" layoutY="412.0" text="Address">
+      <Label layoutX="260.0" layoutY="412.0" text="Address">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -67,7 +67,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="257.0" layoutY="549.0" text="Phone">
+      <Label layoutX="260.0" layoutY="549.0" text="Phone">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -77,27 +77,27 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="259.0" layoutY="504.0" text="City">
+      <Label layoutX="260.0" layoutY="504.0" text="City">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="606.0" layoutY="499.0">
+      <TextField layoutX="615.0" layoutY="499.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="538.0" layoutY="504.0" text="State">
+      <Label layoutX="550.0" layoutY="504.0" text="State">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </Label>
-      <TextField layoutX="619.0" layoutY="544.0">
+      <TextField layoutX="615.0" layoutY="544.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="538.0" layoutY="549.0" text="Zip Code">
+      <Label layoutX="550.0" layoutY="549.0" text="Zip Code">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -133,7 +133,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Label layoutX="257.0" layoutY="454.0" text="Address 2">
+      <Label layoutX="260.0" layoutY="454.0" text="Address 2">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
