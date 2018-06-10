@@ -11,6 +11,7 @@ package scheduleapp.model;
  */
 public class Address {
 
+    private String addressId;
     private String address;
     private String address2;
     private String city;
@@ -20,6 +21,14 @@ public class Address {
     private String createdBy;
     private String lastUpdate;
     private String lastUpdatedBy;
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
+    }
 
     public String getAddress() {
         return address;
