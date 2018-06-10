@@ -15,80 +15,80 @@
    <children>
       <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="258.0">
         <buttons>
-          <Button mnemonicParsing="false" text="Calendar">
+          <Button fx:id="buttonCalendar" mnemonicParsing="false" text="Calendar">
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font></Button>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="125.0" text="Customers">
+            <Button fx:id="buttonCustomers" mnemonicParsing="false" prefHeight="26.0" prefWidth="125.0" text="Customers">
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font></Button>
         </buttons>
       </ButtonBar>
-      <TextField layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="473.0" />
-      <Button layoutX="723.0" layoutY="42.0" mnemonicParsing="false" text="Search">
+      <TextField fx:id="textFieldSearch" layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="473.0" />
+      <Button fx:id="buttonSearch" layoutX="723.0" layoutY="42.0" mnemonicParsing="false" text="Search">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </Button>
-      <Button layoutX="789.0" layoutY="42.0" mnemonicParsing="false" text="Add">
+      <Button fx:id="buttonAdd" layoutX="789.0" layoutY="42.0" mnemonicParsing="false" text="Add">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </Button>
-      <TableView layoutX="250.0" layoutY="83.0" prefHeight="255.0" prefWidth="580.0">
+      <TableView fx:id="tableViewCustomers" layoutX="250.0" layoutY="83.0" prefHeight="255.0" prefWidth="580.0">
         <columns>
           <TableColumn prefWidth="137.0" text="Name" />
           <TableColumn prefWidth="148.0" text="Address" />
             <TableColumn minWidth="0.0" prefWidth="106.0" text="Phone" />
         </columns>
       </TableView>
-      <TextField layoutX="346.0" layoutY="363.0">
+      <TextField fx:id="textFieldFirstName" layoutX="346.0" layoutY="363.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField layoutX="615.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
+      <TextField fx:id="textFieldLastName" layoutX="615.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </TextField>
-      <TextField layoutX="346.0" layoutY="407.0" prefHeight="29.0" prefWidth="258.0">
+      <TextField fx:id="textFieldAddress" layoutX="346.0" layoutY="407.0" prefHeight="29.0" prefWidth="258.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField layoutX="345.0" layoutY="449.0" prefHeight="29.0" prefWidth="258.0">
+      <TextField fx:id="textFieldAddress2" layoutX="345.0" layoutY="449.0" prefHeight="29.0" prefWidth="258.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField layoutX="344.0" layoutY="499.0">
+      <TextField fx:id="textFieldCity" layoutX="344.0" layoutY="499.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField layoutX="615.0" layoutY="499.0">
+      <TextField fx:id="textFieldState" layoutX="615.0" layoutY="499.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField layoutX="344.0" layoutY="544.0">
+      <TextField fx:id="textFieldPhone" layoutX="344.0" layoutY="544.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField layoutX="615.0" layoutY="544.0">
+      <TextField fx:id="textFieldZip" layoutX="615.0" layoutY="544.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Button layoutX="452.0" layoutY="603.0" mnemonicParsing="false" text="Save">
+      <Button fx:id="buttonSave" layoutX="452.0" layoutY="603.0" mnemonicParsing="false" text="Save">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="568.0" layoutY="603.0" mnemonicParsing="false" text="Delete">
+      <Button fx:id="buttonDelete" layoutX="568.0" layoutY="603.0" mnemonicParsing="false" text="Delete">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
