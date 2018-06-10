@@ -27,8 +27,8 @@ public class Datasource {
     private static final String TABLE_USER = "user";
 
     // table columns
-    private static final String USER_USERNAME = "userName";
-    private static final String USER_PASSWORD = "password";
+    private static final String COLUMN_USERNAME = "userName";
+    private static final String COLUMN_PASSWORD = "password";
 
     private static Connection connection = null;
 
@@ -53,6 +53,7 @@ public class Datasource {
         try {
             if (connection != null) {
                 connection.close();
+                System.out.println("Database connection closed");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -72,8 +73,8 @@ public class Datasource {
 
         String passwordQuery = "SELECT * "
                 + "FROM " + TABLE_USER + " "
-                + "WHERE " + USER_USERNAME + "='" + username + "' AND "
-                + USER_PASSWORD + "='" + password + "'";
+                + "WHERE " + COLUMN_USERNAME + "='" + username + "' AND "
+                + COLUMN_PASSWORD + "='" + password + "'";
 
         ResultSet result = statement.executeQuery(passwordQuery);
 
