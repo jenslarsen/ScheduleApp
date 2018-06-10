@@ -31,6 +31,7 @@ public class Datasource {
     private static final String COLUMN_PASSWORD = "password";
 
     private static Connection connection = null;
+    private static String loggedInUser = null;
 
     public static boolean open() throws ClassNotFoundException {
         try {
@@ -80,10 +81,10 @@ public class Datasource {
 
         // if username and password is found in the database, ie a result was returned
         if (result.next()) {
+            loggedInUser = username;
             // close connection
             statement.close();
             Datasource.close();
-
             return true;
         }
 
@@ -91,9 +92,5 @@ public class Datasource {
         statement.close();
         Datasource.close();
         return false;
-    }
-
-    public static void insertData() {
-        // maybe the data only stays in the db temporarly?
     }
 }
