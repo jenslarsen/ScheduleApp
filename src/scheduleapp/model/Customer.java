@@ -5,11 +5,11 @@
  */
 package scheduleapp.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  *
- * @author jlarsen
+ * @author Jens Larsen
  */
 public class Customer {
 
@@ -17,9 +17,9 @@ public class Customer {
     private String customerName;
     private int addressID;
     private boolean active;
-    private Date createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    private String lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdateBy;
 
     public int getCustomerID() {
@@ -54,11 +54,11 @@ public class Customer {
         this.active = active;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -70,11 +70,11 @@ public class Customer {
         this.createdBy = createdBy;
     }
 
-    public String getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
