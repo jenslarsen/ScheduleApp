@@ -5,6 +5,7 @@
  */
 package scheduleapp.view_controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Locale;
 import javafx.application.Application;
@@ -149,18 +150,26 @@ public class FXMLLoginController extends Application {
         boolean loginSuccessful = Datasource.checkLogin(userName, password);
 
         if (loginSuccessful) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(successText);
-            alert.setHeaderText(loginText);
-            alert.setContentText(loginSuccess
-                    + location + " " + language + "!");
-            alert.showAndWait();
+            switchToCustomerScreen();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(errorTitle);
             alert.setHeaderText(unableToLogin);
             alert.setContentText(incorrectUserPass);
             alert.showAndWait();
+        }
+    }
+
+    private void switchToCustomerScreen() {
+        Parent main;
+        try {
+            main = FXMLLoader.load(getClass().getResource("FXMLCustomers.fxml"));
+            Scene scene = new Scene(main);
+            stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            System.out.println("Unable to switch to Customer screen: " + e.getMessage());
         }
     }
 }
