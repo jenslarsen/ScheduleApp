@@ -125,7 +125,7 @@
       </Button>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="32.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../Dropbox/repos/C195/ScheduleApp/src/scheduleapp/view_controller/images/contacts.png" />
+            <Image url="@images/contacts.png" />
          </image>
       </ImageView>
       <TextField layoutX="345.0" layoutY="449.0" prefHeight="29.0" prefWidth="258.0">
