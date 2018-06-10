@@ -86,11 +86,11 @@ public class Datasource {
             statement.close();
             Datasource.close();
             return true;
+        } else {
+            // close connection
+            statement.close();
+            Datasource.close();
+            return false;
         }
-
-        // close connection
-        statement.close();
-        Datasource.close();
-        return false;
     }
 }
