@@ -5,6 +5,8 @@
  */
 package scheduleapp.model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author Jens Larsen
@@ -17,9 +19,9 @@ public class Address {
     private String city;
     private String postalCode;
     private String phone;
-    private String createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    private String lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdatedBy;
 
     public String getAddressId() {
@@ -70,11 +72,11 @@ public class Address {
         this.phone = phone;
     }
 
-    public String getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -86,11 +88,11 @@ public class Address {
         this.createdBy = createdBy;
     }
 
-    public String getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
