@@ -5,14 +5,17 @@
  */
 package scheduleapp.view_controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import scheduleapp.model.CustomerWithAddress;
+import scheduleapp.model.Datasource;
 
 /**
  * FXML Controller class
@@ -70,15 +73,23 @@ public class FXMLCustomersController extends Application {
     private Button buttonDelete;
 
     @FXML
-    public void initialize(URL url, ResourceBundle rb) {
-
+    public void initialize() throws SQLException {
         // load customers from database
-        // display in table
+        List<CustomerWithAddress> customers = new ArrayList<>();
+
+        try {
+            customers = Datasource.getCustomersWithAddresses();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Something went wrong retrieving customers! " + e.getMessage());
+        }
+        System.out.println("Customers retrieved: " + customers);
+        // display in table    }
+
+        Datasource.close();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
+    }
 }
