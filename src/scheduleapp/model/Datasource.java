@@ -60,14 +60,7 @@ public class Datasource {
     private static final String COLUMN_CITY_LASTUPDATEDBY = "lastUpdatedBy";
 
     // static queries
-    /*
-    SELECT customer.customerName, address.address, address.address2, city.city, address.postalCode, address.phone
-    FROM ((customer
-    INNER JOIN address on customer.addressId = address.addressId)
-    INNER JOIN city on address.cityId = city.cityId)
-    WHERE customer.active = 1;
-     */
-    private static final String QUERY_ACTIVE_CUSTOMERS
+    private static final String QUERY_CUSTOMERS_WITH_ADDRESSES
             = "SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ","
             + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + ","
             + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ","
@@ -169,7 +162,7 @@ public class Datasource {
         INNER JOIN city on address.cityId = city.cityId)
         WHERE customer.active = 1;
          */
-        ResultSet result = statement.executeQuery(QUERY_ACTIVE_CUSTOMERS);
+        ResultSet result = statement.executeQuery(QUERY_CUSTOMERS_WITH_ADDRESSES);
 
         while (result.next()) {
 
