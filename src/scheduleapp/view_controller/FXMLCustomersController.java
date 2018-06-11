@@ -72,10 +72,11 @@ public class FXMLCustomersController extends Application {
     @FXML
     private Button buttonDelete;
 
+    List<CustomerWithAddress> customers = new ArrayList<>();
+
     @FXML
     public void initialize() throws SQLException {
         // load customers from database
-        List<CustomerWithAddress> customers = new ArrayList<>();
 
         try {
             customers = Datasource.getCustomersWithAddresses();
@@ -83,7 +84,7 @@ public class FXMLCustomersController extends Application {
             System.out.println("Something went wrong retrieving customers! " + e.getMessage());
         }
         System.out.println("Customers retrieved: " + customers);
-        // display in table    }
+        // display in table 
 
         Datasource.close();
     }
