@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -25,11 +27,60 @@ public class Datasource {
 
     // table names
     private static final String TABLE_USER = "user";
+    private static final String TABLE_CUSTOMER = "customer";
+    private static final String TABLE_ADDRESS = "address";
+    private static final String TABLE_CITY = "city";
 
     // table columns
-    private static final String COLUMN_USERNAME = "userName";
-    private static final String COLUMN_PASSWORD = "password";
+    private static final String COLUMN_USER_USERNAME = "userName";
+    private static final String COLUMN_USER_PASSWORD = "password";
+    private static final String COLUMN_CUSTOMER_CUSTOMERID = "customerId";
+    private static final String COLUMN_CUSTOMER_CUSTOMERNAME = "customerName";
+    private static final String COLUMN_CUSTOMER_ADDRESSID = "addressId";
+    private static final String COLUMN_CUSTOMER_ACTIVE = "active";
+    private static final String COLUMN_CUSTOMER_CREATEDATE = "createDate";
+    private static final String COLUMN_CUSTOMER_CREATEDBY = "createdBy";
+    private static final String COLUMN_CUSTOMER_LASTUPDATEBY = "lastUpdateBy";
+    private static final String COLUMN_ADDRESS_ADDRESSID = "addressId";
+    private static final String COLUMN_ADDRESS_ADDRESS = "address";
+    private static final String COLUMN_ADDRESS_ADDRESS2 = "address2";
+    private static final String COLUMN_ADDRESS_CITYID = "cityId";
+    private static final String COLUMN_ADDRESS_POSTALCODE = "postalCode";
+    private static final String COLUMN_ADDRESS_PHONE = "phone";
+    private static final String COLUMN_ADDRESS_CREATEDATE = "createDate";
+    private static final String COLUMN_ADDRESS_CREADEDBY = "createdBy";
+    private static final String COLUMN_ADDRESS_LASTUPDATE = "lastUpdate";
+    private static final String COLUMN_ADDRESS_LASTUPDATEBY = "lastUpdateBy";
+    private static final String COLUMN_CITY_CITYID = "cityId";
+    private static final String COLUMN_CITY_CITY = "city";
+    private static final String COLUMN_CITY_COUNTRYID = "countryId";
+    private static final String COLUMN_CITY_CREATEDATE = "createDate";
+    private static final String COLUMN_CITY_CREATEDBY = "createdBy";
+    private static final String COLUMN_CITY_LASTUPDATE = "lastUpdate";
+    private static final String COLUMN_CITY_LASTUPDATEDBY = "lastUpdatedBy";
 
+    // static queries
+    /*
+    SELECT customer.customerName, address.address, address.address2, city.city, address.postalCode, address.phone
+    FROM ((customer
+    INNER JOIN address on customer.addressId = address.addressId)
+    INNER JOIN city on address.cityId = city.cityId)
+    WHERE customer.active = 1;
+     */
+    private static final String QUERY_ACTIVE_CUSTOMERS
+            = "SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ","
+            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS + "," + TABLE_ADDRESS + "."
+            + COLUMN_ADDRESS_ADDRESS2 + "," + TABLE_CITY + "." + COLUMN_CITY_CITY
+            + "," + TABLE_ADDRESS + "." + COLUMN_ADDRESS_POSTALCODE + ","
+            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_PHONE
+            + " FROM ((" + TABLE_CUSTOMER + " INNER JOIN " + TABLE_ADDRESS
+            + " on " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ADDRESSID + " = "
+            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESSID + ") INNER JOIN "
+            + TABLE_CITY + " on " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_CITYID
+            + " = " + TABLE_CITY + "." + COLUMN_CITY_CITYID + ") WHERE "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + " = 1;";
+
+    // globals
     private static Connection connection = null;
     private static String loggedInUser = null;
 
@@ -74,8 +125,8 @@ public class Datasource {
 
         String passwordQuery = "SELECT * "
                 + "FROM " + TABLE_USER + " "
-                + "WHERE " + COLUMN_USERNAME + "='" + username + "' AND "
-                + COLUMN_PASSWORD + "='" + password + "'";
+                + "WHERE " + COLUMN_USER_USERNAME + "='" + username + "' AND "
+                + COLUMN_USER_PASSWORD + "='" + password + "'";
 
         ResultSet result = statement.executeQuery(passwordQuery);
 
@@ -92,5 +143,51 @@ public class Datasource {
             Datasource.close();
             return false;
         }
+    }
+
+    public static List<CustomerWithAddress> getCustomersWithAddresses() throws ClassNotFoundException, SQLException {
+
+        List<CustomerWithAddress> customers = new ArrayList<>();
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Unable to open database connection when trying get customers with addresses!");
+            return null;
+        }
+
+        Statement statement = connection.createStatement();
+
+        /*
+        SELECT customer.customerName, address.address, address.address2, city.city,
+            address.postalCode, address.phone
+        FROM ((customer
+        INNER JOIN address on customer.addressId = address.addressId)
+        INNER JOIN city on address.cityId = city.cityId)
+        WHERE customer.active = 1;
+         */
+        ResultSet result = statement.executeQuery(QUERY_ACTIVE_CUSTOMERS);
+
+        while (result.next()) {
+
+            CustomerWithAddress tempCustomer = new CustomerWithAddress();
+
+            tempCustomer.setCustomerID(result.getInt(COLUMN_CUSTOMER_CUSTOMERID));
+            tempCustomer.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
+            tempCustomer.setAddressId(result.getInt(COLUMN_ADDRESS_ADDRESSID));
+            tempCustomer.setAddress(result.getString(COLUMN_ADDRESS_ADDRESS));
+            tempCustomer.setAddress2(result.getString(COLUMN_ADDRESS_ADDRESS2));
+            tempCustomer.setCity(result.getString(COLUMN_CITY_CITY));
+            tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
+            tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
+            if (result.getInt(COLUMN_CUSTOMER_ACTIVE) != 0) {
+                tempCustomer.setActive(true);
+            } else {
+                tempCustomer.setActive(false);
+            }
+
+            customers.add(tempCustomer);
+        }
+        return customers;
     }
 }
