@@ -69,8 +69,11 @@ public class Datasource {
      */
     private static final String QUERY_ACTIVE_CUSTOMERS
             = "SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ","
-            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS + "," + TABLE_ADDRESS + "."
-            + COLUMN_ADDRESS_ADDRESS2 + "," + TABLE_CITY + "." + COLUMN_CITY_CITY
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + ","
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ","
+            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS + ","
+            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESSID + ","
+            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS2 + "," + TABLE_CITY + "." + COLUMN_CITY_CITY
             + "," + TABLE_ADDRESS + "." + COLUMN_ADDRESS_POSTALCODE + ","
             + TABLE_ADDRESS + "." + COLUMN_ADDRESS_PHONE
             + " FROM ((" + TABLE_CUSTOMER + " INNER JOIN " + TABLE_ADDRESS
@@ -174,7 +177,7 @@ public class Datasource {
 
             tempCustomer.setCustomerID(result.getInt(COLUMN_CUSTOMER_CUSTOMERID));
             tempCustomer.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
-            tempCustomer.setAddressId(result.getInt(COLUMN_ADDRESS_ADDRESSID));
+            tempCustomer.setAddressId(result.getInt(COLUMN_CUSTOMER_ADDRESSID));
             tempCustomer.setAddress(result.getString(COLUMN_ADDRESS_ADDRESS));
             tempCustomer.setAddress2(result.getString(COLUMN_ADDRESS_ADDRESS2));
             tempCustomer.setCity(result.getString(COLUMN_CITY_CITY));
