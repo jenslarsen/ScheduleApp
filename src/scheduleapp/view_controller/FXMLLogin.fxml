@@ -14,6 +14,11 @@
    <children>
       <AnchorPane layoutX="422.0" layoutY="87.0" prefHeight="497.0" prefWidth="433.0">
          <children>
+            <Button fx:id="loginButton" layoutX="186.0" layoutY="407.0" mnemonicParsing="false" onAction="#loginButtonClick" text="Login">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
             <TextField fx:id="loginUserName" layoutX="59.0" layoutY="185.0" prefHeight="27.0" prefWidth="323.0" promptText="username">
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
@@ -30,11 +35,6 @@
                </font>
             </Label>
             <ChoiceBox fx:id="loginLocation" layoutX="59.0" layoutY="299.0" prefHeight="26.0" prefWidth="323.0" />
-            <Button fx:id="loginButton" layoutX="186.0" layoutY="407.0" mnemonicParsing="false" onAction="#loginButtonClick" text="Login">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
          </children>
       </AnchorPane>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="136.0" layoutY="251.0" pickOnBounds="true" preserveRatio="true">
