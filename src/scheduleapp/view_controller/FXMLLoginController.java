@@ -106,7 +106,7 @@ public class FXMLLoginController extends Application {
             passwordText = "mot de passe";
             usernameText = "nom d'utilisateur";
             signinText = "Se connecter";
-        } else {
+        } else { // default to English
             loginText = "Login";
             errorTitle = "Error";
             unableToLogin = "Unable to login";
