@@ -19,19 +19,19 @@
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font></Button>
-            <Button fx:id="buttonCustomers" mnemonicParsing="false" prefHeight="26.0" prefWidth="125.0" text="Customers">
+            <Button fx:id="buttonCustomers" mnemonicParsing="false" onAction="#customersButtonClicked" prefHeight="26.0" prefWidth="125.0" text="Customers">
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font></Button>
         </buttons>
       </ButtonBar>
       <TextField fx:id="textFieldSearch" layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="410.0" />
-      <Button fx:id="buttonSearch" layoutX="662.0" layoutY="42.0" mnemonicParsing="false" text="Search">
+      <Button fx:id="buttonSearch" layoutX="662.0" layoutY="42.0" mnemonicParsing="false" onAction="#searchButtonClicked" text="Search">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </Button>
-      <Button fx:id="buttonAdd" layoutX="741.0" layoutY="42.0" mnemonicParsing="false" text="Add">
+      <Button fx:id="buttonAdd" layoutX="741.0" layoutY="42.0" mnemonicParsing="false" onAction="#addButtonClicked" text="Add">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
@@ -83,12 +83,12 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <Button fx:id="buttonSave" layoutX="452.0" layoutY="603.0" mnemonicParsing="false" text="Save">
+      <Button fx:id="buttonSave" layoutX="452.0" layoutY="603.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="buttonDelete" layoutX="568.0" layoutY="603.0" mnemonicParsing="false" text="Delete">
+      <Button fx:id="buttonDelete" layoutX="568.0" layoutY="603.0" mnemonicParsing="false" onAction="#deleteButtonClicked" text="Delete">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>

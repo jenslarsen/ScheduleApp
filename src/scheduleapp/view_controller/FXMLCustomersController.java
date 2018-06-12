@@ -43,6 +43,12 @@ public class FXMLCustomersController {
     private Button buttonAdd;
 
     @FXML
+    private Button buttonSave;
+
+    @FXML
+    private Button buttonDelete;
+
+    @FXML
     private Button buttonEdit;
 
     @FXML
@@ -70,12 +76,6 @@ public class FXMLCustomersController {
     private TextField textFieldZip;
 
     @FXML
-    private Button buttonSave;
-
-    @FXML
-    private Button buttonDelete;
-
-    @FXML
     private TableColumn<CustomerWithAddress, String> tableColName;
 
     @FXML
@@ -88,7 +88,7 @@ public class FXMLCustomersController {
     private List<CustomerWithAddress> customers = new ArrayList<>();
 
     @FXML
-    private ObservableList<CustomerWithAddress> customerList = FXCollections.observableArrayList();
+    private final ObservableList<CustomerWithAddress> customerList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() throws SQLException {
@@ -145,6 +145,12 @@ public class FXMLCustomersController {
 
     @FXML
     void deleteButtonClicked(ActionEvent event) {
+    }
+
+    @FXML
+    void customersButtonClicked(ActionEvent event) {
+        // already on the customers screen - don't do anything!
+        // maybe make this a radio button or tab instead to be more clear??
     }
 
 }
