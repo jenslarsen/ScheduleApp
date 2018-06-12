@@ -8,12 +8,14 @@ package scheduleapp.view_controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
 
@@ -22,7 +24,7 @@ import scheduleapp.model.Datasource;
  *
  * @author Jens Larsen
  */
-public class FXMLCustomersController extends Application {
+public class FXMLCustomersController {
 
     @FXML
     private Button buttonCalendar;
@@ -40,7 +42,7 @@ public class FXMLCustomersController extends Application {
     private Button buttonAdd;
 
     @FXML
-    private TableView<?> tableViewCustomers;
+    private TableView<CustomerWithAddress> tableViewCustomers;
 
     @FXML
     private TextField textFieldFirstName;
@@ -72,25 +74,39 @@ public class FXMLCustomersController extends Application {
     @FXML
     private Button buttonDelete;
 
-    List<CustomerWithAddress> customers = new ArrayList<>();
+    @FXML
+    private TableColumn<CustomerWithAddress, String> tableColName;
+
+    @FXML
+    private TableColumn<CustomerWithAddress, String> tableColAddress;
+
+    @FXML
+    private TableColumn<CustomerWithAddress, String> tableColPhone;
+
+    @FXML
+    private List<CustomerWithAddress> customers = new ArrayList<>();
+
+    @FXML
+    private ObservableList<CustomerWithAddress> customerList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() throws SQLException {
         // load customers from database
-
         try {
             customers = Datasource.getCustomersWithAddresses();
+            customerList.addAll(customers);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Something went wrong retrieving customers! " + e.getMessage());
         }
         System.out.println("Customers retrieved: " + customers);
-        // display in table 
 
         Datasource.close();
-    }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+        // display in table
+        tableColName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        tableColAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        tableColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
+        tableViewCustomers.setItems(customerList);
     }
 }

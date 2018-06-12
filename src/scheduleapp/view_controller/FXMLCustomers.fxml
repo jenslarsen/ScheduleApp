@@ -38,9 +38,9 @@
       </Button>
       <TableView fx:id="tableViewCustomers" layoutX="250.0" layoutY="83.0" prefHeight="255.0" prefWidth="580.0">
         <columns>
-          <TableColumn prefWidth="137.0" text="Name" />
-          <TableColumn prefWidth="148.0" text="Address" />
-            <TableColumn minWidth="0.0" prefWidth="106.0" text="Phone" />
+          <TableColumn fx:id="tableColName" prefWidth="173.0" text="Name" />
+          <TableColumn fx:id="tableColAddress" prefWidth="112.0" text="Address" />
+            <TableColumn fx:id="tableColPhone" minWidth="0.0" prefWidth="106.0" text="Phone" />
         </columns>
       </TableView>
       <TextField fx:id="textFieldFirstName" layoutX="346.0" layoutY="363.0">
