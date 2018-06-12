@@ -42,6 +42,9 @@ public class FXMLCustomersController {
     private Button buttonAdd;
 
     @FXML
+    private Button buttonEdit;
+
+    @FXML
     private TableView<CustomerWithAddress> tableViewCustomers;
 
     @FXML
