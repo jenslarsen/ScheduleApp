@@ -8,15 +8,21 @@ package scheduleapp.view_controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import scheduleapp.model.Address;
+import scheduleapp.model.Customer;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
 
@@ -133,6 +139,29 @@ public class FXMLCustomersController {
 
     @FXML
     void addButtonClicked(ActionEvent event) {
+
+        Customer newCustomer = new Customer();
+        Address newAddress = new Address();
+
+        String name = textFieldName.getText();
+        String address = textFieldAddress.getText();
+        String address2 = textFieldAddress2.getText();
+        String city = textFieldCity.getText();
+        String state = textFieldState.getText();
+        String phone = textFieldPhone.getText();
+        String zip = textFieldZip.getText();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Add new customer?");
+        alert.setContentText(name);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            Stage stage = (Stage) buttonAdd.getScene().getWindow();
+            stage.close();
+        }
+
     }
 
     @FXML
