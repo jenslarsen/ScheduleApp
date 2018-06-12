@@ -39,12 +39,12 @@ public class FXMLLoginController extends Application {
     private String errorTitle;
     private String unableToLogin;
     private String enterUserPass;
-    private String successText;
-    private String loginSuccess;
+    private String switchError;
     private String incorrectUserPass;
     private String passwordText;
     private String usernameText;
     private String signinText;
+    private String unableToSwitch;
 
     @FXML
     private Button loginButton;
@@ -100,23 +100,23 @@ public class FXMLLoginController extends Application {
             errorTitle = "Erreur";
             unableToLogin = "Connection impossible";
             enterUserPass = "Vous devez entrer un nom d'utilisateur et un mot de passe";
-            successText = "Succès";
-            loginSuccess = "Vous vous êtes connecté avec succès à ";
-            incorrectUserPass = "L'identifiant ou le mot de passe est incorrect";
+            incorrectUserPass = "Connexion incorrecte ou base de données indisponible";
             passwordText = "mot de passe";
             usernameText = "nom d'utilisateur";
             signinText = "Se connecter";
+            switchError = "Ce n'est pas bon...";
+            unableToSwitch = "Erreur lors du passage à l'écran du client";
         } else { // default to English
             loginText = "Login";
             errorTitle = "Error";
             unableToLogin = "Unable to login";
             enterUserPass = "You must enter a username and password";
-            successText = "Success";
-            loginSuccess = "You've successfully logged in to ";
-            incorrectUserPass = "Username or password is incorrect";
+            incorrectUserPass = "Login incorrect or database unavailable";
             passwordText = "password";
             usernameText = "username";
             signinText = "Sign in";
+            switchError = "This isn't good...";
+            unableToSwitch = "Error switching to customer screen!";
         }
 
         // update on screen controls
@@ -169,7 +169,11 @@ public class FXMLLoginController extends Application {
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
-            System.out.println("Unable to switch to Customer screen: " + e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(errorTitle);
+            alert.setHeaderText(switchError);
+            alert.setContentText(unableToSwitch);
+            alert.showAndWait();
         }
     }
 }
