@@ -36,7 +36,7 @@
             <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </Button>
-      <Button fx:id="buttonEdit" layoutX="789.0" layoutY="42.0" mnemonicParsing="false" text="Edit">
+      <Button fx:id="buttonEdit" layoutX="789.0" layoutY="42.0" mnemonicParsing="false" onAction="#editButtonClicked" text="Edit">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>

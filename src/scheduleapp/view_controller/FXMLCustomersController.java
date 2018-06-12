@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -111,5 +112,25 @@ public class FXMLCustomersController {
         tableColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
         tableViewCustomers.setItems(customerList);
+    }
+
+    @FXML
+    void editButtonClicked(ActionEvent event) {
+
+        CustomerWithAddress selectedCustomer;
+
+        int index = tableViewCustomers.getSelectionModel().getSelectedIndex();
+
+        if (index > customerList.size() || index < 0) {
+            return;
+        }
+
+        selectedCustomer = customers.get(index);
+        textFieldFirstName.setText(selectedCustomer.getCustomerName());
+        textFieldAddress.setText(selectedCustomer.getAddress());
+        textFieldAddress2.setText(selectedCustomer.getAddress2());
+        textFieldCity.setText(selectedCustomer.getCity());
+        textFieldPhone.setText(selectedCustomer.getPhone());
+        textFieldZip.setText(selectedCustomer.getPostalCode());
     }
 }
