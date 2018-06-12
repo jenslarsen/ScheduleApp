@@ -26,7 +26,7 @@
         </buttons>
       </ButtonBar>
       <TextField fx:id="textFieldSearch" layoutX="246.0" layoutY="42.0" prefHeight="26.0" prefWidth="410.0" />
-      <Button fx:id="buttonSearch" layoutX="669.0" layoutY="42.0" mnemonicParsing="false" text="Search">
+      <Button fx:id="buttonSearch" layoutX="662.0" layoutY="42.0" mnemonicParsing="false" text="Search">
          <font>
             <Font name="Fira Sans Regular" size="13.0" />
          </font>

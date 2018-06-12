@@ -119,7 +119,7 @@ public class FXMLCustomersController {
         int index = tableViewCustomers.getSelectionModel().getSelectedIndex();
 
         if (index > customerList.size() || index < 0) {
-            return;
+            return; // don't do anything if no customer is selected
         }
 
         selectedCustomer = customers.get(index);
@@ -130,4 +130,21 @@ public class FXMLCustomersController {
         textFieldPhone.setText(selectedCustomer.getPhone());
         textFieldZip.setText(selectedCustomer.getPostalCode());
     }
+
+    @FXML
+    void addButtonClicked(ActionEvent event) {
+    }
+
+    @FXML
+    void searchButtonClicked(ActionEvent event) {
+    }
+
+    @FXML
+    void saveButtonClicked(ActionEvent event) {
+    }
+
+    @FXML
+    void deleteButtonClicked(ActionEvent event) {
+    }
+
 }
