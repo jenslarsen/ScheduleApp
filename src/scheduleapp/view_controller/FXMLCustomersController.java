@@ -98,23 +98,7 @@ public class FXMLCustomersController {
 
     @FXML
     public void initialize() throws SQLException {
-        // load customers from database
-        try {
-            customers = Datasource.getCustomersWithAddresses();
-            customerList.addAll(customers);
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("Something went wrong retrieving customers! " + e.getMessage());
-        }
-        System.out.println("Customers retrieved: " + customers);
-
-        Datasource.close();
-
-        // display in table
-        tableColName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        tableColAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        tableColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
-
-        tableViewCustomers.setItems(customerList);
+        loadCustomersFromDatabase();
     }
 
     @FXML
@@ -182,4 +166,25 @@ public class FXMLCustomersController {
         // maybe make this a radio button or tab instead to be more clear??
     }
 
+    void loadCustomersFromDatabase() throws SQLException {
+        try {
+            customers = Datasource.getCustomersWithAddresses();
+            customerList.addAll(customers);
+        } catch (ClassNotFoundException | SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Exeception encountered");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
+        Datasource.close();
+
+        // display in table
+        tableColName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        tableColAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        tableColPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+
+        tableViewCustomers.setItems(customerList);
+    }
 }
