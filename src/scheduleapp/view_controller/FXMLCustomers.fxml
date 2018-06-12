@@ -48,14 +48,9 @@
             <TableColumn fx:id="tableColPhone" minWidth="0.0" prefWidth="106.0" text="Phone" />
         </columns>
       </TableView>
-      <TextField fx:id="textFieldFirstName" layoutX="346.0" layoutY="363.0">
+      <TextField fx:id="textFieldName" layoutX="346.0" layoutY="363.0" prefHeight="29.0" prefWidth="258.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="textFieldLastName" layoutX="615.0" layoutY="364.0" prefHeight="27.0" prefWidth="167.0">
-         <font>
-            <Font name="Fira Sans Regular" size="13.0" />
          </font>
       </TextField>
       <TextField fx:id="textFieldAddress" layoutX="346.0" layoutY="407.0" prefHeight="29.0" prefWidth="258.0">
@@ -98,12 +93,7 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="260.0" layoutY="368.0" text="First">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="550.0" layoutY="368.0" text="Last">
+      <Label layoutX="260.0" layoutY="368.0" text="Name">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>

@@ -49,10 +49,7 @@ public class FXMLCustomersController {
     private TableView<CustomerWithAddress> tableViewCustomers;
 
     @FXML
-    private TextField textFieldFirstName;
-
-    @FXML
-    private TextField textFieldLastName;
+    private TextField textFieldName;
 
     @FXML
     private TextField textFieldAddress;
@@ -126,7 +123,7 @@ public class FXMLCustomersController {
         }
 
         selectedCustomer = customers.get(index);
-        textFieldFirstName.setText(selectedCustomer.getCustomerName());
+        textFieldName.setText(selectedCustomer.getCustomerName());
         textFieldAddress.setText(selectedCustomer.getAddress());
         textFieldAddress2.setText(selectedCustomer.getAddress2());
         textFieldCity.setText(selectedCustomer.getCity());
