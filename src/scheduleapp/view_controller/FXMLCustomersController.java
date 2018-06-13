@@ -20,7 +20,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import scheduleapp.model.Address;
 import scheduleapp.model.Customer;
 import scheduleapp.model.CustomerWithAddress;
@@ -79,7 +78,7 @@ public class FXMLCustomersController {
     private TextField textFieldPhone;
 
     @FXML
-    private TextField textFieldZip;
+    private TextField textFieldPostalCode;
 
     @FXML
     private TableColumn<CustomerWithAddress, String> tableColName;
@@ -118,7 +117,7 @@ public class FXMLCustomersController {
         textFieldAddress2.setText(selectedCustomer.getAddress2());
         textFieldCity.setText(selectedCustomer.getCity());
         textFieldPhone.setText(selectedCustomer.getPhone());
-        textFieldZip.setText(selectedCustomer.getPostalCode());
+        textFieldPostalCode.setText(selectedCustomer.getPostalCode());
     }
 
     @FXML
@@ -133,7 +132,11 @@ public class FXMLCustomersController {
         String city = textFieldCity.getText();
         String state = textFieldState.getText();
         String phone = textFieldPhone.getText();
-        String zip = textFieldZip.getText();
+        String zip = textFieldPostalCode.getText();
+
+        if (name.equals("")) {
+            return; // don't do anything
+        }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -141,10 +144,6 @@ public class FXMLCustomersController {
         alert.setContentText(name);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            Stage stage = (Stage) buttonAdd.getScene().getWindow();
-            stage.close();
-        }
 
     }
 
