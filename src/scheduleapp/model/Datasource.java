@@ -78,7 +78,7 @@ public class Datasource {
 
     // globals
     private static Connection connection = null;
-    private static String loggedInUser = null;
+    public static String loggedInUser = null;
 
     public static boolean open() throws ClassNotFoundException {
         try {
