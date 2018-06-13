@@ -68,7 +68,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="textFieldState" layoutX="615.0" layoutY="499.0">
+      <TextField fx:id="textFieldState" layoutX="638.0" layoutY="499.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -78,7 +78,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="textFieldZip" layoutX="615.0" layoutY="544.0">
+      <TextField fx:id="textFieldPostalCode" layoutX="638.0" layoutY="544.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -118,7 +118,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="550.0" layoutY="549.0" text="Zip Code">
+      <Label layoutX="550.0" layoutY="549.0" text="Postal Code">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
