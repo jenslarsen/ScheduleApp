@@ -81,6 +81,9 @@ public class FXMLCustomersController {
     private TextField textFieldPostalCode;
 
     @FXML
+    private TextField textFieldCountry;
+
+    @FXML
     private TableColumn<CustomerWithAddress, String> tableColName;
 
     @FXML
