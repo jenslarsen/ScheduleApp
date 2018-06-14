@@ -121,6 +121,7 @@ public class FXMLCustomersController {
         textFieldCity.setText(selectedCustomer.getCity());
         textFieldPhone.setText(selectedCustomer.getPhone());
         textFieldPostalCode.setText(selectedCustomer.getPostalCode());
+        textFieldCountry.setText(selectedCustomer.getCountry());
     }
 
     @FXML
@@ -160,6 +161,11 @@ public class FXMLCustomersController {
 
     @FXML
     void deleteButtonClicked(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete customer");
+        alert.setHeaderText("Are you sure you want to remove this customer?");
+        alert.setContentText(textFieldName.getText());
+        alert.showAndWait();
     }
 
     @FXML
@@ -171,7 +177,6 @@ public class FXMLCustomersController {
     void loadCustomersFromDatabase() throws SQLException {
         try {
             customers = Datasource.getCustomersWithAddresses();
-            customerList.addAll(customers);
         } catch (ClassNotFoundException | SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -179,6 +184,8 @@ public class FXMLCustomersController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+
+        customerList.addAll(customers);
 
         Datasource.close();
 
