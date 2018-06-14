@@ -72,9 +72,6 @@ public class FXMLCustomersController {
     private TextField textFieldCity;
 
     @FXML
-    private TextField textFieldState;
-
-    @FXML
     private TextField textFieldPhone;
 
     @FXML
@@ -134,7 +131,6 @@ public class FXMLCustomersController {
         String address = textFieldAddress.getText();
         String address2 = textFieldAddress2.getText();
         String city = textFieldCity.getText();
-        String state = textFieldState.getText();
         String phone = textFieldPhone.getText();
         String zip = textFieldPostalCode.getText();
 

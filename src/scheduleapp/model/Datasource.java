@@ -186,11 +186,15 @@ public class Datasource {
             tempCustomer.setCity(result.getString(COLUMN_CITY_CITY));
             tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
             tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
-            tempCustomer.setCountry(COLUMN_COUNTRY_COUNTRY);
+            tempCustomer.setCountry(result.getString(COLUMN_COUNTRY_COUNTRY));
             tempCustomer.setActive(true);
 
             customers.add(tempCustomer);
         }
+
+        result.close();
+        statement.close();
+
         return customers;
     }
 }

@@ -73,17 +73,12 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="textFieldCountry" layoutX="639.0" layoutY="499.0">
+      <TextField fx:id="textFieldPostalCode" layoutX="346.0" layoutY="543.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="textFieldState" layoutX="348.0" layoutY="544.0">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="textFieldPostalCode" layoutX="638.0" layoutY="544.0">
+      <TextField fx:id="textFieldCountry" layoutX="639.0" layoutY="543.0">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -118,12 +113,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="260.0" layoutY="549.0" text="State">
-         <font>
-            <Font name="Fira Sans Regular" size="15.0" />
-         </font>
-      </Label>
-      <Label layoutX="550.0" layoutY="549.0" text="Postal Code">
+      <Label layoutX="260.0" layoutY="548.0" text="Postal Code">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
@@ -138,7 +128,7 @@
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
       </Label>
-      <Label layoutX="551.0" layoutY="504.0" text="Country">
+      <Label layoutX="551.0" layoutY="548.0" text="Country">
          <font>
             <Font name="Fira Sans Regular" size="15.0" />
          </font>
