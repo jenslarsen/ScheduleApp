@@ -187,11 +187,7 @@ public class Datasource {
             tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
             tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
             tempCustomer.setCountry(COLUMN_COUNTRY_COUNTRY);
-            if (result.getInt(COLUMN_CUSTOMER_ACTIVE) != 0) {
-                tempCustomer.setActive(true);
-            } else {
-                tempCustomer.setActive(false);
-            }
+            tempCustomer.setActive(true);
 
             customers.add(tempCustomer);
         }
