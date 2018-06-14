@@ -20,7 +20,12 @@ public class CustomerWithAddress {
     private String city;
     private String postalCode;
     private String phone;
-    private String Country;
+    private String country;
+    private String state;
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public int getCustomerID() {
         return customerID;
@@ -95,10 +100,14 @@ public class CustomerWithAddress {
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String Country) {
-        this.Country = Country;
+        this.country = Country;
+    }
+
+    public String getState() {
+        return state;
     }
 }
