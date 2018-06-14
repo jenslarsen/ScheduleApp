@@ -30,6 +30,7 @@ public class Datasource {
     private static final String TABLE_CUSTOMER = "customer";
     private static final String TABLE_ADDRESS = "address";
     private static final String TABLE_CITY = "city";
+    private static final String TABLE_COUNTRY = "country";
 
     // table columns
     private static final String COLUMN_USER_USERNAME = "userName";
@@ -58,23 +59,38 @@ public class Datasource {
     private static final String COLUMN_CITY_CREATEDBY = "createdBy";
     private static final String COLUMN_CITY_LASTUPDATE = "lastUpdate";
     private static final String COLUMN_CITY_LASTUPDATEDBY = "lastUpdatedBy";
+    private static final String COLUMN_COUNTRY_COUNTRYID = "countryId";
+    private static final String COLUMN_COUNTRY_COUNTRY = "country";
 
     // static queries
+    /* Query Customers with Addresses
+    SELECT customer.customerName,customer.active,customer.customerId,
+	address.address,address.addressId,address.address2,
+    city.city,address.postalCode,address.phone, country.country
+    FROM (((customer INNER JOIN address on customer.addressId = address.addressId)
+    INNER JOIN city on address.cityId = city.cityId)
+    INNER JOIN country on city.countryId = country.countryId)
+    WHERE customer.active = 1;
+     */
     private static final String QUERY_CUSTOMERS_WITH_ADDRESSES
-            = "SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ","
-            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + ","
+            = "SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME
+            + "," + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + ","
             + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ","
             + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS + ","
             + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESSID + ","
-            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS2 + "," + TABLE_CITY + "." + COLUMN_CITY_CITY
-            + "," + TABLE_ADDRESS + "." + COLUMN_ADDRESS_POSTALCODE + ","
-            + TABLE_ADDRESS + "." + COLUMN_ADDRESS_PHONE
-            + " FROM ((" + TABLE_CUSTOMER + " INNER JOIN " + TABLE_ADDRESS
+            + TABLE_ADDRESS + "."
+            + COLUMN_ADDRESS_ADDRESS2 + ","
+            + TABLE_CITY + "." + COLUMN_CITY_CITY + "," + TABLE_ADDRESS + "."
+            + COLUMN_ADDRESS_POSTALCODE + "," + TABLE_ADDRESS + "."
+            + COLUMN_ADDRESS_PHONE + "," + TABLE_COUNTRY + "." + TABLE_COUNTRY + " "
+            + "FROM (((" + TABLE_CUSTOMER + " INNER JOIN " + TABLE_ADDRESS
             + " on " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ADDRESSID + " = "
             + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESSID + ") INNER JOIN "
             + TABLE_CITY + " on " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_CITYID
-            + " = " + TABLE_CITY + "." + COLUMN_CITY_CITYID + ") WHERE "
-            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + " = 1;";
+            + " = " + TABLE_CITY + "." + COLUMN_CITY_CITYID + ") INNER JOIN "
+            + TABLE_COUNTRY + " on " + TABLE_CITY + "." + COLUMN_CITY_COUNTRYID
+            + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRYID
+            + ") WHERE " + TABLE_CUSTOMER + "." + "active = 1;";
 
     // globals
     private static Connection connection = null;
@@ -154,14 +170,8 @@ public class Datasource {
 
         Statement statement = connection.createStatement();
 
-        /*
-        SELECT customer.customerName, address.address, address.address2, city.city,
-            address.postalCode, address.phone
-        FROM ((customer
-        INNER JOIN address on customer.addressId = address.addressId)
-        INNER JOIN city on address.cityId = city.cityId)
-        WHERE customer.active = 1;
-         */
+        System.out.println(QUERY_CUSTOMERS_WITH_ADDRESSES);
+
         ResultSet result = statement.executeQuery(QUERY_CUSTOMERS_WITH_ADDRESSES);
 
         while (result.next()) {
@@ -176,6 +186,7 @@ public class Datasource {
             tempCustomer.setCity(result.getString(COLUMN_CITY_CITY));
             tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
             tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
+            tempCustomer.setCountry(COLUMN_COUNTRY_COUNTRY);
             if (result.getInt(COLUMN_CUSTOMER_ACTIVE) != 0) {
                 tempCustomer.setActive(true);
             } else {
