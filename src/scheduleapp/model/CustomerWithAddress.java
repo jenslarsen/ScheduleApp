@@ -20,6 +20,7 @@ public class CustomerWithAddress {
     private String city;
     private String postalCode;
     private String phone;
+    private String Country;
 
     public int getCustomerID() {
         return customerID;
@@ -93,4 +94,11 @@ public class CustomerWithAddress {
         this.phone = phone;
     }
 
+    public String getCountry() {
+        return Country;
+    }
+
+    public void setCountry(String Country) {
+        this.Country = Country;
+    }
 }
