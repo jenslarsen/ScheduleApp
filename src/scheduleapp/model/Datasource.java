@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class Datasource {
 
+    // data base info
     public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     public static final String DB_NAME = "U04H9n";
     public static final String DB_URL = "jdbc:mysql://52.206.157.109/" + DB_NAME;
@@ -51,7 +52,7 @@ public class Datasource {
     private static final String COLUMN_ADDRESS_POSTALCODE = "postalCode";
     private static final String COLUMN_ADDRESS_PHONE = "phone";
     private static final String COLUMN_ADDRESS_CREATEDATE = "createDate";
-    private static final String COLUMN_ADDRESS_CREADEDBY = "createdBy";
+    private static final String COLUMN_ADDRESS_CREATEDBY = "createdBy";
     private static final String COLUMN_ADDRESS_LASTUPDATE = "lastUpdate";
     private static final String COLUMN_ADDRESS_LASTUPDATEBY = "lastUpdateBy";
     private static final String COLUMN_CITY_CITYID = "cityId";
@@ -98,7 +99,6 @@ public class Datasource {
     /*
     INSERT INTO customer (customerName, addressId, active,
     createDate, createdBy, lastUpdate, lastUpdateBy)
-    VALUES ("Lee Lo", 111, 1, "2018-06-04", "Jens", "2018-06-04", "Jens");
      */
     private static final String ADD_CUSTOMER_START
             = "INSERT INTO " + TABLE_CUSTOMER
@@ -107,10 +107,24 @@ public class Datasource {
             + "," + COLUMN_CUSTOMER_CREATEDBY + "," + COLUMN_CUSTOMER_LASTUPDATE
             + "," + COLUMN_CUSTOMER_LASTUPDATEBY + ") ";
 
+    // Add Address
+    /*
+    INSERT INTO address (address, address2, cityId, postalCode, phone, createDate,
+    createdBy, lastUpdate, lastUpdateBy)
+     */
+    private static final String ADD_ADDRESS_START
+            = "INSERT INTO " + TABLE_ADDRESS
+            + "(" + COLUMN_ADDRESS_ADDRESS + "," + COLUMN_ADDRESS_ADDRESS2 + ","
+            + COLUMN_ADDRESS_CITYID + "," + COLUMN_ADDRESS_POSTALCODE + ","
+            + COLUMN_ADDRESS_PHONE + "," + COLUMN_ADDRESS_CREATEDATE + ","
+            + COLUMN_ADDRESS_CREATEDBY + "," + COLUMN_ADDRESS_LASTUPDATE + ","
+            + COLUMN_ADDRESS_LASTUPDATEBY + ") ";
+
     // globals
     private static Connection connection = null;
     public static String loggedInUser = null;
 
+    // public methods
     public static boolean open() throws ClassNotFoundException {
         try {
             Class.forName(DB_DRIVER);
@@ -244,4 +258,51 @@ public class Datasource {
         Datasource.close();
         return result;
     }
+
+    public static boolean addAddress(Address address) throws ClassNotFoundException, SQLException {
+
+        String address1 = address.getAddress();
+        String address2 = address.getAddress2();
+        int cityId = address.getCityId();
+        String postalCode = address.getPostalCode();
+        String phone = address.getPhone();
+        String createDate = LocalDateTime.now().toString();
+        String createdBy = loggedInUser;
+        String lastUpdate = createDate;
+        String lastUpdateBy = loggedInUser;
+
+        String addressInsert = ADD_ADDRESS_START
+                + "VALUES ("
+                + "'" + address1 + "'" + ","
+                + "'" + address2 + "'" + ","
+                + cityId + ","
+                + "'" + postalCode + "'" + ","
+                + "'" + phone + "'" + ","
+                + "'" + createDate + "'" + ","
+                + "'" + createdBy + "'" + ","
+                + "'" + lastUpdate + "'" + ","
+                + "'" + lastUpdateBy + "'" + ","
+                + ");";
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        boolean result = false;
+
+        try (Statement statement = connection.createStatement()) {
+
+            result = statement.execute(addressInsert);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error adding address: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return result;
+    }
+
 }
