@@ -16,7 +16,7 @@ public class Address {
     private String addressId;
     private String address;
     private String address2;
-    private String city;
+    private int cityId;
     private String postalCode;
     private String phone;
     private LocalDateTime createDate;
@@ -48,12 +48,12 @@ public class Address {
         this.address2 = address2;
     }
 
-    public String getCity() {
-        return city;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
     public String getPostalCode() {
