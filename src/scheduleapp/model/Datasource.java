@@ -120,6 +120,17 @@ public class Datasource {
             + COLUMN_ADDRESS_CREATEDBY + "," + COLUMN_ADDRESS_LASTUPDATE + ","
             + COLUMN_ADDRESS_LASTUPDATEBY + ") ";
 
+    // Add City
+    /*
+    INSERT INTO city (city,countryId,createDate,createdBy, lastUpdate, lastUpdateBy)
+     */
+    private static final String ADD_CITY_START
+            = "INSERT INTO " + TABLE_CITY
+            + "(" + COLUMN_CITY_CITY + "," + COLUMN_CITY_COUNTRYID + ","
+            + COLUMN_CITY_CREATEDATE + ","
+            + COLUMN_CITY_CREATEDBY + "," + COLUMN_CITY_LASTUPDATE + ","
+            + COLUMN_CITY_LASTUPDATEDBY + ") ";
+
     // globals
     private static Connection connection = null;
     public static String loggedInUser = null;
@@ -314,7 +325,7 @@ public class Datasource {
         String lastUpdate = createDate;
         String lastUpdateBy = loggedInUser;
 
-        String addressInsert = ADD_ADDRESS_START
+        String addressInsert = ADD_CITY_START
                 + "VALUES ("
                 + "'" + cityName + "'" + ","
                 + countryId + ","
@@ -344,5 +355,4 @@ public class Datasource {
         Datasource.close();
         return result;
     }
-
 }
