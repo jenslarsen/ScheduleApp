@@ -168,32 +168,28 @@ public class Datasource {
             return null;
         }
 
-        Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement();
+                ResultSet result = statement.executeQuery(QUERY_CUSTOMERS_WITH_ADDRESSES)) {
+            System.out.println(QUERY_CUSTOMERS_WITH_ADDRESSES);
 
-        System.out.println(QUERY_CUSTOMERS_WITH_ADDRESSES);
+            while (result.next()) {
 
-        ResultSet result = statement.executeQuery(QUERY_CUSTOMERS_WITH_ADDRESSES);
+                CustomerWithAddress tempCustomer = new CustomerWithAddress();
 
-        while (result.next()) {
+                tempCustomer.setCustomerID(result.getInt(COLUMN_CUSTOMER_CUSTOMERID));
+                tempCustomer.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
+                tempCustomer.setAddressId(result.getInt(COLUMN_CUSTOMER_ADDRESSID));
+                tempCustomer.setAddress(result.getString(COLUMN_ADDRESS_ADDRESS));
+                tempCustomer.setAddress2(result.getString(COLUMN_ADDRESS_ADDRESS2));
+                tempCustomer.setCity(result.getString(COLUMN_CITY_CITY));
+                tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
+                tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
+                tempCustomer.setCountry(result.getString(COLUMN_COUNTRY_COUNTRY));
+                tempCustomer.setActive(true);
 
-            CustomerWithAddress tempCustomer = new CustomerWithAddress();
-
-            tempCustomer.setCustomerID(result.getInt(COLUMN_CUSTOMER_CUSTOMERID));
-            tempCustomer.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
-            tempCustomer.setAddressId(result.getInt(COLUMN_CUSTOMER_ADDRESSID));
-            tempCustomer.setAddress(result.getString(COLUMN_ADDRESS_ADDRESS));
-            tempCustomer.setAddress2(result.getString(COLUMN_ADDRESS_ADDRESS2));
-            tempCustomer.setCity(result.getString(COLUMN_CITY_CITY));
-            tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
-            tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
-            tempCustomer.setCountry(result.getString(COLUMN_COUNTRY_COUNTRY));
-            tempCustomer.setActive(true);
-
-            customers.add(tempCustomer);
+                customers.add(tempCustomer);
+            }
         }
-
-        result.close();
-        statement.close();
 
         return customers;
     }
