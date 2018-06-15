@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class Datasource {
     private static final String COLUMN_CUSTOMER_ACTIVE = "active";
     private static final String COLUMN_CUSTOMER_CREATEDATE = "createDate";
     private static final String COLUMN_CUSTOMER_CREATEDBY = "createdBy";
+    private static final String COLUMN_CUSTOMER_LASTUPDATE = "lastUpdate";
     private static final String COLUMN_CUSTOMER_LASTUPDATEBY = "lastUpdateBy";
     private static final String COLUMN_ADDRESS_ADDRESSID = "addressId";
     private static final String COLUMN_ADDRESS_ADDRESS = "address";
@@ -91,6 +93,19 @@ public class Datasource {
             + TABLE_COUNTRY + " on " + TABLE_CITY + "." + COLUMN_CITY_COUNTRYID
             + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRYID
             + ") WHERE " + TABLE_CUSTOMER + "." + "active = 1;";
+
+    // Add customer
+    /*
+    INSERT INTO customer (customerName, addressId, active,
+    createDate, createdBy, lastUpdate, lastUpdateBy)
+    VALUES ("Lee Lo", 111, 1, "2018-06-04", "Jens", "2018-06-04", "Jens");
+     */
+    private static final String ADD_CUSTOMER_START
+            = "INSERT INTO " + TABLE_CUSTOMER
+            + " (" + COLUMN_CUSTOMER_CUSTOMERNAME + "," + COLUMN_CUSTOMER_ADDRESSID
+            + "," + COLUMN_CUSTOMER_ACTIVE + "," + COLUMN_CUSTOMER_CREATEDATE
+            + "," + COLUMN_CUSTOMER_CREATEDBY + "," + COLUMN_CUSTOMER_LASTUPDATE
+            + "," + COLUMN_CUSTOMER_LASTUPDATEBY + ") ";
 
     // globals
     private static Connection connection = null;
@@ -170,7 +185,6 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement();
                 ResultSet result = statement.executeQuery(QUERY_CUSTOMERS_WITH_ADDRESSES)) {
-            System.out.println(QUERY_CUSTOMERS_WITH_ADDRESSES);
 
             while (result.next()) {
 
@@ -192,5 +206,44 @@ public class Datasource {
         }
 
         return customers;
+    }
+
+    public static boolean addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
+
+        String name = customer.getCustomerName();
+        int addressId = customer.getAddressID();
+        int active = 1;
+        String createDate = LocalDateTime.now().toString();
+        String createdBy = loggedInUser;
+        String lastUpdate = createDate;
+        String lastUpdateBy = loggedInUser;
+
+        String customerInsert = ADD_CUSTOMER_START
+                + "VALUES (" + "'" + name + "'" + "," + addressId + ","
+                + active + "," + "'" + createDate + "'" + "," + "'"
+                + createdBy + "'" + "," + "'"
+                + lastUpdate + "'" + "," + "'" + lastUpdateBy + "'" + ");";
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        boolean result = false;
+
+        try (Statement statement = connection.createStatement()) {
+
+            System.out.println(customerInsert);
+
+            result = statement.execute(customerInsert);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error adding customer: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return result;
     }
 }
