@@ -64,6 +64,10 @@ public class Datasource {
     private static final String COLUMN_CITY_LASTUPDATEDBY = "lastUpdatedBy";
     private static final String COLUMN_COUNTRY_COUNTRYID = "countryId";
     private static final String COLUMN_COUNTRY_COUNTRY = "country";
+    private static final String COLUMN_COUNTRY_CREATEDATE = "createDate";
+    private static final String COLUMN_COUNTRY_CREATEDBY = "createdBy";
+    private static final String COLUMN_COUNTRY_LASTUPDATE = "lastUpdate";
+    private static final String COLUMN_COUNTRY_LASTUPDATEBY = "lastUpdateBy";
 
     // static queries
     /* Query Customers with Addresses
@@ -130,6 +134,16 @@ public class Datasource {
             + COLUMN_CITY_CREATEDATE + ","
             + COLUMN_CITY_CREATEDBY + "," + COLUMN_CITY_LASTUPDATE + ","
             + COLUMN_CITY_LASTUPDATEDBY + ") ";
+
+    // Add Country
+    /*
+    INSERT INTO country (country,createDate,createdBy, lastUpdate, lastUpdateBy)
+     */
+    private static final String ADD_COUNTRY_START
+            = "INSERT INTO " + TABLE_COUNTRY
+            + "(" + COLUMN_COUNTRY_COUNTRY + "," + COLUMN_COUNTRY_CREATEDATE + ","
+            + COLUMN_COUNTRY_CREATEDBY + "," + COLUMN_COUNTRY_LASTUPDATE + ","
+            + COLUMN_COUNTRY_LASTUPDATEBY + ") ";
 
     // globals
     private static Connection connection = null;
@@ -350,6 +364,45 @@ public class Datasource {
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding city: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return result;
+    }
+
+    public static boolean addCountry(Country country) throws ClassNotFoundException, SQLException {
+
+        String countryName = country.getCountry();
+
+        String createDate = LocalDateTime.now().toString();
+        String createdBy = loggedInUser;
+        String lastUpdate = createDate;
+        String lastUpdateBy = loggedInUser;
+
+        String addressInsert = ADD_COUNTRY_START
+                + "VALUES ("
+                + "'" + countryName + "'" + ","
+                + "'" + createDate + "'" + ","
+                + "'" + createdBy + "'" + ","
+                + "'" + lastUpdate + "'" + ","
+                + "'" + lastUpdateBy + "'" + ","
+                + ");";
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        boolean result = false;
+
+        try (Statement statement = connection.createStatement()) {
+
+            result = statement.execute(addressInsert);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error adding country: " + e.getMessage());
         }
 
         Datasource.close();
