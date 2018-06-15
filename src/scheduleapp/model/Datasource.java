@@ -235,8 +235,6 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
 
-            System.out.println(customerInsert);
-
             result = statement.execute(customerInsert);
 
         } catch (SQLException e) {
