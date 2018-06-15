@@ -122,7 +122,15 @@ public class FXMLCustomersController {
     }
 
     @FXML
-    void addButtonClicked(ActionEvent event) {
+    void addButtonClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
+    }
+
+    @FXML
+    void searchButtonClicked(ActionEvent event) {
+    }
+
+    @FXML
+    void saveButtonClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
 
         Customer newCustomer = new Customer();
         Address newAddress = new Address();
@@ -140,19 +148,16 @@ public class FXMLCustomersController {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Add new customer?");
+        alert.setHeaderText("Save customer details");
         alert.setContentText(name);
 
         Optional<ButtonType> result = alert.showAndWait();
 
-    }
+        newCustomer.setCustomerName(name);
+        newCustomer.setAddressID(100);
 
-    @FXML
-    void searchButtonClicked(ActionEvent event) {
-    }
+        Datasource.addCustomer(newCustomer);
 
-    @FXML
-    void saveButtonClicked(ActionEvent event) {
     }
 
     @FXML
