@@ -305,4 +305,44 @@ public class Datasource {
         return result;
     }
 
+    public static boolean addCity(City city) throws ClassNotFoundException, SQLException {
+
+        String cityName = city.getCity();
+        int countryId = city.getCountryid();
+        String createDate = LocalDateTime.now().toString();
+        String createdBy = loggedInUser;
+        String lastUpdate = createDate;
+        String lastUpdateBy = loggedInUser;
+
+        String addressInsert = ADD_ADDRESS_START
+                + "VALUES ("
+                + "'" + cityName + "'" + ","
+                + countryId + ","
+                + "'" + createDate + "'" + ","
+                + "'" + createdBy + "'" + ","
+                + "'" + lastUpdate + "'" + ","
+                + "'" + lastUpdateBy + "'" + ","
+                + ");";
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        boolean result = false;
+
+        try (Statement statement = connection.createStatement()) {
+
+            result = statement.execute(addressInsert);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error adding city: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return result;
+    }
+
 }
