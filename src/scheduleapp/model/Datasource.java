@@ -379,7 +379,7 @@ public class Datasource {
         String lastUpdate = createDate;
         String lastUpdateBy = loggedInUser;
 
-        String addressInsert = ADD_COUNTRY_START
+        String countryInsert = ADD_COUNTRY_START
                 + "VALUES ("
                 + "'" + countryName + "'" + ","
                 + "'" + createDate + "'" + ","
@@ -399,7 +399,7 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
 
-            result = statement.execute(addressInsert);
+            result = statement.execute(countryInsert);
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding country: " + e.getMessage());
