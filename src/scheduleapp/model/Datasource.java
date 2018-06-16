@@ -330,7 +330,7 @@ public class Datasource {
         return result;
     }
 
-    public static boolean addCity(City city) throws ClassNotFoundException, SQLException {
+    public static int addCity(City city) throws ClassNotFoundException, SQLException {
 
         String cityName = city.getCity();
         int countryId = city.getCountryid();
@@ -349,25 +349,32 @@ public class Datasource {
                 + "'" + lastUpdateBy + "'" + ","
                 + ");";
 
+        String cityQuery
+                = "SELECT * FROM " + TABLE_CITY
+                + " WHERE " + COLUMN_CITY_CITY + " = '" + cityName
+                + "';";
+
+        int cityId = -1;
+        ResultSet result;
+
         boolean open = Datasource.open();
 
         if (!open) {
             System.out.println("Error opening datasource!");
-            return false;
+            return cityId;
         }
-
-        boolean result = false;
 
         try (Statement statement = connection.createStatement()) {
 
-            result = statement.execute(addressInsert);
+            statement.execute(addressInsert);
+            result = statement.executeQuery(cityQuery);
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding city: " + e.getMessage());
         }
 
         Datasource.close();
-        return result;
+        return cityId;
     }
 
     public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
