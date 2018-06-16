@@ -368,6 +368,7 @@ public class Datasource {
 
             statement.execute(addressInsert);
             result = statement.executeQuery(cityQuery);
+            cityId = result.getInt(COLUMN_CITY_CITYID);
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding city: " + e.getMessage());
