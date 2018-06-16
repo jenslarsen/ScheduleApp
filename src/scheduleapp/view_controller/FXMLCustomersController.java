@@ -170,12 +170,14 @@ public class FXMLCustomersController {
         alert.setContentText(name);
 
         Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() != ButtonType.OK) {
+            return;
+        }
 
         newCustomer.setCustomerName(name);
         newCustomer.setAddressID(100);
 
         Datasource.addCustomer(newCustomer);
-
     }
 
     @FXML
