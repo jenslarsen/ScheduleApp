@@ -21,6 +21,11 @@ public class City {
     private LocalDateTime lastUpdate;
     private String lastUpdateBy;
 
+    public City(String city, int countryid) {
+        this.city = city;
+        this.countryid = countryid;
+    }
+
     public int getCityId() {
         return cityId;
     }
