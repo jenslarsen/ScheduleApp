@@ -20,6 +20,10 @@ public class Country {
     private LocalDateTime lastUpdate;
     private String lastUpdateBy;
 
+    public Country(String country) {
+        this.country = country;
+    }
+
     public int getCountryId() {
         return countryId;
     }
