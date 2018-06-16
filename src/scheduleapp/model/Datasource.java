@@ -370,7 +370,7 @@ public class Datasource {
         return result;
     }
 
-    public static boolean addCountry(Country country) throws ClassNotFoundException, SQLException {
+    public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
 
         String countryName = country.getCountry();
 
@@ -388,24 +388,32 @@ public class Datasource {
                 + "'" + lastUpdateBy + "'" + ","
                 + ");";
 
+        String countryQuery
+                = "SELECT * FROM " + TABLE_COUNTRY
+                + " WHERE " + COLUMN_COUNTRY_COUNTRY + " = '" + countryName
+                + "';";
+
         boolean open = Datasource.open();
 
         if (!open) {
             System.out.println("Error opening datasource!");
-            return false;
+            return -1;
         }
 
-        boolean result = false;
+        ResultSet result;
+        int countryId = -1;
 
         try (Statement statement = connection.createStatement()) {
 
-            result = statement.execute(countryInsert);
+            statement.execute(countryInsert);
+            result = statement.executeQuery(countryQuery);
+            countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding country: " + e.getMessage());
         }
 
         Datasource.close();
-        return result;
+        return countryId;
     }
 }
