@@ -247,6 +247,36 @@ public class Datasource {
         return customers;
     }
 
+    public static int countryExists(String country) throws ClassNotFoundException {
+        int countryId = -1;
+
+        String countryQuery
+                = "SELECT * FROM " + TABLE_COUNTRY
+                + "WHERE " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRY
+                + " = " + "'" + country + "'"
+                + "'";
+
+        ResultSet result;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return countryId;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+
+            result = statement.executeQuery(countryQuery);
+            countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error querying country: " + e.getMessage());
+        }
+
+        return countryId;
+    }
+
     public static int addressExists(String address, String city) throws ClassNotFoundException {
         int addressId = -1;
 
