@@ -247,6 +247,38 @@ public class Datasource {
         return customers;
     }
 
+    public static int customerExists(String name, String address) throws ClassNotFoundException {
+        int customerId = -1;
+
+        String customerQuery
+                = "SELECT * FROM " + TABLE_CUSTOMER
+                + "INNER JOIN " + TABLE_ADDRESS + " "
+                + "WHERE " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME
+                + " = " + "'" + name + "'"
+                + " AND " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
+                + " = " + "'" + address + "'";
+
+        ResultSet result;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return customerId;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+
+            result = statement.executeQuery(customerQuery);
+            customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error querying customer: " + e.getMessage());
+        }
+
+        return customerId;
+    }
+
     public static int addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
 
         String name = customer.getCustomerName();
@@ -443,4 +475,5 @@ public class Datasource {
         Datasource.close();
         return countryId;
     }
+
 }
