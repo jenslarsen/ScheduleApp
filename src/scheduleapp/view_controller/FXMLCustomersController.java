@@ -123,6 +123,24 @@ public class FXMLCustomersController {
 
     @FXML
     void addButtonClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
+
+        // get confirmation
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Clear fields for new customer");
+        alert.setContentText("Are you sure?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            // clear fields
+            textFieldName.clear();
+            textFieldAddress.clear();
+            textFieldAddress2.clear();
+            textFieldCity.clear();
+            textFieldPhone.clear();
+            textFieldPostalCode.clear();
+            textFieldCountry.clear();
+        }
     }
 
     @FXML
