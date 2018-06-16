@@ -284,7 +284,7 @@ public class Datasource {
         return result;
     }
 
-    public static boolean addAddress(Address address) throws ClassNotFoundException, SQLException {
+    public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
 
         String address1 = address.getAddress();
         String address2 = address.getAddress2();
@@ -309,25 +309,35 @@ public class Datasource {
                 + "'" + lastUpdateBy + "'" + ","
                 + ");";
 
+        String addressQuery
+                = "SELECT * FROM " + TABLE_ADDRESS
+                + " WHERE " + COLUMN_ADDRESS_ADDRESS + " = '" + address1
+                + " AND " + COLUMN_ADDRESS_ADDRESS2 + " = " + address2
+                + " AND " + COLUMN_ADDRESS_CITYID + " = " + cityId
+                + "';";
+
+        int addressId = -1;
+        ResultSet result;
+
         boolean open = Datasource.open();
 
         if (!open) {
             System.out.println("Error opening datasource!");
-            return false;
+            return addressId;
         }
-
-        boolean result = false;
 
         try (Statement statement = connection.createStatement()) {
 
-            result = statement.execute(addressInsert);
+            statement.execute(addressInsert);
+            result = statement.executeQuery(addressQuery);
+            addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding address: " + e.getMessage());
         }
 
         Datasource.close();
-        return result;
+        return addressId;
     }
 
     public static int addCity(City city) throws ClassNotFoundException, SQLException {
