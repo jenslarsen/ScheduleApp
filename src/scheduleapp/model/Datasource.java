@@ -247,6 +247,38 @@ public class Datasource {
         return customers;
     }
 
+    public static int addressExists(String address, String city) throws ClassNotFoundException {
+        int addressId = -1;
+
+        String addressQuery
+                = "SELECT * FROM " + TABLE_ADDRESS
+                + "INNER JOIN " + TABLE_CITY + " "
+                + "WHERE " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
+                + " = " + "'" + address + "'"
+                + " AND " + TABLE_CITY + "." + COLUMN_CITY_CITY
+                + " = " + "'" + city + "'";
+
+        ResultSet result;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return addressId;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+
+            result = statement.executeQuery(addressQuery);
+            addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error querying address: " + e.getMessage());
+        }
+
+        return addressId;
+    }
+
     public static int cityExists(String city, String country) throws ClassNotFoundException {
         int cityId = -1;
 
