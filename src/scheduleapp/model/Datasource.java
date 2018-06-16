@@ -247,7 +247,7 @@ public class Datasource {
         return customers;
     }
 
-    public static boolean addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
+    public static int addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
 
         String name = customer.getCustomerName();
         int addressId = customer.getAddressID();
@@ -263,25 +263,34 @@ public class Datasource {
                 + createdBy + "'" + "," + "'"
                 + lastUpdate + "'" + "," + "'" + lastUpdateBy + "'" + ");";
 
+        String customerQuery
+                = "SELECT * FROM " + TABLE_CUSTOMER
+                + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = '" + name
+                + " AND " + COLUMN_CUSTOMER_ADDRESSID + " = " + addressId
+                + "';";
+
+        int customerId = -1;
+        ResultSet result;
+
         boolean open = Datasource.open();
 
         if (!open) {
             System.out.println("Error opening datasource!");
-            return false;
+            return customerId;
         }
-
-        boolean result = false;
 
         try (Statement statement = connection.createStatement()) {
 
-            result = statement.execute(customerInsert);
+            statement.execute(customerInsert);
+            result = statement.executeQuery(customerQuery);
+            customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding customer: " + e.getMessage());
         }
 
         Datasource.close();
-        return result;
+        return customerId;
     }
 
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
