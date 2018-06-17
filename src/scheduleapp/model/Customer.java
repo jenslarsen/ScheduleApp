@@ -22,6 +22,11 @@ public class Customer {
     private LocalDateTime lastUpdate;
     private String lastUpdateBy;
 
+    public Customer(String customerName, int addressID) {
+        this.customerName = customerName;
+        this.addressID = addressID;
+    }
+
     public int getCustomerID() {
         return customerID;
     }
