@@ -192,26 +192,13 @@ public class FXMLCustomersController {
             System.out.println("Added " + city + " with ID " + cityId);
         }
 
-        int addressId = Datasource.addressExists(address, city);
+        Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
+        int addressId = Datasource.addAddress(addressToAdd);
+        System.out.println("Added " + address + " with ID " + addressId);
 
-        if (addressId < 1) {            /// address isn't in the dateabase
-            System.out.println("Couldn't find " + city + " in the database");
-
-            Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
-            addressId = Datasource.addAddress(addressToAdd);
-            System.out.println("Added " + address + " with ID " + addressId);
-
-        }
-
-        int customerId = Datasource.customerExists(name, address);
-
-        if (customerId < 1) {            /// customer isn't in the dateabase
-            System.out.println("Couldn't find " + city + " in the database");
-
-            Customer customerToAdd = new Customer(name, addressId);
-            customerId = Datasource.addCustomer(customerToAdd);
-            System.out.println("Added " + name + " with ID " + customerId);
-        }
+        Customer customerToAdd = new Customer(name, addressId);
+        int customerId = Datasource.addCustomer(customerToAdd);
+        System.out.println("Added " + name + " with ID " + customerId);
     }
 
     @FXML
