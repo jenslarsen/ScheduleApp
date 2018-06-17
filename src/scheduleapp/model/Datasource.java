@@ -61,7 +61,7 @@ public class Datasource {
     private static final String COLUMN_CITY_CREATEDATE = "createDate";
     private static final String COLUMN_CITY_CREATEDBY = "createdBy";
     private static final String COLUMN_CITY_LASTUPDATE = "lastUpdate";
-    private static final String COLUMN_CITY_LASTUPDATEDBY = "lastUpdatedBy";
+    private static final String COLUMN_CITY_LASTUPDATEBY = "lastUpdateBy";
     private static final String COLUMN_COUNTRY_COUNTRYID = "countryId";
     private static final String COLUMN_COUNTRY_COUNTRY = "country";
     private static final String COLUMN_COUNTRY_CREATEDATE = "createDate";
@@ -133,7 +133,7 @@ public class Datasource {
             + "(" + COLUMN_CITY_CITY + "," + COLUMN_CITY_COUNTRYID + ","
             + COLUMN_CITY_CREATEDATE + ","
             + COLUMN_CITY_CREATEDBY + "," + COLUMN_CITY_LASTUPDATE + ","
-            + COLUMN_CITY_LASTUPDATEDBY + ") ";
+            + COLUMN_CITY_LASTUPDATEBY + ") ";
 
     // Add Country
     /*
@@ -251,10 +251,10 @@ public class Datasource {
         int countryId = -1;
 
         String countryQuery
-                = "SELECT * FROM " + TABLE_COUNTRY
+                = "SELECT * FROM " + TABLE_COUNTRY + " "
                 + "WHERE " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRY
                 + " = " + "'" + country + "'"
-                + "'";
+                + ";";
 
         ResultSet result;
 
@@ -267,8 +267,13 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
 
+            System.out.println("Checking for country: " + countryQuery);
+
             result = statement.executeQuery(countryQuery);
-            countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
+
+            if (result.next()) {
+                countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error querying country: " + e.getMessage());
@@ -281,12 +286,12 @@ public class Datasource {
         int addressId = -1;
 
         String addressQuery
-                = "SELECT * FROM " + TABLE_ADDRESS
+                = "SELECT * FROM " + TABLE_ADDRESS + " "
                 + "INNER JOIN " + TABLE_CITY + " "
                 + "WHERE " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
                 + " = " + "'" + address + "'"
                 + " AND " + TABLE_CITY + "." + COLUMN_CITY_CITY
-                + " = " + "'" + city + "'";
+                + " = " + "'" + city + "';";
 
         ResultSet result;
 
@@ -299,8 +304,13 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
 
+            System.out.println("Checking for address: " + addressQuery);
+
             result = statement.executeQuery(addressQuery);
-            addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
+
+            if (result.next()) {
+                addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error querying address: " + e.getMessage());
@@ -313,12 +323,12 @@ public class Datasource {
         int cityId = -1;
 
         String cityQuery
-                = "SELECT * FROM " + TABLE_CITY
+                = "SELECT * FROM " + TABLE_CITY + " "
                 + "INNER JOIN " + TABLE_COUNTRY + " "
                 + "WHERE " + TABLE_CITY + "." + COLUMN_CITY_CITY
                 + " = " + "'" + city + "'"
                 + " AND " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRY
-                + " = " + "'" + country + "'";
+                + " = " + "'" + country + "';";
 
         ResultSet result;
 
@@ -331,8 +341,13 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
 
+            System.out.println("Checking for city: " + cityQuery);
+
             result = statement.executeQuery(cityQuery);
-            cityId = result.getInt(COLUMN_CITY_CITYID);
+
+            if (result.next()) {
+                cityId = result.getInt(COLUMN_CITY_CITYID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error querying city: " + e.getMessage());
@@ -345,12 +360,12 @@ public class Datasource {
         int customerId = -1;
 
         String customerQuery
-                = "SELECT * FROM " + TABLE_CUSTOMER
+                = "SELECT * FROM " + TABLE_CUSTOMER + " "
                 + "INNER JOIN " + TABLE_ADDRESS + " "
                 + "WHERE " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME
                 + " = " + "'" + name + "'"
                 + " AND " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
-                + " = " + "'" + address + "'";
+                + " = " + "'" + address + "';";
 
         ResultSet result;
 
@@ -364,7 +379,10 @@ public class Datasource {
         try (Statement statement = connection.createStatement()) {
 
             result = statement.executeQuery(customerQuery);
-            customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
+
+            if (result.next()) {
+                customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error querying customer: " + e.getMessage());
@@ -390,7 +408,7 @@ public class Datasource {
                 + lastUpdate + "'" + "," + "'" + lastUpdateBy + "'" + ");";
 
         String customerQuery
-                = "SELECT * FROM " + TABLE_CUSTOMER
+                = "SELECT * FROM " + TABLE_CUSTOMER + " "
                 + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = '" + name
                 + " AND " + COLUMN_CUSTOMER_ADDRESSID + " = " + addressId
                 + "';";
@@ -409,7 +427,9 @@ public class Datasource {
 
             statement.execute(customerInsert);
             result = statement.executeQuery(customerQuery);
-            customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
+            if (result.next()) {
+                customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding customer: " + e.getMessage());
@@ -441,7 +461,7 @@ public class Datasource {
                 + "'" + createDate + "'" + ","
                 + "'" + createdBy + "'" + ","
                 + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'" + ","
+                + "'" + lastUpdateBy + "'"
                 + ");";
 
         String addressQuery
@@ -465,7 +485,10 @@ public class Datasource {
 
             statement.execute(addressInsert);
             result = statement.executeQuery(addressQuery);
-            addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
+
+            if (result.next()) {
+                addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding address: " + e.getMessage());
@@ -484,14 +507,14 @@ public class Datasource {
         String lastUpdate = createDate;
         String lastUpdateBy = loggedInUser;
 
-        String addressInsert = ADD_CITY_START
+        String cityInsert = ADD_CITY_START
                 + "VALUES ("
                 + "'" + cityName + "'" + ","
                 + countryId + ","
                 + "'" + createDate + "'" + ","
                 + "'" + createdBy + "'" + ","
                 + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'" + ","
+                + "'" + lastUpdateBy + "'"
                 + ");";
 
         String cityQuery
@@ -511,9 +534,14 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
 
-            statement.execute(addressInsert);
+            System.out.println("Inserting city: " + cityInsert);
+            statement.execute(cityInsert);
+            System.out.println("Getting added city: " + cityQuery);
             result = statement.executeQuery(cityQuery);
-            cityId = result.getInt(COLUMN_CITY_CITYID);
+
+            if (result.next()) {
+                cityId = result.getInt(COLUMN_CITY_CITYID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding city: " + e.getMessage());
@@ -538,12 +566,12 @@ public class Datasource {
                 + "'" + createDate + "'" + ","
                 + "'" + createdBy + "'" + ","
                 + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'" + ","
+                + "'" + lastUpdateBy + "'"
                 + ");";
 
         String countryQuery
                 = "SELECT * FROM " + TABLE_COUNTRY
-                + " WHERE " + COLUMN_COUNTRY_COUNTRY + " = '" + countryName
+                + "  WHERE " + COLUMN_COUNTRY_COUNTRY + " = '" + countryName
                 + "';";
 
         boolean open = Datasource.open();
@@ -560,6 +588,7 @@ public class Datasource {
 
             statement.execute(countryInsert);
             result = statement.executeQuery(countryQuery);
+            result.next();
             countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
 
         } catch (SQLException e) {
