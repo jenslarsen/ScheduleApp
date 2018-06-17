@@ -21,6 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import scheduleapp.model.Address;
+import scheduleapp.model.City;
+import scheduleapp.model.Country;
 import scheduleapp.model.Customer;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
@@ -150,15 +152,13 @@ public class FXMLCustomersController {
     @FXML
     void saveButtonClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
 
-        Customer newCustomer = new Customer();
-        Address newAddress = new Address();
-
         String name = textFieldName.getText();
         String address = textFieldAddress.getText();
         String address2 = textFieldAddress2.getText();
         String city = textFieldCity.getText();
         String phone = textFieldPhone.getText();
-        String zip = textFieldPostalCode.getText();
+        String postalCode = textFieldPostalCode.getText();
+        String country = textFieldCountry.getText();
 
         if (name.equals("")) {
             return; // don't do anything
@@ -174,10 +174,44 @@ public class FXMLCustomersController {
             return;
         }
 
-        newCustomer.setCustomerName(name);
-        newCustomer.setAddressID(100);
+        int countryId = Datasource.countryExists(country);
 
-        Datasource.addCustomer(newCustomer);
+        if (countryId < 1) {            /// country isn't in the dateabase
+            System.out.println("Couldn't find " + country + " in the database");
+            Country countryToAdd = new Country(country);
+            countryId = Datasource.addCountry(countryToAdd);
+            System.out.println("Added " + country + " with ID " + countryId);
+        }
+
+        int cityId = Datasource.cityExists(city, country);
+
+        if (cityId < 1) {            /// city isn't in the dateabase
+            System.out.println("Couldn't find " + city + " in the database");
+            City cityToAdd = new City(city, countryId);
+            cityId = Datasource.addCity(cityToAdd);
+            System.out.println("Added " + city + " with ID " + cityId);
+        }
+
+        int addressId = Datasource.addressExists(address, city);
+
+        if (addressId < 1) {            /// address isn't in the dateabase
+            System.out.println("Couldn't find " + city + " in the database");
+
+            Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
+            addressId = Datasource.addAddress(addressToAdd);
+            System.out.println("Added " + address + " with ID " + addressId);
+
+        }
+
+        int customerId = Datasource.customerExists(name, address);
+
+        if (customerId < 1) {            /// customer isn't in the dateabase
+            System.out.println("Couldn't find " + city + " in the database");
+
+            Customer customerToAdd = new Customer(name, addressId);
+            customerId = Datasource.addCustomer(customerToAdd);
+            System.out.println("Added " + name + " with ID " + customerId);
+        }
     }
 
     @FXML
