@@ -613,8 +613,6 @@ public class Datasource {
             return false;
         }
 
-        ResultSet result;
-
         try (Statement statement = connection.createStatement()) {
             System.out.println("Attempting to inactivate customer " + customerId);
             System.out.println(inactivateCustomer);
