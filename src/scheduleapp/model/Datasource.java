@@ -402,16 +402,21 @@ public class Datasource {
         String lastUpdateBy = loggedInUser;
 
         String customerInsert = ADD_CUSTOMER_START
-                + "VALUES (" + "'" + name + "'" + "," + addressId + ","
-                + active + "," + "'" + createDate + "'" + "," + "'"
-                + createdBy + "'" + "," + "'"
-                + lastUpdate + "'" + "," + "'" + lastUpdateBy + "'" + ");";
+                + "VALUES ("
+                + "'" + name + "'" + ","
+                + addressId + ","
+                + active + ","
+                + "'" + createDate + "'" + ","
+                + "'" + createdBy + "'" + ","
+                + "'" + lastUpdate + "'" + ","
+                + "'" + lastUpdateBy + "'"
+                + ");";
 
         String customerQuery
                 = "SELECT * FROM " + TABLE_CUSTOMER + " "
-                + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = '" + name
+                + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = '" + name + "'"
                 + " AND " + COLUMN_CUSTOMER_ADDRESSID + " = " + addressId
-                + "';";
+                + ";";
 
         int customerId = -1;
         ResultSet result;
@@ -426,6 +431,7 @@ public class Datasource {
         try (Statement statement = connection.createStatement()) {
 
             statement.execute(customerInsert);
+            System.out.println("Getting ID for " + name + ":" + customerQuery);
             result = statement.executeQuery(customerQuery);
             if (result.next()) {
                 customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
@@ -466,10 +472,10 @@ public class Datasource {
 
         String addressQuery
                 = "SELECT * FROM " + TABLE_ADDRESS
-                + " WHERE " + COLUMN_ADDRESS_ADDRESS + " = '" + address1
-                + " AND " + COLUMN_ADDRESS_ADDRESS2 + " = " + address2
+                + " WHERE " + COLUMN_ADDRESS_ADDRESS + " = '" + address1 + "'"
+                + " AND " + COLUMN_ADDRESS_ADDRESS2 + " = " + "'" + address2 + "'"
                 + " AND " + COLUMN_ADDRESS_CITYID + " = " + cityId
-                + "';";
+                + ";";
 
         int addressId = -1;
         ResultSet result;
