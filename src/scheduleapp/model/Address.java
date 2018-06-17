@@ -24,6 +24,14 @@ public class Address {
     private LocalDateTime lastUpdate;
     private String lastUpdatedBy;
 
+    public Address(String address, String address2, int cityId, String postalCode, String phone) {
+        this.address = address;
+        this.address2 = address2;
+        this.cityId = cityId;
+        this.postalCode = postalCode;
+        this.phone = phone;
+    }
+
     public String getAddressId() {
         return addressId;
     }
