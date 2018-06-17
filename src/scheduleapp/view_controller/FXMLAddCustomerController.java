@@ -122,6 +122,9 @@ public class FXMLAddCustomerController implements Initializable {
         Customer customerToAdd = new Customer(name, addressId);
         int customerId = Datasource.addCustomer(customerToAdd);
         System.out.println("Added " + name + " with ID " + customerId);
+
+        Stage stage = (Stage) buttonSave.getScene().getWindow();
+        stage.close();
     }
 
     /**
