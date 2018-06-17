@@ -599,4 +599,36 @@ public class Datasource {
         return countryId;
     }
 
+    public static boolean inactivateCustomer(int customerId) throws SQLException, ClassNotFoundException {
+
+        final String inactivateCustomer
+                = "UPDATE " + TABLE_CUSTOMER + " "
+                + "SET " + COLUMN_CUSTOMER_ACTIVE + " = 0 "
+                + "WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId + ";";
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        ResultSet result;
+
+        try (Statement statement = connection.createStatement()) {
+            System.out.println("Attempting to inactivate customer " + customerId);
+            System.out.println(inactivateCustomer);
+            connection.prepareStatement(inactivateCustomer);
+            int updateCount = statement.executeUpdate(inactivateCustomer);
+            if (updateCount > 0) {
+                return true;
+            } else {
+                System.out.println("Something went wrong inactivating customer " + customerId);
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception trying to inactivate customer " + customerId);
+            return false;
+        }
+    }
 }
