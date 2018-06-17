@@ -77,7 +77,22 @@ public class FXMLCustomersController {
     }
 
     @FXML
-    void editButtonClicked(ActionEvent event) {
+    void editButtonClicked(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+
+        FXMLLoader addCustomerLoader = new FXMLLoader();
+        addCustomerLoader.setLocation(getClass().getResource("FXMLEditCustomer.fxml"));
+
+        Parent root = addCustomerLoader.load();
+
+        stage.setScene(new Scene(root));
+
+        stage.setTitle("Edit Customer");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.setResizable(false);
+
+        stage.showAndWait();
     }
 
     @FXML
