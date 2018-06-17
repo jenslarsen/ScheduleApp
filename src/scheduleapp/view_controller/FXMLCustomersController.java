@@ -8,22 +8,15 @@ package scheduleapp.view_controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import scheduleapp.model.Address;
-import scheduleapp.model.City;
-import scheduleapp.model.Country;
-import scheduleapp.model.Customer;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
 
@@ -41,12 +34,6 @@ public class FXMLCustomersController {
     private Button buttonCustomers;
 
     @FXML
-    private TextField textFieldSearch;
-
-    @FXML
-    private Button buttonSearch;
-
-    @FXML
     private Button buttonAdd;
 
     @FXML
@@ -60,27 +47,6 @@ public class FXMLCustomersController {
 
     @FXML
     private TableView<CustomerWithAddress> tableViewCustomers;
-
-    @FXML
-    private TextField textFieldName;
-
-    @FXML
-    private TextField textFieldAddress;
-
-    @FXML
-    private TextField textFieldAddress2;
-
-    @FXML
-    private TextField textFieldCity;
-
-    @FXML
-    private TextField textFieldPhone;
-
-    @FXML
-    private TextField textFieldPostalCode;
-
-    @FXML
-    private TextField textFieldCountry;
 
     @FXML
     private TableColumn<CustomerWithAddress, String> tableColName;
@@ -104,45 +70,11 @@ public class FXMLCustomersController {
 
     @FXML
     void editButtonClicked(ActionEvent event) {
-
-        CustomerWithAddress selectedCustomer;
-
-        int index = tableViewCustomers.getSelectionModel().getSelectedIndex();
-
-        if (index > customerList.size() || index < 0) {
-            return; // don't do anything if no customer is selected
-        }
-
-        selectedCustomer = customers.get(index);
-        textFieldName.setText(selectedCustomer.getCustomerName());
-        textFieldAddress.setText(selectedCustomer.getAddress());
-        textFieldAddress2.setText(selectedCustomer.getAddress2());
-        textFieldCity.setText(selectedCustomer.getCity());
-        textFieldPhone.setText(selectedCustomer.getPhone());
-        textFieldPostalCode.setText(selectedCustomer.getPostalCode());
-        textFieldCountry.setText(selectedCustomer.getCountry());
     }
 
     @FXML
     void addButtonClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
 
-        // get confirmation
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Clear fields for new customer");
-        alert.setContentText("Are you sure?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            // clear fields
-            textFieldName.clear();
-            textFieldAddress.clear();
-            textFieldAddress2.clear();
-            textFieldCity.clear();
-            textFieldPhone.clear();
-            textFieldPostalCode.clear();
-            textFieldCountry.clear();
-        }
     }
 
     @FXML
@@ -150,63 +82,11 @@ public class FXMLCustomersController {
     }
 
     @FXML
-    void saveButtonClicked(ActionEvent event) throws ClassNotFoundException, SQLException {
-
-        String name = textFieldName.getText();
-        String address = textFieldAddress.getText();
-        String address2 = textFieldAddress2.getText();
-        String city = textFieldCity.getText();
-        String phone = textFieldPhone.getText();
-        String postalCode = textFieldPostalCode.getText();
-        String country = textFieldCountry.getText();
-
-        if (name.equals("")) {
-            return; // don't do anything
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation Dialog");
-        alert.setHeaderText("Save customer details");
-        alert.setContentText(name);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() != ButtonType.OK) {
-            return;
-        }
-
-        int countryId = Datasource.countryExists(country);
-
-        if (countryId < 1) {            /// country isn't in the dateabase
-            System.out.println("Couldn't find " + country + " in the database");
-            Country countryToAdd = new Country(country);
-            countryId = Datasource.addCountry(countryToAdd);
-            System.out.println("Added " + country + " with ID " + countryId);
-        }
-
-        int cityId = Datasource.cityExists(city, country);
-
-        if (cityId < 1) {            /// city isn't in the dateabase
-            System.out.println("Couldn't find " + city + " in the database");
-            City cityToAdd = new City(city, countryId);
-            cityId = Datasource.addCity(cityToAdd);
-            System.out.println("Added " + city + " with ID " + cityId);
-        }
-
-        Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
-        int addressId = Datasource.addAddress(addressToAdd);
-        System.out.println("Added " + address + " with ID " + addressId);
-
-        Customer customerToAdd = new Customer(name, addressId);
-        int customerId = Datasource.addCustomer(customerToAdd);
-        System.out.println("Added " + name + " with ID " + customerId);
-    }
-
-    @FXML
     void deleteButtonClicked(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete customer");
         alert.setHeaderText("Are you sure you want to remove this customer?");
-        alert.setContentText(textFieldName.getText());
+        //alert.setContentText(textFieldName.getText());
         alert.showAndWait();
     }
 
