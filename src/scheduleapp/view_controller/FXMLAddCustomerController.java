@@ -84,7 +84,11 @@ public class FXMLAddCustomerController implements Initializable {
         String country = textFieldCountry.getText();
 
         if (name.equals("")) {
-            return; // don't do anything
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("You must enter a name");
+            alert.setContentText(name);
+            return; // don't add anything
         }
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -117,14 +121,27 @@ public class FXMLAddCustomerController implements Initializable {
 
         Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
         int addressId = Datasource.addAddress(addressToAdd);
-        System.out.println("Added " + address + " with ID " + addressId);
+        if (addressId == -1) {
+            System.out.println("Adding address failed!");
+            Stage stage = (Stage) buttonSave.getScene().getWindow();
+            stage.close();
+            return;
+        }
 
         Customer customerToAdd = new Customer(name, addressId);
         int customerId = Datasource.addCustomer(customerToAdd);
+        if (customerId == -1) {
+            System.out.println("Adding customer failed!");
+            Stage stage = (Stage) buttonSave.getScene().getWindow();
+            stage.close();
+            return;
+        }
+
         System.out.println("Added " + name + " with ID " + customerId);
 
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
+
     }
 
     /**
