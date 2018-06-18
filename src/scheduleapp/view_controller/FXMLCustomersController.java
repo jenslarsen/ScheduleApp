@@ -96,7 +96,7 @@ public class FXMLCustomersController {
     }
 
     @FXML
-    void addButtonClicked(ActionEvent event) throws IOException {
+    void addButtonClicked(ActionEvent event) throws IOException, SQLException {
         Stage stage = new Stage();
 
         FXMLLoader addCustomerLoader = new FXMLLoader();
@@ -112,6 +112,7 @@ public class FXMLCustomersController {
         stage.setResizable(false);
 
         stage.showAndWait();
+        loadCustomersFromDatabase();
     }
 
     @FXML
