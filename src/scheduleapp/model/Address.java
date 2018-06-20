@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  */
 public class Address {
 
-    private String addressId;
+    private int addressId;
     private String address;
     private String address2;
     private int cityId;
@@ -32,11 +32,11 @@ public class Address {
         this.phone = phone;
     }
 
-    public String getAddressId() {
+    public int getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(String addressId) {
+    public void setAddressId(int addressId) {
         this.addressId = addressId;
     }
 
