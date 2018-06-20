@@ -77,13 +77,22 @@ public class FXMLCustomersController {
     }
 
     @FXML
-    void editButtonClicked(ActionEvent event) throws IOException {
+    void editButtonClicked(ActionEvent event) throws IOException, SQLException {
+
+        int index = tableViewCustomers.getSelectionModel().getSelectedIndex();
+
+        if (index < 0) {
+            return;
+        }
+
+        Datasource.customerBeingEdited = customers.get(index);
+
         Stage stage = new Stage();
 
-        FXMLLoader addCustomerLoader = new FXMLLoader();
-        addCustomerLoader.setLocation(getClass().getResource("FXMLEditCustomer.fxml"));
+        FXMLLoader editCustomerLoader = new FXMLLoader();
+        editCustomerLoader.setLocation(getClass().getResource("FXMLEditCustomer.fxml"));
 
-        Parent root = addCustomerLoader.load();
+        Parent root = editCustomerLoader.load();
 
         stage.setScene(new Scene(root));
 
@@ -93,6 +102,8 @@ public class FXMLCustomersController {
         stage.setResizable(false);
 
         stage.showAndWait();
+        loadCustomersFromDatabase();
+
     }
 
     @FXML
@@ -113,10 +124,6 @@ public class FXMLCustomersController {
 
         stage.showAndWait();
         loadCustomersFromDatabase();
-    }
-
-    @FXML
-    void searchButtonClicked(ActionEvent event) {
     }
 
     @FXML

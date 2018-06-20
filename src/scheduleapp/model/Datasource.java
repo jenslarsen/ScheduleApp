@@ -148,6 +148,7 @@ public class Datasource {
     // globals
     private static Connection connection = null;
     public static String loggedInUser = null;
+    public static CustomerWithAddress customerBeingEdited = new CustomerWithAddress();
 
     // public methods
     public static boolean open() throws ClassNotFoundException {
