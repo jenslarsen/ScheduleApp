@@ -153,7 +153,7 @@ public class FXMLCustomersController {
 
     void loadCustomersFromDatabase() throws SQLException {
         customers = new ArrayList<>();
-        customerList = FXCollections.observableArrayList();;
+        customerList = FXCollections.observableArrayList();
 
         try {
             customers = Datasource.getCustomersWithAddresses();
