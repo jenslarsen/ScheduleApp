@@ -239,6 +239,8 @@ public class Datasource {
                 tempCustomer.setPostalCode(result.getString(COLUMN_ADDRESS_POSTALCODE));
                 tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
                 tempCustomer.setCountry(result.getString(COLUMN_COUNTRY_COUNTRY));
+
+                //// needs to be fixed VVVVV
                 tempCustomer.setActive(true);
 
                 customers.add(tempCustomer);
@@ -523,13 +525,13 @@ public class Datasource {
         String lastUpdateBy = loggedInUser;
 
         String updateAddress = "UPDATE " + TABLE_ADDRESS
-                + " SET " + COLUMN_ADDRESS_ADDRESS + " = " + address1 + ", "
-                + COLUMN_ADDRESS_ADDRESS2 + " = " + address2 + ", "
+                + " SET " + COLUMN_ADDRESS_ADDRESS + " = " + "'" + address1 + "'" + ", "
+                + COLUMN_ADDRESS_ADDRESS2 + " = " + "'" + address2 + "'" + ", "
                 + COLUMN_ADDRESS_CITYID + " = " + cityId + ", "
-                + COLUMN_ADDRESS_POSTALCODE + " = " + postalCode + ", "
-                + COLUMN_ADDRESS_PHONE + " = " + phone + ", "
-                + COLUMN_ADDRESS_LASTUPDATE + " = " + lastUpdate + ", "
-                + COLUMN_ADDRESS_LASTUPDATEBY + " = " + lastUpdateBy + ", "
+                + COLUMN_ADDRESS_POSTALCODE + " = " + "'" + postalCode + "'" + ", "
+                + COLUMN_ADDRESS_PHONE + " = " + "'" + phone + "'" + ", "
+                + COLUMN_ADDRESS_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
+                + COLUMN_ADDRESS_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
                 + " WHERE " + COLUMN_ADDRESS_ADDRESSID + " = " + addressId;
 
         boolean open = Datasource.open();
