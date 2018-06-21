@@ -521,7 +521,7 @@ public class Datasource {
         int cityId = address.getCityId();
         String postalCode = address.getPostalCode();
         String phone = address.getPhone();
-        String lastUpdate = LocalDateTime.now().toString();;
+        String lastUpdate = LocalDateTime.now().toString();
         String lastUpdateBy = loggedInUser;
 
         String updateAddress = "UPDATE " + TABLE_ADDRESS
@@ -554,6 +554,52 @@ public class Datasource {
 
         } catch (SQLException e) {
             System.out.println("SQL Error updating address: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return true;
+    }
+
+    public static boolean updateCustomer(Customer customer) throws ClassNotFoundException, SQLException {
+
+        int customerId = customer.getCustomerID();
+
+        if (customerId < 1) {
+            System.out.println("Error with customerId! Unable to update customer.");
+            return false;
+        }
+
+        String customerName = customer.getCustomerName();
+        boolean active = true;
+        String lastUpdate = LocalDateTime.now().toString();
+        String lastUpdateBy = loggedInUser;
+
+        String updateCustomer = "UPDATE " + TABLE_CUSTOMER
+                + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = " + "'" + customer + "'" + ", "
+                + COLUMN_CUSTOMER_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
+                + COLUMN_CUSTOMER_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
+                + " WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+            System.out.println("Updating Customer: " + updateCustomer);
+            connection.prepareStatement(updateCustomer);
+            int updateCount = statement.executeUpdate(updateCustomer);
+            if (updateCount > 0) {
+                return true;
+            } else {
+                System.out.println("Something went wrong updating customer " + customerId);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error updating customer: " + e.getMessage());
         }
 
         Datasource.close();
