@@ -240,7 +240,7 @@ public class Datasource {
                 tempCustomer.setPhone(result.getString(COLUMN_ADDRESS_PHONE));
                 tempCustomer.setCountry(result.getString(COLUMN_COUNTRY_COUNTRY));
 
-                //// needs to be fixed VVVVV
+                // SQL Query only returns active customers
                 tempCustomer.setActive(true);
 
                 customers.add(tempCustomer);
