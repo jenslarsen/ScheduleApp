@@ -505,6 +505,59 @@ public class Datasource {
         return addressId;
     }
 
+    public static boolean updateAddress(Address address) throws ClassNotFoundException, SQLException {
+
+        int addressId = address.getAddressId();
+
+        if (addressId < 1) {
+            System.out.println("Error with addressId! Unable to update address.");
+            return false;
+        }
+
+        String address1 = address.getAddress();
+        String address2 = address.getAddress2();
+        int cityId = address.getCityId();
+        String postalCode = address.getPostalCode();
+        String phone = address.getPhone();
+        String lastUpdate = LocalDateTime.now().toString();;
+        String lastUpdateBy = loggedInUser;
+
+        String updateAddress = "UPDATE " + TABLE_ADDRESS
+                + " SET " + COLUMN_ADDRESS_ADDRESS + " = " + address1 + ", "
+                + COLUMN_ADDRESS_ADDRESS2 + " = " + address2 + ", "
+                + COLUMN_ADDRESS_CITYID + " = " + cityId + ", "
+                + COLUMN_ADDRESS_POSTALCODE + " = " + postalCode + ", "
+                + COLUMN_ADDRESS_PHONE + " = " + phone + ", "
+                + COLUMN_ADDRESS_LASTUPDATE + " = " + lastUpdate + ", "
+                + COLUMN_ADDRESS_LASTUPDATEBY + " = " + lastUpdateBy + ", "
+                + " WHERE " + COLUMN_ADDRESS_ADDRESSID + " = " + addressId;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+            System.out.println("Updating Address: " + updateAddress);
+            connection.prepareStatement(updateAddress);
+            int updateCount = statement.executeUpdate(updateAddress);
+            if (updateCount > 0) {
+                return true;
+            } else {
+                System.out.println("Something went wrong updating address " + addressId);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error updating address: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return true;
+    }
+
     public static int addCity(City city) throws ClassNotFoundException, SQLException {
 
         String cityName = city.getCity();
