@@ -5,8 +5,10 @@
  */
 package scheduleapp.view_controller;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -150,6 +152,21 @@ public class FXMLLoginController extends Application {
         boolean loginSuccessful = Datasource.checkLogin(userName, password);
 
         if (loginSuccessful) {
+            // write login to log file
+            FileWriter logFile = null;
+            try {
+                logFile = new FileWriter("logins.log", true);
+                logFile.append(LocalDateTime.now().toString() + " " + userName
+                        + " logged in\n");
+            } catch (IOException e) {
+                System.out.println("Unable to open log file for writing!");
+            } finally {
+                try {
+                    logFile.close();
+                } catch (IOException ex) {
+                    System.out.println("Unable to close log file!");
+                }
+            }
             switchToCustomerScreen();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
