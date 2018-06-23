@@ -130,8 +130,12 @@ public class FXMLEditCustomerController {
             return;
         }
 
-        Customer customerToAdd = new Customer(name, addressId);
-        if (customerId == -1) {
+        Customer customerToUpdate = new Customer(name, addressId);
+        customerToUpdate.setCustomerID(customerId);
+
+        boolean customerUpdateSuccessful = Datasource.updateCustomer(customerToUpdate);
+
+        if (customerUpdateSuccessful != true) {
             System.out.println("Updating customer failed!");
             Stage stage = (Stage) buttonSave.getScene().getWindow();
             stage.close();
@@ -142,7 +146,6 @@ public class FXMLEditCustomerController {
 
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
-
     }
 
     /**
