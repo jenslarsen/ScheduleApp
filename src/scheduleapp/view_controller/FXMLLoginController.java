@@ -158,7 +158,7 @@ public class FXMLLoginController extends Application {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(errorTitle);
             alert.setHeaderText(unableToLogin);
-            alert.setContentText(incorrectUserPass);
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
 
