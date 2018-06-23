@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9" fx:controller="scheduleapp.view_controller.FXMLEditCustomerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="scheduleapp.view_controller.FXMLEditCustomerController">
    <children>
       <Label layoutX="42.0" layoutY="43.0" text="Edit Customer">
          <font>
