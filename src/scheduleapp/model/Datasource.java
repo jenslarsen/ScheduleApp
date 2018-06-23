@@ -575,7 +575,7 @@ public class Datasource {
         String lastUpdateBy = loggedInUser;
 
         String updateCustomer = "UPDATE " + TABLE_CUSTOMER
-                + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = " + "'" + customer + "'" + ", "
+                + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = " + "'" + customerName + "'" + ", "
                 + COLUMN_CUSTOMER_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
                 + COLUMN_CUSTOMER_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
                 + " WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId;
