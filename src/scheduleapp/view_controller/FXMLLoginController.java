@@ -25,6 +25,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import scheduleapp.model.Datasource;
+import scheduleapp.model.LoginException;
 
 /**
  * FXML Login Controller class
@@ -149,7 +150,17 @@ public class FXMLLoginController extends Application {
         // get the location
         String location = loginLocation.getValue();
 
-        boolean loginSuccessful = Datasource.checkLogin(userName, password);
+        boolean loginSuccessful = false;
+
+        try {
+            loginSuccessful = Datasource.checkLogin(userName, password);
+        } catch (LoginException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(errorTitle);
+            alert.setHeaderText(unableToLogin);
+            alert.setContentText(incorrectUserPass);
+            alert.showAndWait();
+        }
 
         if (loginSuccessful) {
             // write login to log file

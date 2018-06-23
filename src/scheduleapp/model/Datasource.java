@@ -180,7 +180,7 @@ public class Datasource {
     }
 
     public static boolean checkLogin(String username, String password)
-            throws ClassNotFoundException, SQLException {
+            throws ClassNotFoundException, SQLException, LoginException {
         boolean open = Datasource.open();
 
         if (!open) {
@@ -195,7 +195,12 @@ public class Datasource {
                 + "WHERE " + COLUMN_USER_USERNAME + "='" + username + "' AND "
                 + COLUMN_USER_PASSWORD + "='" + password + "'";
 
-        ResultSet result = statement.executeQuery(passwordQuery);
+        ResultSet result = null;
+        try {
+            result = statement.executeQuery(passwordQuery);
+        } catch (SQLException sQLException) {
+            throw new LoginException("SQL Error checking password");
+        }
 
         // if username and password is found in the database, ie a result was returned
         if (result.next()) {
