@@ -50,19 +50,26 @@ public class FXMLCalendarController implements Initializable {
     @FXML
     private Button buttonCustomers;
 
+    @FXML
     private void addButtonClicked() {
     }
 
+    @FXML
     private void editButtonClicked() {
     }
 
+    @FXML
     private void deleteButtonClicked() {
     }
 
+    @FXML
     private void customersButtonClicked() {
     }
 
+    @FXML
     private void calendarButtonClicked() {
+        // already on the customers screen - don't do anything!
+        // maybe make this a radio button or tab instead to be more clear??    }
     }
 
     /**
