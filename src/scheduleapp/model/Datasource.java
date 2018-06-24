@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -167,6 +168,20 @@ public class Datasource {
             + "(" + COLUMN_COUNTRY_COUNTRY + "," + COLUMN_COUNTRY_CREATEDATE + ","
             + COLUMN_COUNTRY_CREATEDBY + "," + COLUMN_COUNTRY_LASTUPDATE + ","
             + COLUMN_COUNTRY_LASTUPDATEBY + ") ";
+
+    // Add Appointment
+    /*
+    INSERT INTO appointment (customerId, title, description, location, contact,
+                            url, start, end, createdDate, createdBy, lastUpdate, lastUpdatedBy)
+     */
+    private static final String ADD_APPOINTMENT_START
+            = "INSERT INTO " + TABLE_APPOINTMENT
+            + COLUMN_APPOINTMENT_CUSTOMERID + "," + COLUMN_APPOINTMENT_TITLE + ","
+            + COLUMN_APPOINTMENT_DESCRIPTION + "," + COLUMN_APPOINTMENT_LOCATION + ","
+            + COLUMN_APPOINTMENT_CONTACT + "," + COLUMN_APPOINTMENT_URL + ","
+            + COLUMN_APPOINTMENT_START + "," + COLUMN_APPOINTMENT_END + ","
+            + COLUMN_APPOINTMENT_CREATEDATE + "," + COLUMN_APPOINTMENT_CREATEDBY + ","
+            + COLUMN_APPOINTMENT_LASTUPDATE + "," + COLUMN_APPOINTMENT_LASTUPDATEBY + ")";
 
     // globals
     private static Connection connection = null;
@@ -764,5 +779,67 @@ public class Datasource {
             System.out.println("SQL Exception trying to inactivate customer " + customerId);
             return false;
         }
+    }
+
+    public static int addAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
+        int appointmentId = -1;
+
+        int customerId = appointment.getCustomerID();
+        String title = appointment.getTitle();
+        String description = appointment.getDescription();
+        String location = appointment.getLocation();
+        String contact = appointment.getContact();
+        String url = appointment.getUrl();
+        Date start = appointment.getStart();
+        Date end = appointment.getEnd();
+        String createDate = LocalDateTime.now().toString();
+        String createdBy = loggedInUser;
+        String lastUpdate = createDate;
+        String lastUpdateBy = loggedInUser;
+
+        String appointmentInsert = ADD_APPOINTMENT_START
+                + "VALUES ("
+                + "'" + customerId + "'" + ","
+                + "'" + title + "'" + ","
+                + "'" + description + "'" + ","
+                + "'" + location + "'"
+                + "'" + contact + "'"
+                + "'" + url + "'"
+                + "'" + start + "'"
+                + "'" + end + "'"
+                + "'" + createDate + "'"
+                + "'" + createdBy + "'"
+                + "'" + lastUpdate + "'"
+                + "'" + lastUpdateBy + "'"
+                + ");";
+
+        String appointmentQuery
+                = "SELECT * FROM " + TABLE_APPOINTMENT
+                + "  WHERE " + COLUMN_APPOINTMENT_TITLE + " = '" + title
+                + "';";
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return -1;
+        }
+
+        ResultSet result;
+        int countryId = -1;
+
+        try (Statement statement = connection.createStatement()) {
+
+            statement.execute(appointmentInsert);
+            result = statement.executeQuery(appointmentQuery);
+            result.next();
+            countryId = result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error adding appointment: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return appointmentId;
     }
 }
