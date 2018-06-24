@@ -5,13 +5,19 @@
  */
 package scheduleapp.view_controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -64,6 +70,20 @@ public class FXMLCalendarController implements Initializable {
 
     @FXML
     private void customersButtonClicked() {
+        Parent main;
+        try {
+            main = FXMLLoader.load(getClass().getResource("FXMLCustomers.fxml"));
+            Scene scene = new Scene(main);
+            Stage stage = (Stage) buttonCustomers.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error switching screens");
+            alert.setContentText("Unable to switch to customer screen!");
+            alert.showAndWait();
+        }
     }
 
     @FXML

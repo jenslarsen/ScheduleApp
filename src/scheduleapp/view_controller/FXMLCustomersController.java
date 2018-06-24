@@ -145,10 +145,27 @@ public class FXMLCustomersController {
     }
 
     @FXML
-    void customersButtonClicked(ActionEvent event
-    ) {
+    void customersButtonClicked(ActionEvent event) {
         // already on the customers screen - don't do anything!
         // maybe make this a radio button or tab instead to be more clear??
+    }
+
+    @FXML
+    private void calendarButtonClicked(ActionEvent event) {
+        Parent main;
+        try {
+            main = FXMLLoader.load(getClass().getResource("FXMLCalendar.fxml"));
+            Scene scene = new Scene(main);
+            Stage stage = (Stage) buttonCustomers.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error switching screens");
+            alert.setContentText("Unable to switch to calendar screen!");
+            alert.showAndWait();
+        }
     }
 
     void loadCustomersFromDatabase() throws SQLException {

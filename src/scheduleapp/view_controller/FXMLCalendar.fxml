@@ -42,7 +42,7 @@
       </ImageView>
       <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="258.0">
         <buttons>
-          <Button fx:id="buttonCalendar" mnemonicParsing="false" text="Calendar">
+          <Button fx:id="buttonCalendar" mnemonicParsing="false" onAction="#calendarButtonClicked" text="Calendar">
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font></Button>
