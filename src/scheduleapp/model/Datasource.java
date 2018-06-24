@@ -33,6 +33,8 @@ public class Datasource {
     private static final String TABLE_ADDRESS = "address";
     private static final String TABLE_CITY = "city";
     private static final String TABLE_COUNTRY = "country";
+    private static final String TABLE_APPOINTMENT = "appointment";
+    private static final String TABLE_REMINDER = "reminder";
 
     // table columns
     private static final String COLUMN_USER_USERNAME = "userName";
@@ -68,6 +70,27 @@ public class Datasource {
     private static final String COLUMN_COUNTRY_CREATEDBY = "createdBy";
     private static final String COLUMN_COUNTRY_LASTUPDATE = "lastUpdate";
     private static final String COLUMN_COUNTRY_LASTUPDATEBY = "lastUpdateBy";
+    private static final String COLUMN_APPOINTMENT_APPOINTMENTID = "appointmentId";
+    private static final String COLUMN_APPOINTMENT_CUSTOMERID = "customerId";
+    private static final String COLUMN_APPOINTMENT_TITLE = "title";
+    private static final String COLUMN_APPOINTMENT_DESCRIPTION = "description";
+    private static final String COLUMN_APPOINTMENT_LOCATION = "location";
+    private static final String COLUMN_APPOINTMENT_CONTACT = "contact";
+    private static final String COLUMN_APPOINTMENT_URL = "url";
+    private static final String COLUMN_APPOINTMENT_START = "start";
+    private static final String COLUMN_APPOINTMENT_END = "end";
+    private static final String COLUMN_APPOINTMENT_CREATEDATE = "createDate";
+    private static final String COLUMN_APPOINTMENT_CREATEDBY = "createdBy";
+    private static final String COLUMN_APPOINTMENT_LASTUPDATE = "lastUpdate";
+    private static final String COLUMN_APPOINTMENT_LASTUPDATEBY = "lastUpdateBy";
+    private static final String COLUMN_REMINDER_REMINDERID = "reminderId";
+    private static final String COLUMN_REMINDER_REMINDERDATE = "reminderDate";
+    private static final String COLUMN_REMINDER_SNOOZEINCREMENT = "snoozeIncrement";
+    private static final String COLUMN_REMINDER_SNOOZEINCREMENTTYPE = "snoozeIncrementType";
+    private static final String COLUMN_REMINDER_APPOINTMENTID = "appointmentId";
+    private static final String COLUMN_REMINDER_CREATEDBY = "createdBy";
+    private static final String COLUMN_REMINDER_CREATEDDATE = "createdDate";
+    private static final String COLUMN_REMINDER_REMINDERCOL = "remindercol";
 
     // static queries
     /* Query Customers with Addresses
