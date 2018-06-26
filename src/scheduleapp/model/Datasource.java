@@ -842,4 +842,56 @@ public class Datasource {
         Datasource.close();
         return appointmentId;
     }
+
+    public static boolean updateAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
+
+        int appointmentId = appointment.getAppointmentID();
+
+        if (appointmentId < 1) {
+            System.out.println("Error with appointmentId! Unable to update appointment.");
+            return false;
+        }
+
+        String appointmentTitle = appointment.getTitle();
+        boolean active = true;
+        String lastUpdate = LocalDateTime.now().toString();
+        String lastUpdateBy = loggedInUser;
+
+        String updateAppointment = "UPDATE " + TABLE_APPOINTMENT
+                + " SET " + COLUMN_APPOINTMENT_TITLE + " = " + "'" + appointmentTitle + "'" + ", "
+                + COLUMN_APPOINTMENT_DESCRIPTION + " = " + "'" + appointment.getDescription() + "'" + ", "
+                + COLUMN_APPOINTMENT_LOCATION + " = " + "'" + appointment.getLocation() + "'" + ", "
+                + COLUMN_APPOINTMENT_CONTACT + " = " + "'" + appointment.getContact() + "'" + ", "
+                + COLUMN_APPOINTMENT_URL + " = " + "'" + appointment.getUrl() + "'" + ", "
+                + COLUMN_APPOINTMENT_START + " = " + "'" + appointment.getStart() + "'" + ", "
+                + COLUMN_APPOINTMENT_END + " = " + "'" + appointment.getEnd() + "'" + ", "
+                + COLUMN_APPOINTMENT_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
+                + COLUMN_APPOINTMENT_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
+                + " WHERE " + COLUMN_APPOINTMENT_APPOINTMENTID + " = " + appointmentId;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Error opening datasource!");
+            return false;
+        }
+
+        try (Statement statement = connection.createStatement()) {
+            System.out.println("Updating Appointment: " + updateAppointment);
+            connection.prepareStatement(updateAppointment);
+            int updateCount = statement.executeUpdate(updateAppointment);
+            if (updateCount > 0) {
+                return true;
+            } else {
+                System.out.println("Something went wrong updating appointment " + appointmentId);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error updating appointment: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return true;
+    }
 }
