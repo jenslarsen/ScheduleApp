@@ -852,13 +852,13 @@ public class Datasource {
             return false;
         }
 
-        String appointmentTitle = appointment.getTitle();
-        boolean active = true;
         String lastUpdate = LocalDateTime.now().toString();
         String lastUpdateBy = loggedInUser;
 
         String updateAppointment = "UPDATE " + TABLE_APPOINTMENT
-                + " SET " + COLUMN_APPOINTMENT_TITLE + " = " + "'" + appointmentTitle + "'" + ", "
+                + " SET "
+                + COLUMN_APPOINTMENT_TITLE + " = " + "'" + appointment.getTitle() + "'" + ", "
+                + COLUMN_APPOINTMENT_CUSTOMERID + " = " + appointment.getCustomerID() + ", "
                 + COLUMN_APPOINTMENT_DESCRIPTION + " = " + "'" + appointment.getDescription() + "'" + ", "
                 + COLUMN_APPOINTMENT_LOCATION + " = " + "'" + appointment.getLocation() + "'" + ", "
                 + COLUMN_APPOINTMENT_CONTACT + " = " + "'" + appointment.getContact() + "'" + ", "
