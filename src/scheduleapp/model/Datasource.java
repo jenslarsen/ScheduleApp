@@ -123,6 +123,10 @@ public class Datasource {
             + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRYID
             + ") WHERE " + TABLE_CUSTOMER + "." + "active = 1;";
 
+    // Query appointments
+    private static final String QUERY_APPOINTMENTS
+            = "SELECT * FROM " + TABLE_APPOINTMENT;
+
     // Add customer
     /*
     INSERT INTO customer (customerName, addressId, active,
@@ -893,5 +897,39 @@ public class Datasource {
 
         Datasource.close();
         return true;
+    }
+
+    public static List<Appointment> getAppointments() throws ClassNotFoundException, SQLException {
+        List<Appointment> appointments = new ArrayList<>();
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.out.println("Unable to open database connection when trying get appointments!");
+            return null;
+        }
+
+        try (Statement statement = connection.createStatement();
+                ResultSet result = statement.executeQuery(QUERY_APPOINTMENTS)) {
+
+            while (result.next()) {
+
+                Appointment tempAppointment = new Appointment();
+
+                tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
+                tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
+                tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
+                tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
+                tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
+                tempAppointment.setContact(result.getString(COLUMN_APPOINTMENT_CONTACT));
+                tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
+                tempAppointment.setStart(result.getDate(COLUMN_APPOINTMENT_START));
+                tempAppointment.setEnd(result.getDate(COLUMN_APPOINTMENT_END));
+
+                appointments.add(tempAppointment);
+            }
+        }
+
+        return appointments;
     }
 }
