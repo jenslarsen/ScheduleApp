@@ -108,6 +108,10 @@ public class FXMLCalendarController {
      */
     @FXML
     public void initialize() throws SQLException {
+        loadAppointmentsWithContacts();
+    }
+
+    private boolean loadAppointmentsWithContacts() throws SQLException {
         appointments = new ArrayList<>();
         appointmentList = FXCollections.observableArrayList();
 
@@ -119,6 +123,7 @@ public class FXMLCalendarController {
             alert.setHeaderText("Exeception encountered");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
+            return false;
         }
 
         appointmentList.addAll(appointments);
@@ -132,6 +137,8 @@ public class FXMLCalendarController {
         tableColDate.setCellValueFactory(new PropertyValueFactory<>("start"));
 
         tableViewCalendar.setItems(appointmentList);
+
+        return true;
     }
 
 }
