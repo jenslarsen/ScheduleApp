@@ -5,7 +5,7 @@
  */
 package scheduleapp.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 /**
  *
@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 public class Reminder {
 
     private int reminderId;
-    private LocalDateTime reminderDate;
+    private Timestamp reminderDate;
     private int snoozeincrement;
     private int snoozeincrementTypeId;
     private int appointmentId;
     private String createdby;
-    private LocalDateTime createdDate;
+    private Timestamp createdDate;
     private int remindercol;
 
     public int getReminderId() {
@@ -30,11 +30,11 @@ public class Reminder {
         this.reminderId = reminderId;
     }
 
-    public LocalDateTime getReminderDate() {
+    public Timestamp getReminderDate() {
         return reminderDate;
     }
 
-    public void setReminderDate(LocalDateTime reminderDate) {
+    public void setReminderDate(Timestamp reminderDate) {
         this.reminderDate = reminderDate;
     }
 
@@ -70,11 +70,11 @@ public class Reminder {
         this.createdby = createdby;
     }
 
-    public LocalDateTime getCreatedDate() {
+    public Timestamp getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
