@@ -923,8 +923,8 @@ public class Datasource {
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
                 tempAppointment.setContact(result.getString(COLUMN_APPOINTMENT_CONTACT));
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
-                tempAppointment.setStart(result.getDate(COLUMN_APPOINTMENT_START));
-                tempAppointment.setEnd(result.getDate(COLUMN_APPOINTMENT_END));
+                tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
+                tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
 
                 appointments.add(tempAppointment);
             }
