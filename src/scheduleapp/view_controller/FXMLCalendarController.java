@@ -27,7 +27,7 @@ import scheduleapp.model.Datasource;
 /**
  * FXML Controller class
  *
- * @author dasuperman
+ * @author Jens Larsen
  */
 public class FXMLCalendarController {
 
