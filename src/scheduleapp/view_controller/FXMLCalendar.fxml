@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCalendarController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCalendarController">
    <children>
       <Button fx:id="buttonAdd" layoutX="409.0" layoutY="529.0" mnemonicParsing="false" onAction="#addButtonClicked" text="Add">
          <font>
@@ -22,12 +22,12 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Button>
-      <TableView fx:id="tableViewCustomers" layoutX="250.0" layoutY="83.0" prefHeight="434.0" prefWidth="580.0">
+      <TableView fx:id="tableViewCalendar" layoutX="250.0" layoutY="83.0" prefHeight="434.0" prefWidth="580.0">
         <columns>
-          <TableColumn fx:id="tableColName" prefWidth="161.0" text="Title" />
-          <TableColumn fx:id="tableColAddress" prefWidth="124.0" text="Date" />
-            <TableColumn fx:id="tableColPhone" minWidth="0.0" prefWidth="121.0" text="Time" />
-            <TableColumn fx:id="tableColPhone1" minWidth="0.0" prefWidth="121.0" text="Duration" />
+          <TableColumn fx:id="tableColTitle" prefWidth="161.0" text="Title" />
+          <TableColumn fx:id="tableColLocation" prefWidth="124.0" text="Location" />
+            <TableColumn fx:id="tableColContact" minWidth="0.0" prefWidth="121.0" text="Contact" />
+            <TableColumn fx:id="tableColDate" minWidth="0.0" prefWidth="121.0" text="Date &amp; Time" />
         </columns>
       </TableView>
       <Button fx:id="buttonDelete" layoutX="561.0" layoutY="529.0" mnemonicParsing="false" onAction="#deleteButtonClicked" text="Delete">

@@ -7,6 +7,7 @@ package scheduleapp.view_controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -40,16 +41,19 @@ public class FXMLCalendarController {
     private Button buttonEdit;
 
     @FXML
-    private TableView<Appointment> tableViewAppointments;
+    private TableView<Appointment> tableViewCalendar;
 
     @FXML
-    private TableColumn<?, ?> tableColTitle;
+    private TableColumn<Appointment, String> tableColTitle;
 
     @FXML
-    private TableColumn<?, ?> tableColDate;
+    private TableColumn<Appointment, String> tableColLocation;
 
     @FXML
-    private TableColumn<?, ?> tableColTime;
+    private TableColumn<Appointment, String> tableColContact;
+
+    @FXML
+    private TableColumn<Appointment, Timestamp> tableColDate;
 
     @FXML
     private Button buttonDelete;
@@ -102,6 +106,7 @@ public class FXMLCalendarController {
     /**
      * Initializes the controller class.
      */
+    @FXML
     public void initialize() throws SQLException {
         appointments = new ArrayList<>();
         appointmentList = FXCollections.observableArrayList();
@@ -122,10 +127,11 @@ public class FXMLCalendarController {
 
         // display in table
         tableColTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tableColLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
+        tableColContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
         tableColDate.setCellValueFactory(new PropertyValueFactory<>("start"));
-        tableColTime.setCellValueFactory(new PropertyValueFactory<>("start"));
 
-        tableViewAppointments.setItems(appointmentList);
+        tableViewCalendar.setItems(appointmentList);
     }
 
 }
