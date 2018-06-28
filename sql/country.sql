@@ -1,5 +1,6 @@
 /*
 ALTER TABLE country MODIFY COLUMN countryId INT auto_increment;
+ALTER table country AUTO_INCREMENT = 100;
 
 INSERT INTO country (country, createDate, createdBy, lastUpdate, lastUpdateBy) 
 VALUES ("US", "2018-06-04", "Jens", "2018-06-04", "Jens");
