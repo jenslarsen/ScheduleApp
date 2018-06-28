@@ -127,6 +127,27 @@ public class Datasource {
     private static final String QUERY_APPOINTMENTS
             = "SELECT * FROM " + TABLE_APPOINTMENT;
 
+    // Query appointments with Contacts
+    /*
+    SELECT appointment.appointmentId, appointment.customerId, customer.customerName,
+           appointment.title, appointment.description, appointment.location,
+           appointment.url, appointment.start, appointment.end
+    FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId
+     */
+    private static final String QUERY_APPOINTMENTSWITHCONTACTS_START
+            = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_TITLE + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_DESCRIPTION + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_LOCATION + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_URL + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_START + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_END
+            + " FROM " + TABLE_APPOINTMENT + " INNER JOIN " + TABLE_CUSTOMER
+            + " ON " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID
+            + " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID;
+
     // Add customer
     /*
     INSERT INTO customer (customerName, addressId, active,
@@ -922,6 +943,46 @@ public class Datasource {
                 tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
                 tempAppointment.setContact(result.getString(COLUMN_APPOINTMENT_CONTACT));
+                tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
+                tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
+                tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
+
+                appointments.add(tempAppointment);
+            }
+        }
+
+        return appointments;
+    }
+
+    public static List<AppointmentsWithContacts> getAppointmentsWithContacts() throws ClassNotFoundException, SQLException {
+        List<AppointmentsWithContacts> appointments = new ArrayList<>();
+
+        boolean open = Datasource.open();
+
+        //     WHERE appointment.contact = "Jamie";
+        String queryAppointments = QUERY_APPOINTMENTSWITHCONTACTS_START
+                + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
+                + " = " + Datasource.loggedInUser;
+
+        if (!open) {
+            System.out.println("Unable to open database connection when trying get appointments with contacts!");
+            return null;
+        }
+
+        try (Statement statement = connection.createStatement();
+                ResultSet result = statement.executeQuery(queryAppointments)) {
+
+            while (result.next()) {
+
+                AppointmentsWithContacts tempAppointment = new AppointmentsWithContacts();
+
+                tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
+                tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
+                tempAppointment.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
+                tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
+                tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
+                tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
+                tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
                 tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
                 tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
