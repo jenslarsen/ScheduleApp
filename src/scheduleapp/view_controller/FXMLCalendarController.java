@@ -6,25 +6,32 @@
 package scheduleapp.view_controller;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import scheduleapp.model.Appointment;
+import scheduleapp.model.Datasource;
 
 /**
  * FXML Controller class
  *
  * @author dasuperman
  */
-public class FXMLCalendarController implements Initializable {
+public class FXMLCalendarController {
+
+    private List<Appointment> appointments;
 
     @FXML
     private Button buttonAdd;
@@ -33,19 +40,16 @@ public class FXMLCalendarController implements Initializable {
     private Button buttonEdit;
 
     @FXML
-    private TableView<?> tableViewCustomers;
+    private TableView<Appointment> tableViewAppointments;
 
     @FXML
-    private TableColumn<?, ?> tableColName;
+    private TableColumn<?, ?> tableColTitle;
 
     @FXML
-    private TableColumn<?, ?> tableColAddress;
+    private TableColumn<?, ?> tableColDate;
 
     @FXML
-    private TableColumn<?, ?> tableColPhone;
-
-    @FXML
-    private TableColumn<?, ?> tableColPhone1;
+    private TableColumn<?, ?> tableColTime;
 
     @FXML
     private Button buttonDelete;
@@ -55,6 +59,9 @@ public class FXMLCalendarController implements Initializable {
 
     @FXML
     private Button buttonCustomers;
+
+    @FXML
+    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
 
     @FXML
     private void addButtonClicked() {
@@ -88,16 +95,37 @@ public class FXMLCalendarController implements Initializable {
 
     @FXML
     private void calendarButtonClicked() {
-        // already on the customers screen - don't do anything!
+        // already on the calendar screen - don't do anything!
         // maybe make this a radio button or tab instead to be more clear??    }
     }
 
     /**
      * Initializes the controller class.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void initialize() throws SQLException {
+        appointments = new ArrayList<>();
+        appointmentList = FXCollections.observableArrayList();
+
+        try {
+            appointments = Datasource.getAppointments();
+        } catch (ClassNotFoundException | SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Exeception encountered");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
+        appointmentList.addAll(appointments);
+
+        Datasource.close();
+
+        // display in table
+        tableColTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tableColDate.setCellValueFactory(new PropertyValueFactory<>("start"));
+        tableColTime.setCellValueFactory(new PropertyValueFactory<>("start"));
+
+        tableViewAppointments.setItems(appointmentList);
     }
 
 }
