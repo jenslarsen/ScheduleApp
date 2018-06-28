@@ -5,6 +5,7 @@
  */
 package scheduleapp.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -22,11 +23,11 @@ public class Appointment {
     private String contact;
     private String type;
     private String url;
-    private Date start;
-    private Date end;
-    private Date createDate;
+    private Timestamp start;
+    private Timestamp end;
+    private Timestamp createDate;
     private String createdBy;
-    private String lastUpdate;
+    private Timestamp lastUpdate;
     private String lastUpdateBy;
 
     public int getAppointmentID() {
@@ -105,7 +106,7 @@ public class Appointment {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
@@ -113,7 +114,7 @@ public class Appointment {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
@@ -121,7 +122,7 @@ public class Appointment {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
@@ -133,11 +134,11 @@ public class Appointment {
         this.createdBy = createdBy;
     }
 
-    public String getLastUpdate() {
+    public Timestamp getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(String lastUpdate) {
+    public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
