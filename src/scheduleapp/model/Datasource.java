@@ -138,6 +138,7 @@ public class Datasource {
             = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
             + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ", "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_TITLE + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_DESCRIPTION + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_LOCATION + ", "
@@ -962,7 +963,9 @@ public class Datasource {
         //     WHERE appointment.contact = "Jamie";
         String queryAppointments = QUERY_APPOINTMENTSWITHCONTACTS_START
                 + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
-                + " = " + Datasource.loggedInUser;
+                + " = " + "'" + Datasource.loggedInUser + "'";
+
+        System.out.println(queryAppointments);
 
         if (!open) {
             System.out.println("Unable to open database connection when trying get appointments with contacts!");

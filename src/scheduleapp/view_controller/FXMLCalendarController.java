@@ -22,7 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import scheduleapp.model.Appointment;
+import scheduleapp.model.AppointmentsWithContacts;
 import scheduleapp.model.Datasource;
 
 /**
@@ -32,7 +32,7 @@ import scheduleapp.model.Datasource;
  */
 public class FXMLCalendarController {
 
-    private List<Appointment> appointments;
+    private List<AppointmentsWithContacts> appointments;
 
     @FXML
     private Button buttonAdd;
@@ -41,19 +41,19 @@ public class FXMLCalendarController {
     private Button buttonEdit;
 
     @FXML
-    private TableView<Appointment> tableViewCalendar;
+    private TableView<AppointmentsWithContacts> tableViewCalendar;
 
     @FXML
-    private TableColumn<Appointment, String> tableColTitle;
+    private TableColumn<AppointmentsWithContacts, String> tableColTitle;
 
     @FXML
-    private TableColumn<Appointment, String> tableColLocation;
+    private TableColumn<AppointmentsWithContacts, String> tableColLocation;
 
     @FXML
-    private TableColumn<Appointment, String> tableColContact;
+    private TableColumn<AppointmentsWithContacts, String> tableColCustomer;
 
     @FXML
-    private TableColumn<Appointment, Timestamp> tableColDate;
+    private TableColumn<AppointmentsWithContacts, Timestamp> tableColDate;
 
     @FXML
     private Button buttonDelete;
@@ -65,7 +65,8 @@ public class FXMLCalendarController {
     private Button buttonCustomers;
 
     @FXML
-    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private ObservableList<AppointmentsWithContacts> appointmentList
+            = FXCollections.observableArrayList();
 
     @FXML
     private void addButtonClicked() {
@@ -116,7 +117,7 @@ public class FXMLCalendarController {
         appointmentList = FXCollections.observableArrayList();
 
         try {
-            appointments = Datasource.getAppointments();
+            appointments = Datasource.getAppointmentsWithContacts();
         } catch (ClassNotFoundException | SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -133,7 +134,7 @@ public class FXMLCalendarController {
         // display in table
         tableColTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         tableColLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
-        tableColContact.setCellValueFactory(new PropertyValueFactory<>("contact"));
+        tableColCustomer.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         tableColDate.setCellValueFactory(new PropertyValueFactory<>("start"));
 
         tableViewCalendar.setItems(appointmentList);

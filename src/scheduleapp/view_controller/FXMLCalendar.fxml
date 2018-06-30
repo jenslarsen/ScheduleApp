@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCalendarController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCalendarController">
    <children>
       <Button fx:id="buttonAdd" layoutX="409.0" layoutY="529.0" mnemonicParsing="false" onAction="#addButtonClicked" text="Add">
          <font>
@@ -26,7 +26,7 @@
         <columns>
           <TableColumn fx:id="tableColTitle" prefWidth="161.0" text="Title" />
           <TableColumn fx:id="tableColLocation" prefWidth="124.0" text="Location" />
-            <TableColumn fx:id="tableColContact" minWidth="0.0" prefWidth="121.0" text="Contact" />
+            <TableColumn fx:id="tableColCustomer" minWidth="0.0" prefWidth="121.0" text="Customer" />
             <TableColumn fx:id="tableColDate" minWidth="0.0" prefWidth="121.0" text="Date &amp; Time" />
         </columns>
       </TableView>
