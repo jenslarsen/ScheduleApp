@@ -21,6 +21,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import scheduleapp.model.AppointmentWithContact;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
 
@@ -59,6 +60,9 @@ public class FXMLAddAppointmentController {
     private TextField textEndTime;
 
     @FXML
+    private TextField textFieldUrl;
+
+    @FXML
     private ComboBox<String> comboCustomer;
 
     private List<CustomerWithAddress> customers;
@@ -81,7 +85,12 @@ public class FXMLAddAppointmentController {
 
     @FXML
     void saveButtonClicked(ActionEvent event) {
+        AppointmentWithContact newAppointment = new AppointmentWithContact();
 
+        newAppointment.setTitle(textTitle.getText());
+        newAppointment.setDescription(textFieldDescription.getText());
+        newAppointment.setLocation(textFieldLocation.getText());
+        newAppointment.setUrl(textFieldUrl.getText());
     }
 
     public void initialize() throws ClassNotFoundException, SQLException {

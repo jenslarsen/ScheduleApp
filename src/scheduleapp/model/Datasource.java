@@ -955,8 +955,8 @@ public class Datasource {
         return appointments;
     }
 
-    public static List<AppointmentsWithContacts> getAppointmentsWithContacts() throws ClassNotFoundException, SQLException {
-        List<AppointmentsWithContacts> appointments = new ArrayList<>();
+    public static List<AppointmentWithContact> getAppointmentsWithContacts() throws ClassNotFoundException, SQLException {
+        List<AppointmentWithContact> appointments = new ArrayList<>();
 
         boolean open = Datasource.open();
 
@@ -977,7 +977,7 @@ public class Datasource {
 
             while (result.next()) {
 
-                AppointmentsWithContacts tempAppointment = new AppointmentsWithContacts();
+                AppointmentWithContact tempAppointment = new AppointmentWithContact();
 
                 tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
                 tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));

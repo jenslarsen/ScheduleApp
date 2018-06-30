@@ -23,7 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import scheduleapp.model.AppointmentsWithContacts;
+import scheduleapp.model.AppointmentWithContact;
 import scheduleapp.model.Datasource;
 
 /**
@@ -33,7 +33,7 @@ import scheduleapp.model.Datasource;
  */
 public class FXMLCalendarController {
 
-    private List<AppointmentsWithContacts> appointments;
+    private List<AppointmentWithContact> appointments;
 
     @FXML
     private Button buttonAdd;
@@ -42,19 +42,19 @@ public class FXMLCalendarController {
     private Button buttonEdit;
 
     @FXML
-    private TableView<AppointmentsWithContacts> tableViewCalendar;
+    private TableView<AppointmentWithContact> tableViewCalendar;
 
     @FXML
-    private TableColumn<AppointmentsWithContacts, String> tableColTitle;
+    private TableColumn<AppointmentWithContact, String> tableColTitle;
 
     @FXML
-    private TableColumn<AppointmentsWithContacts, String> tableColLocation;
+    private TableColumn<AppointmentWithContact, String> tableColLocation;
 
     @FXML
-    private TableColumn<AppointmentsWithContacts, String> tableColCustomer;
+    private TableColumn<AppointmentWithContact, String> tableColCustomer;
 
     @FXML
-    private TableColumn<AppointmentsWithContacts, Timestamp> tableColDate;
+    private TableColumn<AppointmentWithContact, Timestamp> tableColDate;
 
     @FXML
     private Button buttonDelete;
@@ -66,7 +66,7 @@ public class FXMLCalendarController {
     private Button buttonCustomers;
 
     @FXML
-    private ObservableList<AppointmentsWithContacts> appointmentList
+    private ObservableList<AppointmentWithContact> appointmentList
             = FXCollections.observableArrayList();
 
     @FXML

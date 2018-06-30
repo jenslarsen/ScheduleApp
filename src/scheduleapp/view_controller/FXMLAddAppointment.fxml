@@ -73,5 +73,11 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
+      <Label layoutX="382.0" layoutY="381.0" text="URL" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldUrl" layoutX="507.0" layoutY="382.0" prefHeight="25.0" prefWidth="174.0" />
    </children>
 </AnchorPane>
