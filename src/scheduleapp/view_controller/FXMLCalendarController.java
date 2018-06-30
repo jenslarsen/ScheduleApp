@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import scheduleapp.model.AppointmentsWithContacts;
 import scheduleapp.model.Datasource;
@@ -69,7 +70,22 @@ public class FXMLCalendarController {
             = FXCollections.observableArrayList();
 
     @FXML
-    private void addButtonClicked() {
+    private void addButtonClicked() throws IOException {
+        Stage stage = new Stage();
+
+        FXMLLoader addAppointmentLoader = new FXMLLoader();
+        addAppointmentLoader.setLocation(getClass().getResource("FXMLAddAppointment.fxml"));
+
+        Parent root = addAppointmentLoader.load();
+
+        stage.setScene(new Scene(root));
+
+        stage.setTitle("Add Appointment");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.setResizable(false);
+
+        stage.showAndWait();
     }
 
     @FXML
