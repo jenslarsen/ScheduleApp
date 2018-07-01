@@ -22,14 +22,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import scheduleapp.model.AppointmentWithContact;
+import scheduleapp.model.Appointment;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
 
 /**
  * FXML Controller class
  *
- * @author jlarsen
+ * @author Jens Larsen
  */
 public class FXMLAddAppointmentController {
 
@@ -91,29 +91,60 @@ public class FXMLAddAppointmentController {
     }
 
     @FXML
-    void saveButtonClicked(ActionEvent event) throws ParseException {
-        AppointmentWithContact newAppointment = new AppointmentWithContact();
+    void saveButtonClicked(ActionEvent event) throws ParseException, ClassNotFoundException, SQLException {
+        Appointment newAppointment = new Appointment();
 
         newAppointment.setTitle(textFieldTitle.getText());
         newAppointment.setDescription(textFieldDescription.getText());
         newAppointment.setLocation(textFieldLocation.getText());
         newAppointment.setUrl(textFieldUrl.getText());
 
-        String startString = datePickerStart.getValue() + " "
-                + comboStartHour.getValue() + ":" + comboStartMinute.getValue() + ":00";
+        if (newAppointment.getTitle().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("You must enter a title");
+            alert.setContentText("Some fields are empty");
+            alert.showAndWait();
+            return;
+        }
 
-        newAppointment.setStart(Timestamp.valueOf(startString));
+        try {
+            String startString = datePickerStart.getValue() + " "
+                    + comboStartHour.getValue() + ":" + comboStartMinute.getValue() + ":00";
 
-        String endString = datePickerEnd.getValue() + " "
-                + comboEndHour.getValue() + ":" + comboEndMinute.getValue() + ":00";
+            newAppointment.setStart(Timestamp.valueOf(startString));
 
-        newAppointment.setEnd(Timestamp.valueOf(endString));
+            String endString = datePickerEnd.getValue() + " "
+                    + comboEndHour.getValue() + ":" + comboEndMinute.getValue() + ":00";
+
+            newAppointment.setEnd(Timestamp.valueOf(endString));
+        } catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Time entry error");
+            alert.setHeaderText("You must enter a start and end dates and times");
+            alert.setContentText("Some fields are empty");
+            alert.showAndWait();
+            return;
+        }
 
         newAppointment.setCreateDate(new Timestamp(System.currentTimeMillis()));
         newAppointment.setCreatedBy(Datasource.loggedInUser);
-        newAppointment.setLastUpdate(newAppointment.getCreateDate());
+        newAppointment.setLastUpdate((Timestamp) newAppointment.getCreateDate());
         newAppointment.setLastUpdateBy(Datasource.loggedInUser);
 
+        int customerIndex = comboCustomer.getSelectionModel().getSelectedIndex();
+
+        try {
+            newAppointment.setCustomerID(customers.get(customerIndex).getCustomerID());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Customer seleciton error");
+            alert.setHeaderText("You must select a customer");
+            alert.setContentText("Some fields are empty");
+            alert.showAndWait();
+            return;
+        }
+        Datasource.addAppointment(newAppointment);
     }
 
     public void initialize() throws ClassNotFoundException, SQLException {
@@ -141,6 +172,5 @@ public class FXMLAddAppointmentController {
         comboStartMinute.setItems(mins);
         comboEndHour.setItems(hours);
         comboEndMinute.setItems(mins);
-
     }
 }
