@@ -100,8 +100,8 @@ public class FXMLAddAppointmentController {
         newAppointment.setUrl(textFieldUrl.getText());
 
         if (newAppointment.getTitle().equals("")) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Confirmation Dialog");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Input error");
             alert.setHeaderText("You must enter a title");
             alert.setContentText("Some fields are empty");
             alert.showAndWait();
