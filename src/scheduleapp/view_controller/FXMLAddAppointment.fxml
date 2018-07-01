@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="datePickerStart" prefHeight="554.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLAddAppointmentController">
+<AnchorPane id="AnchorPane" prefHeight="554.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLAddAppointmentController">
        <children>
       <Label layoutX="42.0" layoutY="43.0" text="Add Appointment">
          <font>
@@ -20,7 +20,6 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textTitle" layoutX="175.0" layoutY="123.0" prefHeight="25.0" prefWidth="506.0" />
       <Label layoutX="70.0" layoutY="171.0" text="Description" textAlignment="RIGHT">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
@@ -53,22 +52,20 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
-      <DatePicker layoutX="175.0" layoutY="277.0" />
+      <DatePicker fx:id="datePickerStart" layoutX="175.0" layoutY="277.0" />
       <DatePicker fx:id="datePickerEnd" layoutX="507.0" layoutY="277.0" />
       <Label layoutX="70.0" layoutY="326.0" text="Start Time" textAlignment="RIGHT">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textStartTime" layoutX="175.0" layoutY="327.0" prefHeight="25.0" prefWidth="174.0" />
-      <Label layoutX="382.0" layoutY="326.0" text="Start Time" textAlignment="RIGHT">
+      <Label layoutX="382.0" layoutY="326.0" text="End Time" textAlignment="RIGHT">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textEndTime" layoutX="507.0" layoutY="327.0" prefHeight="25.0" prefWidth="174.0" />
-      <ComboBox fx:id="comboCustomer" layoutX="175.0" layoutY="394.0" prefWidth="150.0" />
-      <Label layoutX="70.0" layoutY="393.0" text="Customer" textAlignment="RIGHT">
+      <ComboBox fx:id="comboCustomer" layoutX="175.0" layoutY="382.0" prefWidth="150.0" />
+      <Label layoutX="70.0" layoutY="381.0" text="Customer" textAlignment="RIGHT">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
@@ -79,5 +76,20 @@
          </font>
       </Label>
       <TextField fx:id="textFieldUrl" layoutX="507.0" layoutY="382.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="comboStartHour" layoutX="175.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <ComboBox fx:id="comboStartMinute" layoutX="257.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <Label layoutX="246.0" layoutY="326.0" text=":" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboEndHour" layoutX="507.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <ComboBox fx:id="comboEndMinute" layoutX="594.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <Label layoutX="578.0" layoutY="326.0" text=":" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldTitle" layoutX="175.0" layoutY="123.0" prefHeight="25.0" prefWidth="506.0" />
    </children>
 </AnchorPane>
