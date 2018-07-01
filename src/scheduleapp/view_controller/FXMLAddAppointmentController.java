@@ -100,12 +100,12 @@ public class FXMLAddAppointmentController {
         newAppointment.setUrl(textFieldUrl.getText());
 
         String startString = datePickerStart.getValue() + " "
-                + comboStartHour.getValue() + ":" + comboStartMinute.getValue();
+                + comboStartHour.getValue() + ":" + comboStartMinute.getValue() + ":00";
 
         newAppointment.setStart(Timestamp.valueOf(startString));
 
         String endString = datePickerEnd.getValue() + " "
-                + comboEndHour.getValue() + ":" + comboEndMinute.getValue();
+                + comboEndHour.getValue() + ":" + comboEndMinute.getValue() + ":00";
 
         newAppointment.setEnd(Timestamp.valueOf(endString));
 
