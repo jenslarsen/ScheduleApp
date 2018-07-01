@@ -6,6 +6,8 @@
 package scheduleapp.view_controller;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +21,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import scheduleapp.model.AppointmentWithContact;
 import scheduleapp.model.CustomerWithAddress;
@@ -31,12 +32,6 @@ import scheduleapp.model.Datasource;
  * @author jlarsen
  */
 public class FXMLAddAppointmentController {
-
-    @FXML
-    private AnchorPane datePickerStart;
-
-    @FXML
-    private TextField textTitle;
 
     @FXML
     private TextField textFieldDescription;
@@ -51,19 +46,31 @@ public class FXMLAddAppointmentController {
     private Button buttonCancel;
 
     @FXML
+    private DatePicker datePickerStart;
+
+    @FXML
     private DatePicker datePickerEnd;
 
     @FXML
-    private TextField textStartTime;
-
-    @FXML
-    private TextField textEndTime;
+    private ComboBox<String> comboCustomer;
 
     @FXML
     private TextField textFieldUrl;
 
     @FXML
-    private ComboBox<String> comboCustomer;
+    private ComboBox<String> comboStartHour;
+
+    @FXML
+    private ComboBox<String> comboStartMinute;
+
+    @FXML
+    private ComboBox<String> comboEndHour;
+
+    @FXML
+    private ComboBox<String> comboEndMinute;
+
+    @FXML
+    private TextField textFieldTitle;
 
     private List<CustomerWithAddress> customers;
     ObservableList<String> customerList
@@ -84,26 +91,56 @@ public class FXMLAddAppointmentController {
     }
 
     @FXML
-    void saveButtonClicked(ActionEvent event) {
+    void saveButtonClicked(ActionEvent event) throws ParseException {
         AppointmentWithContact newAppointment = new AppointmentWithContact();
 
-        newAppointment.setTitle(textTitle.getText());
+        newAppointment.setTitle(textFieldTitle.getText());
         newAppointment.setDescription(textFieldDescription.getText());
         newAppointment.setLocation(textFieldLocation.getText());
         newAppointment.setUrl(textFieldUrl.getText());
+
+        String startString = datePickerStart.getValue() + " "
+                + comboStartHour.getValue() + ":" + comboStartMinute.getValue();
+
+        newAppointment.setStart(Timestamp.valueOf(startString));
+
+        String endString = datePickerEnd.getValue() + " "
+                + comboEndHour.getValue() + ":" + comboEndMinute.getValue();
+
+        newAppointment.setEnd(Timestamp.valueOf(endString));
+
+        newAppointment.setCreateDate(new Timestamp(System.currentTimeMillis()));
+        newAppointment.setCreatedBy(Datasource.loggedInUser);
+        newAppointment.setLastUpdate(newAppointment.getCreateDate());
+        newAppointment.setLastUpdateBy(Datasource.loggedInUser);
+
     }
 
     public void initialize() throws ClassNotFoundException, SQLException {
+
+        // load customers into dropdown
         customers = Datasource.getCustomersWithAddresses();
-
         List<String> listOfCustomers = new ArrayList();
-
-        for (CustomerWithAddress customer : customers) {
+        customers.forEach((customer) -> {
             listOfCustomers.add(customer.getCustomerName());
-        }
-
+        });
         customerList = FXCollections.observableArrayList(listOfCustomers);
-
         comboCustomer.setItems(customerList);
+
+        // populate time dropdowns
+        ObservableList<String> hours = FXCollections.observableArrayList(
+                "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
+                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"
+        );
+
+        ObservableList<String> mins = FXCollections.observableArrayList(
+                "00", "15", "30", "45"
+        );
+
+        comboStartHour.setItems(hours);
+        comboStartMinute.setItems(mins);
+        comboEndHour.setItems(hours);
+        comboEndMinute.setItems(mins);
+
     }
 }
