@@ -178,7 +178,7 @@ public class FXMLLoginController extends Application {
                     System.out.println("Unable to close log file!");
                 }
             }
-            switchToCustomerScreen();
+            switchToCalendarScreen();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle(errorTitle);
@@ -192,6 +192,23 @@ public class FXMLLoginController extends Application {
         Parent main;
         try {
             main = FXMLLoader.load(getClass().getResource("FXMLCustomers.fxml"));
+            Scene scene = new Scene(main);
+            stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(errorTitle);
+            alert.setHeaderText(switchError);
+            alert.setContentText(unableToSwitch);
+            alert.showAndWait();
+        }
+    }
+
+    private void switchToCalendarScreen() {
+        Parent main;
+        try {
+            main = FXMLLoader.load(getClass().getResource("FXMLCalendar.fxml"));
             Scene scene = new Scene(main);
             stage = (Stage) loginButton.getScene().getWindow();
             stage.setScene(scene);
