@@ -202,12 +202,12 @@ public class Datasource {
      */
     private static final String ADD_APPOINTMENT_START
             = "INSERT INTO " + TABLE_APPOINTMENT
-            + COLUMN_APPOINTMENT_CUSTOMERID + "," + COLUMN_APPOINTMENT_TITLE + ","
+            + "(" + COLUMN_APPOINTMENT_CUSTOMERID + "," + COLUMN_APPOINTMENT_TITLE + ","
             + COLUMN_APPOINTMENT_DESCRIPTION + "," + COLUMN_APPOINTMENT_LOCATION + ","
             + COLUMN_APPOINTMENT_CONTACT + "," + COLUMN_APPOINTMENT_URL + ","
             + COLUMN_APPOINTMENT_START + "," + COLUMN_APPOINTMENT_END + ","
             + COLUMN_APPOINTMENT_CREATEDATE + "," + COLUMN_APPOINTMENT_CREATEDBY + ","
-            + COLUMN_APPOINTMENT_LASTUPDATE + "," + COLUMN_APPOINTMENT_LASTUPDATEBY + ")";
+            + COLUMN_APPOINTMENT_LASTUPDATE + "," + COLUMN_APPOINTMENT_LASTUPDATEBY + ") ";
 
     // globals
     private static Connection connection = null;
@@ -828,14 +828,14 @@ public class Datasource {
                 + "'" + customerId + "'" + ","
                 + "'" + title + "'" + ","
                 + "'" + description + "'" + ","
-                + "'" + location + "'"
-                + "'" + contact + "'"
-                + "'" + url + "'"
-                + "'" + start + "'"
-                + "'" + end + "'"
-                + "'" + createDate + "'"
-                + "'" + createdBy + "'"
-                + "'" + lastUpdate + "'"
+                + "'" + location + "'" + ","
+                + "'" + contact + "'" + ","
+                + "'" + url + "'" + ","
+                + "'" + start + "'" + ","
+                + "'" + end + "'" + ","
+                + "'" + createDate + "'" + ","
+                + "'" + createdBy + "'" + ","
+                + "'" + lastUpdate + "'" + ","
                 + "'" + lastUpdateBy + "'"
                 + ");";
 
@@ -843,6 +843,8 @@ public class Datasource {
                 = "SELECT * FROM " + TABLE_APPOINTMENT
                 + "  WHERE " + COLUMN_APPOINTMENT_TITLE + " = '" + title
                 + "';";
+
+        System.out.println("New appointment: " + appointmentInsert);
 
         boolean open = Datasource.open();
 
