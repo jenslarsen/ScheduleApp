@@ -205,12 +205,22 @@ public class Datasource {
     /*
     INSERT INTO city (city,countryId,createDate,createdBy, lastUpdate, lastUpdateBy)
      */
-    private static final String ADD_CITY_START
+    private static final String ADD_CITY_STRING
             = "INSERT INTO " + TABLE_CITY
             + "(" + COLUMN_CITY_CITY + "," + COLUMN_CITY_COUNTRYID + ","
             + COLUMN_CITY_CREATEDATE + ","
             + COLUMN_CITY_CREATEDBY + "," + COLUMN_CITY_LASTUPDATE + ","
-            + COLUMN_CITY_LASTUPDATEBY + ") ";
+            + COLUMN_CITY_LASTUPDATEBY + ") "
+            + "VALUES (?, ?, ?, ?, ?, ?);";
+
+    private static PreparedStatement cityInsert = null;
+
+    private static final String QUERY_CITY_STRING
+            = "SELECT * FROM " + TABLE_CITY
+            + " WHERE " + COLUMN_CITY_CITY + " = ?"
+            + "';";
+
+    private static PreparedStatement cityQuery = null;
 
     // Add Country
     /*
@@ -549,23 +559,16 @@ public class Datasource {
 
         addressInsert = connection.prepareStatement(ADD_ADDRESS_STRING);
 
-        /*
-            + COLUMN_ADDRESS_ADDRESS + "," + COLUMN_ADDRESS_ADDRESS2 + ","
-            + COLUMN_ADDRESS_CITYID + "," + COLUMN_ADDRESS_POSTALCODE + ","
-            + COLUMN_ADDRESS_PHONE + "," + COLUMN_ADDRESS_CREATEDATE + ","
-            + COLUMN_ADDRESS_CREATEDBY + "," + COLUMN_ADDRESS_LASTUPDATE + ","
-            + COLUMN_ADDRESS_LASTUPDATEBY
-         */
         addressInsert.setString(1, address.getAddress());
         addressInsert.setString(2, address.getAddress2());
         addressInsert.setInt(3, address.getCityId());
         addressInsert.setString(4, address.getPostalCode());
         addressInsert.setString(5, address.getPhone());
 
-        addressInsert.setTimestamp(4, createDate);
-        addressInsert.setString(5, Datasource.loggedInUser);
-        addressInsert.setTimestamp(6, lastUpdate);
+        addressInsert.setTimestamp(6, createDate);
         addressInsert.setString(7, Datasource.loggedInUser);
+        addressInsert.setTimestamp(8, lastUpdate);
+        addressInsert.setString(9, Datasource.loggedInUser);
 
         addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
         addressQuery.setString(1, address.getAddress());
@@ -687,29 +690,9 @@ public class Datasource {
     }
 
     public static int addCity(City city) throws ClassNotFoundException, SQLException {
-
-        String cityName = city.getCity();
-        int countryId = city.getCountryid();
-        String createDate = LocalDateTime.now().toString();
-        String createdBy = loggedInUser;
-        String lastUpdate = createDate;
-        String lastUpdateBy = loggedInUser;
-
-        String cityInsert = ADD_CITY_START
-                + "VALUES ("
-                + "'" + cityName + "'" + ","
-                + countryId + ","
-                + "'" + createDate + "'" + ","
-                + "'" + createdBy + "'" + ","
-                + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'"
-                + ");";
-
-        String cityQuery
-                = "SELECT * FROM " + TABLE_CITY
-                + " WHERE " + COLUMN_CITY_CITY + " = '" + cityName
-                + "';";
-
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
         int cityId = -1;
         ResultSet result;
 
@@ -720,13 +703,22 @@ public class Datasource {
             return cityId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        cityInsert = connection.prepareStatement(ADD_CITY_STRING);
 
-            System.out.println("Inserting city: " + cityInsert);
-            statement.execute(cityInsert);
-            System.out.println("Getting added city: " + cityQuery);
-            result = statement.executeQuery(cityQuery);
+        cityInsert.setString(1, city.getCity());
+        cityInsert.setInt(2, city.getCountryid());
 
+        cityInsert.setTimestamp(3, createDate);
+        cityInsert.setString(4, Datasource.loggedInUser);
+        cityInsert.setTimestamp(5, lastUpdate);
+        cityInsert.setString(6, Datasource.loggedInUser);
+
+        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+        cityQuery.setString(1, city.getCity());
+
+        try {
+            cityInsert.execute();
+            result = cityQuery.executeQuery();
             if (result.next()) {
                 cityId = result.getInt(COLUMN_CITY_CITYID);
             }
