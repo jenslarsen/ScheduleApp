@@ -226,11 +226,20 @@ public class Datasource {
     /*
     INSERT INTO country (country,createDate,createdBy, lastUpdate, lastUpdateBy)
      */
-    private static final String ADD_COUNTRY_START
+    private static final String ADD_COUNTRY_STRING
             = "INSERT INTO " + TABLE_COUNTRY
             + "(" + COLUMN_COUNTRY_COUNTRY + "," + COLUMN_COUNTRY_CREATEDATE + ","
             + COLUMN_COUNTRY_CREATEDBY + "," + COLUMN_COUNTRY_LASTUPDATE + ","
-            + COLUMN_COUNTRY_LASTUPDATEBY + ") ";
+            + COLUMN_COUNTRY_LASTUPDATEBY + ") "
+            + "VALUES (?, ?, ?, ?, ?);";
+
+    private static PreparedStatement countryInsert = null;
+
+    private static final String QUERY_COUNTRY_STRING
+            = "SELECT * FROM " + TABLE_COUNTRY
+            + "  WHERE " + COLUMN_COUNTRY_COUNTRY + " = ?;";
+
+    private static PreparedStatement countryQuery = null;
 
     // Add Appointment
     /*
@@ -732,44 +741,36 @@ public class Datasource {
     }
 
     public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
-
-        String countryName = country.getCountry();
-
-        String createDate = LocalDateTime.now().toString();
-        String createdBy = loggedInUser;
-        String lastUpdate = createDate;
-        String lastUpdateBy = loggedInUser;
-
-        String countryInsert = ADD_COUNTRY_START
-                + "VALUES ("
-                + "'" + countryName + "'" + ","
-                + "'" + createDate + "'" + ","
-                + "'" + createdBy + "'" + ","
-                + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'"
-                + ");";
-
-        String countryQuery
-                = "SELECT * FROM " + TABLE_COUNTRY
-                + "  WHERE " + COLUMN_COUNTRY_COUNTRY + " = '" + countryName
-                + "';";
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
+        int countryId = -1;
+        ResultSet result;
 
         boolean open = Datasource.open();
 
         if (!open) {
             System.out.println("Error opening datasource!");
-            return -1;
+            return countryId;
         }
 
-        ResultSet result;
-        int countryId = -1;
+        countryInsert = connection.prepareStatement(ADD_COUNTRY_STRING);
 
-        try (Statement statement = connection.createStatement()) {
+        countryInsert.setString(1, country.getCountry());
+        countryInsert.setTimestamp(2, createDate);
+        countryInsert.setString(3, Datasource.loggedInUser);
+        countryInsert.setTimestamp(4, lastUpdate);
+        countryInsert.setString(5, Datasource.loggedInUser);
 
-            statement.execute(countryInsert);
-            result = statement.executeQuery(countryQuery);
-            result.next();
-            countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
+        countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
+        countryQuery.setString(1, country.getCountry());
+
+        try {
+            countryInsert.execute();
+            result = countryQuery.executeQuery();
+            if (result.next()) {
+                countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding country: " + e.getMessage());
