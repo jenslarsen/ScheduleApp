@@ -182,13 +182,24 @@ public class Datasource {
     INSERT INTO address (address, address2, cityId, postalCode, phone, createDate,
     createdBy, lastUpdate, lastUpdateBy)
      */
-    private static final String ADD_ADDRESS_START
+    private static final String ADD_ADDRESS_STRING
             = "INSERT INTO " + TABLE_ADDRESS
             + "(" + COLUMN_ADDRESS_ADDRESS + "," + COLUMN_ADDRESS_ADDRESS2 + ","
             + COLUMN_ADDRESS_CITYID + "," + COLUMN_ADDRESS_POSTALCODE + ","
             + COLUMN_ADDRESS_PHONE + "," + COLUMN_ADDRESS_CREATEDATE + ","
             + COLUMN_ADDRESS_CREATEDBY + "," + COLUMN_ADDRESS_LASTUPDATE + ","
-            + COLUMN_ADDRESS_LASTUPDATEBY + ") ";
+            + COLUMN_ADDRESS_LASTUPDATEBY + ") "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+    private static PreparedStatement addressInsert = null;
+
+    private static final String QUERY_ADDRESS_STRING
+            = "SELECT * FROM " + TABLE_ADDRESS
+            + " WHERE " + COLUMN_ADDRESS_ADDRESS + " = ?"
+            + " AND " + COLUMN_ADDRESS_ADDRESS2 + " = ?"
+            + " AND " + COLUMN_ADDRESS_CITYID + " = ?" + ";";
+
+    private static PreparedStatement addressQuery = null;
 
     // Add City
     /*
@@ -523,37 +534,9 @@ public class Datasource {
     }
 
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
-
-        String address1 = address.getAddress();
-        String address2 = address.getAddress2();
-        int cityId = address.getCityId();
-        String postalCode = address.getPostalCode();
-        String phone = address.getPhone();
-        String createDate = LocalDateTime.now().toString();
-        String createdBy = loggedInUser;
-        String lastUpdate = createDate;
-        String lastUpdateBy = loggedInUser;
-
-        String addressInsert = ADD_ADDRESS_START
-                + "VALUES ("
-                + "'" + address1 + "'" + ","
-                + "'" + address2 + "'" + ","
-                + cityId + ","
-                + "'" + postalCode + "'" + ","
-                + "'" + phone + "'" + ","
-                + "'" + createDate + "'" + ","
-                + "'" + createdBy + "'" + ","
-                + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'"
-                + ");";
-
-        String addressQuery
-                = "SELECT * FROM " + TABLE_ADDRESS
-                + " WHERE " + COLUMN_ADDRESS_ADDRESS + " = '" + address1 + "'"
-                + " AND " + COLUMN_ADDRESS_ADDRESS2 + " = " + "'" + address2 + "'"
-                + " AND " + COLUMN_ADDRESS_CITYID + " = " + cityId
-                + ";";
-
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
         int addressId = -1;
         ResultSet result;
 
@@ -564,11 +547,34 @@ public class Datasource {
             return addressId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        addressInsert = connection.prepareStatement(ADD_ADDRESS_STRING);
 
-            statement.execute(addressInsert);
-            result = statement.executeQuery(addressQuery);
+        /*
+            + COLUMN_ADDRESS_ADDRESS + "," + COLUMN_ADDRESS_ADDRESS2 + ","
+            + COLUMN_ADDRESS_CITYID + "," + COLUMN_ADDRESS_POSTALCODE + ","
+            + COLUMN_ADDRESS_PHONE + "," + COLUMN_ADDRESS_CREATEDATE + ","
+            + COLUMN_ADDRESS_CREATEDBY + "," + COLUMN_ADDRESS_LASTUPDATE + ","
+            + COLUMN_ADDRESS_LASTUPDATEBY
+         */
+        addressInsert.setString(1, address.getAddress());
+        addressInsert.setString(2, address.getAddress2());
+        addressInsert.setInt(3, address.getCityId());
+        addressInsert.setString(4, address.getPostalCode());
+        addressInsert.setString(5, address.getPhone());
 
+        addressInsert.setTimestamp(4, createDate);
+        addressInsert.setString(5, Datasource.loggedInUser);
+        addressInsert.setTimestamp(6, lastUpdate);
+        addressInsert.setString(7, Datasource.loggedInUser);
+
+        addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
+        addressQuery.setString(1, address.getAddress());
+        addressQuery.setString(2, address.getAddress2());
+        addressQuery.setInt(3, address.getCityId());
+
+        try {
+            addressInsert.execute();
+            result = addressQuery.executeQuery();
             if (result.next()) {
                 addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
             }
