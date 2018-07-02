@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,12 +160,22 @@ public class Datasource {
     INSERT INTO customer (customerName, addressId, active,
     createDate, createdBy, lastUpdate, lastUpdateBy)
      */
-    private static final String ADD_CUSTOMER_START
+    private static final String ADD_CUSTOMER_STRING
             = "INSERT INTO " + TABLE_CUSTOMER
             + " (" + COLUMN_CUSTOMER_CUSTOMERNAME + "," + COLUMN_CUSTOMER_ADDRESSID
             + "," + COLUMN_CUSTOMER_ACTIVE + "," + COLUMN_CUSTOMER_CREATEDATE
             + "," + COLUMN_CUSTOMER_CREATEDBY + "," + COLUMN_CUSTOMER_LASTUPDATE
-            + "," + COLUMN_CUSTOMER_LASTUPDATEBY + ") ";
+            + "," + COLUMN_CUSTOMER_LASTUPDATEBY + ")"
+            + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    private static PreparedStatement customerInsert = null;
+
+    private static final String QUERY_CUSTOMER_STRING
+            = "SELECT * FROM " + TABLE_CUSTOMER + " "
+            + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ? "
+            + " AND " + COLUMN_CUSTOMER_ADDRESSID + " = ?;";
+
+    private static PreparedStatement customerQuery = null;
 
     // Add Address
     /*
@@ -469,32 +480,9 @@ public class Datasource {
     }
 
     public static int addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
-
-        String name = customer.getCustomerName();
-        int addressId = customer.getAddressID();
-        int active = 1;
-        String createDate = LocalDateTime.now().toString();
-        String createdBy = loggedInUser;
-        String lastUpdate = createDate;
-        String lastUpdateBy = loggedInUser;
-
-        String customerInsert = ADD_CUSTOMER_START
-                + "VALUES ("
-                + "'" + name + "'" + ","
-                + addressId + ","
-                + active + ","
-                + "'" + createDate + "'" + ","
-                + "'" + createdBy + "'" + ","
-                + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'"
-                + ");";
-
-        String customerQuery
-                = "SELECT * FROM " + TABLE_CUSTOMER + " "
-                + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = '" + name + "'"
-                + " AND " + COLUMN_CUSTOMER_ADDRESSID + " = " + addressId
-                + ";";
-
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
         int customerId = -1;
         ResultSet result;
 
@@ -505,11 +493,23 @@ public class Datasource {
             return customerId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        customerInsert = connection.prepareStatement(ADD_CUSTOMER_STRING);
 
-            statement.execute(customerInsert);
-            System.out.println("Getting ID for " + name + ":" + customerQuery);
-            result = statement.executeQuery(customerQuery);
+        customerInsert.setString(1, customer.getCustomerName());
+        customerInsert.setInt(2, customer.getAddressID());
+        customerInsert.setInt(3, 1); // set active
+        customerInsert.setTimestamp(4, createDate);
+        customerInsert.setString(5, Datasource.loggedInUser);
+        customerInsert.setTimestamp(6, lastUpdate);
+        customerInsert.setString(7, Datasource.loggedInUser);
+
+        customerQuery = connection.prepareStatement(QUERY_CUSTOMER_STRING);
+        customerQuery.setString(1, customer.getCustomerName());
+        customerQuery.setInt(2, customer.getAddressID());
+
+        try {
+            customerInsert.execute();
+            result = customerQuery.executeQuery();
             if (result.next()) {
                 customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
             }
