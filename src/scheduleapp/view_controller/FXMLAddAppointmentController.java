@@ -127,6 +127,7 @@ public class FXMLAddAppointmentController {
             return;
         }
 
+        newAppointment.setContact(Datasource.loggedInUser);
         newAppointment.setCreateDate(new Timestamp(System.currentTimeMillis()));
         newAppointment.setCreatedBy(Datasource.loggedInUser);
         newAppointment.setLastUpdate((Timestamp) newAppointment.getCreateDate());
