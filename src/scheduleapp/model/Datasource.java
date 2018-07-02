@@ -7,6 +7,7 @@ package scheduleapp.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -134,7 +135,7 @@ public class Datasource {
            appointment.url, appointment.start, appointment.end
     FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId
      */
-    private static final String QUERY_APPOINTMENTSWITHCONTACTS_START
+    private static final String QUERY_APPOINTMENTSWITHCONTACTS_STRING
             = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
             + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ", "
@@ -147,7 +148,11 @@ public class Datasource {
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_END
             + " FROM " + TABLE_APPOINTMENT + " INNER JOIN " + TABLE_CUSTOMER
             + " ON " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID
-            + " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID;
+            + " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID
+            + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
+            + " = " + "?;";
+
+    private static PreparedStatement queryAppointments = null;
 
     // Add customer
     /*
@@ -612,7 +617,7 @@ public class Datasource {
 
         try (Statement statement = connection.createStatement()) {
             System.out.println("Updating Address: " + updateAddress);
-            connection.prepareStatement(updateAddress);
+            // connection.prepareStatement(updateAddress);
             int updateCount = statement.executeUpdate(updateAddress);
             if (updateCount > 0) {
                 return true;
@@ -962,10 +967,8 @@ public class Datasource {
 
         boolean open = Datasource.open();
 
-        //     WHERE appointment.contact = "Jamie";
-        String queryAppointments = QUERY_APPOINTMENTSWITHCONTACTS_START
-                + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
-                + " = " + "'" + Datasource.loggedInUser + "'";
+        queryAppointments = connection.prepareStatement(QUERY_APPOINTMENTSWITHCONTACTS_STRING);
+        queryAppointments.setString(1, Datasource.loggedInUser);
 
         System.out.println(queryAppointments);
 
@@ -974,8 +977,7 @@ public class Datasource {
             return null;
         }
 
-        try (Statement statement = connection.createStatement();
-                ResultSet result = statement.executeQuery(queryAppointments)) {
+        try (ResultSet result = queryAppointments.executeQuery()) {
 
             while (result.next()) {
 
