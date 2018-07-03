@@ -387,7 +387,7 @@ public class Datasource {
             return countryId;
         }
 
-        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+        cityQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
         cityQuery.setString(1, country);
 
         try {
@@ -407,16 +407,8 @@ public class Datasource {
         return countryId;
     }
 
-    public static int addressExists(String address, String city) throws ClassNotFoundException {
+    public static int addressExists(String address, String address2, String city) throws ClassNotFoundException, SQLException {
         int addressId = -1;
-
-        String addressQuery
-                = "SELECT * FROM " + TABLE_ADDRESS + " "
-                + "INNER JOIN " + TABLE_CITY + " "
-                + "WHERE " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
-                + " = " + "'" + address + "'"
-                + " AND " + TABLE_CITY + "." + COLUMN_CITY_CITY
-                + " = " + "'" + city + "';";
 
         ResultSet result;
 
@@ -427,11 +419,16 @@ public class Datasource {
             return addressId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
 
+        addressQuery.setString(1, address);
+        addressQuery.setString(2, address2);
+        addressQuery.setString(3, city);
+
+        try {
             System.out.println("Checking for address: " + addressQuery);
 
-            result = statement.executeQuery(addressQuery);
+            result = addressQuery.executeQuery();
 
             if (result.next()) {
                 addressId = result.getInt(COLUMN_ADDRESS_ADDRESSID);
