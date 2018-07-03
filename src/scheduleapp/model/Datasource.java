@@ -246,14 +246,24 @@ public class Datasource {
     INSERT INTO appointment (customerId, title, description, location, contact,
                             url, start, end, createdDate, createdBy, lastUpdate, lastUpdatedBy)
      */
-    private static final String ADD_APPOINTMENT_START
+    private static final String ADD_APPOINTMENT_STRING
             = "INSERT INTO " + TABLE_APPOINTMENT
             + "(" + COLUMN_APPOINTMENT_CUSTOMERID + "," + COLUMN_APPOINTMENT_TITLE + ","
             + COLUMN_APPOINTMENT_DESCRIPTION + "," + COLUMN_APPOINTMENT_LOCATION + ","
             + COLUMN_APPOINTMENT_CONTACT + "," + COLUMN_APPOINTMENT_URL + ","
             + COLUMN_APPOINTMENT_START + "," + COLUMN_APPOINTMENT_END + ","
             + COLUMN_APPOINTMENT_CREATEDATE + "," + COLUMN_APPOINTMENT_CREATEDBY + ","
-            + COLUMN_APPOINTMENT_LASTUPDATE + "," + COLUMN_APPOINTMENT_LASTUPDATEBY + ") ";
+            + COLUMN_APPOINTMENT_LASTUPDATE + "," + COLUMN_APPOINTMENT_LASTUPDATEBY + ") "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+    private static PreparedStatement appointmentInsert = null;
+
+    private static String QUERY_APPOINTMENT_STRING
+            = "SELECT * FROM " + TABLE_APPOINTMENT
+            + "  WHERE " + COLUMN_APPOINTMENT_TITLE + " = ?"
+            + "';";
+
+    private static PreparedStatement appointmentQuery = null;
 
     // globals
     private static Connection connection = null;
@@ -812,60 +822,45 @@ public class Datasource {
     }
 
     public static int addAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
         int appointmentId = -1;
-
-        int customerId = appointment.getCustomerID();
-        String title = appointment.getTitle();
-        String description = appointment.getDescription();
-        String location = appointment.getLocation();
-        String contact = appointment.getContact();
-        String url = appointment.getUrl();
-        Date start = appointment.getStart();
-        Date end = appointment.getEnd();
-        String createDate = LocalDateTime.now().toString();
-        String createdBy = loggedInUser;
-        String lastUpdate = createDate;
-        String lastUpdateBy = loggedInUser;
-
-        String appointmentInsert = ADD_APPOINTMENT_START
-                + "VALUES ("
-                + "'" + customerId + "'" + ","
-                + "'" + title + "'" + ","
-                + "'" + description + "'" + ","
-                + "'" + location + "'" + ","
-                + "'" + contact + "'" + ","
-                + "'" + url + "'" + ","
-                + "'" + start + "'" + ","
-                + "'" + end + "'" + ","
-                + "'" + createDate + "'" + ","
-                + "'" + createdBy + "'" + ","
-                + "'" + lastUpdate + "'" + ","
-                + "'" + lastUpdateBy + "'"
-                + ");";
-
-        String appointmentQuery
-                = "SELECT * FROM " + TABLE_APPOINTMENT
-                + "  WHERE " + COLUMN_APPOINTMENT_TITLE + " = '" + title
-                + "';";
-
-        System.out.println("New appointment: " + appointmentInsert);
+        ResultSet result;
 
         boolean open = Datasource.open();
 
         if (!open) {
             System.out.println("Error opening datasource!");
-            return -1;
+            return appointmentId;
         }
 
-        ResultSet result;
-        int countryId = -1;
+        appointmentInsert = connection.prepareStatement(ADD_APPOINTMENT_STRING);
 
-        try (Statement statement = connection.createStatement()) {
+        appointmentInsert.setInt(1, appointment.getCustomerID());
+        appointmentInsert.setString(2, appointment.getTitle());
+        appointmentInsert.setString(3, appointment.getDescription());
+        appointmentInsert.setString(4, appointment.getLocation());
+        appointmentInsert.setString(5, appointment.getContact());
+        appointmentInsert.setString(6, appointment.getUrl());
+        appointmentInsert.setTimestamp(7, (Timestamp) appointment.getStart());
+        appointmentInsert.setTimestamp(8, (Timestamp) appointment.getEnd());
 
-            statement.execute(appointmentInsert);
-            result = statement.executeQuery(appointmentQuery);
-            result.next();
-            countryId = result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID);
+        appointmentInsert.setTimestamp(9, createDate);
+        appointmentInsert.setString(10, Datasource.loggedInUser);
+        appointmentInsert.setTimestamp(11, lastUpdate);
+        appointmentInsert.setString(12, Datasource.loggedInUser);
+
+        appointmentQuery = connection.prepareStatement(QUERY_APPOINTMENT_STRING);
+        appointmentQuery.setString(1, appointment.getTitle());
+        appointmentQuery.setInt(2, appointment.getCustomerID());
+
+        try {
+            appointmentInsert.execute();
+            result = appointmentQuery.executeQuery();
+            if (result.next()) {
+                appointmentId = result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID);
+            }
 
         } catch (SQLException e) {
             System.out.println("SQL Error adding appointment: " + e.getMessage());
