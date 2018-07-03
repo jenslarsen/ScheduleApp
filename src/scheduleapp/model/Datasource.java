@@ -258,7 +258,7 @@ public class Datasource {
 
     private static PreparedStatement appointmentInsert = null;
 
-    private static String QUERY_APPOINTMENT_STRING
+    private static final String QUERY_APPOINTMENT_STRING
             = "SELECT * FROM " + TABLE_APPOINTMENT
             + "  WHERE " + COLUMN_APPOINTMENT_TITLE + " = ?"
             + "';";
@@ -375,14 +375,8 @@ public class Datasource {
         return customers;
     }
 
-    public static int countryExists(String country) throws ClassNotFoundException {
+    public static int countryExists(String country) throws ClassNotFoundException, SQLException {
         int countryId = -1;
-
-        String countryQuery
-                = "SELECT * FROM " + TABLE_COUNTRY + " "
-                + "WHERE " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRY
-                + " = " + "'" + country + "'"
-                + ";";
 
         ResultSet result;
 
@@ -393,11 +387,14 @@ public class Datasource {
             return countryId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+        cityQuery.setString(1, country);
+
+        try {
 
             System.out.println("Checking for country: " + countryQuery);
 
-            result = statement.executeQuery(countryQuery);
+            result = countryQuery.executeQuery();
 
             if (result.next()) {
                 countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
