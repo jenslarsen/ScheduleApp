@@ -218,6 +218,7 @@ public class Datasource {
     private static final String QUERY_CITY_STRING
             = "SELECT * FROM " + TABLE_CITY
             + " WHERE " + COLUMN_CITY_CITY + " = ?"
+            + " AND " + COLUMN_CITY_COUNTRYID + " = ?"
             + "';";
 
     private static PreparedStatement cityQuery = null;
@@ -265,7 +266,7 @@ public class Datasource {
 
     private static PreparedStatement appointmentQuery = null;
 
-    private static String QUERY_PASSWORD_STRING
+    private static final String QUERY_PASSWORD_STRING
             = "SELECT * "
             + "FROM " + TABLE_USER + " "
             + "WHERE " + COLUMN_USER_USERNAME + "= ? AND "
@@ -286,12 +287,12 @@ public class Datasource {
             System.out.println("Connected to database : " + DB_NAME);
             return true;
         } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("VendorError: " + e.getErrorCode());
+            System.err.println("SQLException: " + e.getMessage());
+            System.err.println("SQLState: " + e.getSQLState());
+            System.err.println("VendorError: " + e.getErrorCode());
             return false;
         } catch (ClassNotFoundException e) {
-            System.out.println("Unable to find class " + e.getMessage());
+            System.err.println("Unable to find class " + e.getMessage());
             return false;
         }
     }
@@ -303,7 +304,7 @@ public class Datasource {
                 System.out.println("Database connection closed");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -312,7 +313,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Unable to open database connection when trying login!");
+            System.err.println("Unable to open database connection when trying login!");
             return false;
         }
 
@@ -349,7 +350,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Unable to open database connection when trying get customers with addresses!");
+            System.err.println("Unable to open database connection when trying get customers with addresses!");
             return null;
         }
 
@@ -388,7 +389,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return countryId;
         }
 
@@ -403,7 +404,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error querying country: " + e.getMessage());
+            System.err.println("SQL Error querying country: " + e.getMessage());
         }
 
         return countryId;
@@ -417,7 +418,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return addressId;
         }
 
@@ -428,8 +429,6 @@ public class Datasource {
         addressQuery.setString(3, city);
 
         try {
-            System.out.println("Checking for address: " + addressQuery);
-
             result = addressQuery.executeQuery();
 
             if (result.next()) {
@@ -437,44 +436,44 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error querying address: " + e.getMessage());
+            System.err.println("SQL Error querying address: " + e.getMessage());
         }
 
         return addressId;
     }
 
-    public static int cityExists(String city, String country) throws ClassNotFoundException {
+    public static int cityExists(String city, String country) throws ClassNotFoundException, SQLException {
         int cityId = -1;
-
-        String cityQuery
-                = "SELECT * FROM " + TABLE_CITY + " "
-                + "INNER JOIN " + TABLE_COUNTRY + " "
-                + "WHERE " + TABLE_CITY + "." + COLUMN_CITY_CITY
-                + " = " + "'" + city + "'"
-                + " AND " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRY
-                + " = " + "'" + country + "';";
 
         ResultSet result;
 
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return cityId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        int countryId = Datasource.cityExists(city, country);
 
-            System.out.println("Checking for city: " + cityQuery);
+        if (countryId < 1) {
+            return -1;     // unable to add city if country does not exist
+        }
 
-            result = statement.executeQuery(cityQuery);
+        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+
+        cityQuery.setString(1, city);
+        cityQuery.setInt(2, countryId);
+
+        try {
+            result = cityQuery.executeQuery();
 
             if (result.next()) {
                 cityId = result.getInt(COLUMN_CITY_CITYID);
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error querying city: " + e.getMessage());
+            System.err.println("SQL Error querying city: " + e.getMessage());
         }
 
         return cityId;
@@ -496,7 +495,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return customerId;
         }
 
@@ -509,7 +508,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error querying customer: " + e.getMessage());
+            System.err.println("SQL Error querying customer: " + e.getMessage());
         }
 
         return customerId;
@@ -525,7 +524,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return customerId;
         }
 
@@ -551,7 +550,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error adding customer: " + e.getMessage());
+            System.err.println("SQL Error adding customer: " + e.getMessage());
         }
 
         Datasource.close();
@@ -568,7 +567,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return addressId;
         }
 
@@ -598,7 +597,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error adding address: " + e.getMessage());
+            System.err.println("SQL Error adding address: " + e.getMessage());
         }
 
         Datasource.close();
@@ -610,7 +609,7 @@ public class Datasource {
         int addressId = address.getAddressId();
 
         if (addressId < 1) {
-            System.out.println("Error with addressId! Unable to update address.");
+            System.err.println("Error with addressId! Unable to update address.");
             return false;
         }
 
@@ -635,23 +634,21 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return false;
         }
 
         try (Statement statement = connection.createStatement()) {
-            System.out.println("Updating Address: " + updateAddress);
-            // connection.prepareStatement(updateAddress);
             int updateCount = statement.executeUpdate(updateAddress);
             if (updateCount > 0) {
                 return true;
             } else {
-                System.out.println("Something went wrong updating address " + addressId);
+                System.err.println("Something went wrong updating address " + addressId);
                 return false;
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error updating address: " + e.getMessage());
+            System.err.println("SQL Error updating address: " + e.getMessage());
         }
 
         Datasource.close();
@@ -663,7 +660,7 @@ public class Datasource {
         int customerId = customer.getCustomerID();
 
         if (customerId < 1) {
-            System.out.println("Error with customerId! Unable to update customer.");
+            System.err.println("Error with customerId! Unable to update customer.");
             return false;
         }
 
@@ -681,23 +678,22 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return false;
         }
 
         try (Statement statement = connection.createStatement()) {
-            System.out.println("Updating Customer: " + updateCustomer);
             connection.prepareStatement(updateCustomer);
             int updateCount = statement.executeUpdate(updateCustomer);
             if (updateCount > 0) {
                 return true;
             } else {
-                System.out.println("Something went wrong updating customer " + customerId);
+                System.err.println("Something went wrong updating customer " + customerId);
                 return false;
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error updating customer: " + e.getMessage());
+            System.err.println("SQL Error updating customer: " + e.getMessage());
         }
 
         Datasource.close();
@@ -714,7 +710,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return cityId;
         }
 
@@ -730,6 +726,7 @@ public class Datasource {
 
         cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
         cityQuery.setString(1, city.getCity());
+        cityQuery.setInt(2, city.getCountryid());
 
         try {
             cityInsert.execute();
@@ -739,7 +736,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error adding city: " + e.getMessage());
+            System.err.println("SQL Error adding city: " + e.getMessage());
         }
 
         Datasource.close();
@@ -756,7 +753,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return countryId;
         }
 
@@ -779,7 +776,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error adding country: " + e.getMessage());
+            System.err.println("SQL Error adding country: " + e.getMessage());
         }
 
         Datasource.close();
@@ -796,23 +793,21 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return false;
         }
 
         try (Statement statement = connection.createStatement()) {
-            System.out.println("Attempting to inactivate customer " + customerId);
-            System.out.println(inactivateCustomer);
             connection.prepareStatement(inactivateCustomer);
             int updateCount = statement.executeUpdate(inactivateCustomer);
             if (updateCount > 0) {
                 return true;
             } else {
-                System.out.println("Something went wrong inactivating customer " + customerId);
+                System.err.println("Something went wrong inactivating customer " + customerId);
                 return false;
             }
         } catch (SQLException e) {
-            System.out.println("SQL Exception trying to inactivate customer " + customerId);
+            System.err.println("SQL Exception trying to inactivate customer " + customerId);
             return false;
         }
     }
@@ -827,7 +822,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return appointmentId;
         }
 
@@ -859,7 +854,7 @@ public class Datasource {
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error adding appointment: " + e.getMessage());
+            System.err.println("SQL Error adding appointment: " + e.getMessage());
         }
 
         Datasource.close();
@@ -871,7 +866,7 @@ public class Datasource {
         int appointmentId = appointment.getAppointmentID();
 
         if (appointmentId < 1) {
-            System.out.println("Error with appointmentId! Unable to update appointment.");
+            System.err.println("Error with appointmentId! Unable to update appointment.");
             return false;
         }
 
@@ -895,23 +890,23 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Error opening datasource!");
+            System.err.println("Error opening datasource!");
             return false;
         }
 
         try (Statement statement = connection.createStatement()) {
-            System.out.println("Updating Appointment: " + updateAppointment);
+            System.err.println("Updating Appointment: " + updateAppointment);
             connection.prepareStatement(updateAppointment);
             int updateCount = statement.executeUpdate(updateAppointment);
             if (updateCount > 0) {
                 return true;
             } else {
-                System.out.println("Something went wrong updating appointment " + appointmentId);
+                System.err.println("Something went wrong updating appointment " + appointmentId);
                 return false;
             }
 
         } catch (SQLException e) {
-            System.out.println("SQL Error updating appointment: " + e.getMessage());
+            System.err.println("SQL Error updating appointment: " + e.getMessage());
         }
 
         Datasource.close();
@@ -924,7 +919,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         if (!open) {
-            System.out.println("Unable to open database connection when trying get appointments!");
+            System.err.println("Unable to open database connection when trying get appointments!");
             return null;
         }
 
@@ -960,10 +955,8 @@ public class Datasource {
         queryAppointments = connection.prepareStatement(QUERY_APPOINTMENTSWITHCONTACTS_STRING);
         queryAppointments.setString(1, Datasource.loggedInUser);
 
-        System.out.println(queryAppointments);
-
         if (!open) {
-            System.out.println("Unable to open database connection when trying get appointments with contacts!");
+            System.err.println("Unable to open database connection when trying get appointments with contacts!");
             return null;
         }
 
