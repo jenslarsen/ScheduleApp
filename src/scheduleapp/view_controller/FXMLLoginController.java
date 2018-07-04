@@ -19,7 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -60,9 +59,6 @@ public class FXMLLoginController extends Application {
 
     @FXML
     private Label loginSignInText;
-
-    @FXML
-    private ChoiceBox<String> loginLocation;
 
     String language = "en"; // english by default
 
@@ -128,9 +124,6 @@ public class FXMLLoginController extends Application {
         loginUserName.setPromptText(usernameText);
         loginSignInText.setText(signinText);
 
-        // add locations
-        loginLocation.getItems().addAll("Phoenix", "New York", "London");
-        loginLocation.setValue("New York");
     }
 
     @FXML
@@ -146,9 +139,6 @@ public class FXMLLoginController extends Application {
             alert.showAndWait();
             return;
         }
-
-        // get the location
-        String location = loginLocation.getValue();
 
         boolean loginSuccessful = false;
 
