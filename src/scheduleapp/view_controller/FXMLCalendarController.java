@@ -89,7 +89,32 @@ public class FXMLCalendarController {
     }
 
     @FXML
-    private void editButtonClicked() {
+    private void editButtonClicked() throws IOException, SQLException {
+
+        int index = tableViewCalendar.getSelectionModel().getSelectedIndex();
+
+        if (index < 0) {
+            return;
+        }
+
+        Datasource.appointmentBeingEdited = appointments.get(index);
+
+        Stage stage = new Stage();
+
+        FXMLLoader editAppointmentLoader = new FXMLLoader();
+        editAppointmentLoader.setLocation(getClass().getResource("FXMLEditAppointment.fxml"));
+
+        Parent root = editAppointmentLoader.load();
+
+        stage.setScene(new Scene(root));
+
+        stage.setTitle("Edit Customer");
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        stage.setResizable(false);
+
+        stage.showAndWait();
+        loadAppointmentsWithContacts();
     }
 
     @FXML
