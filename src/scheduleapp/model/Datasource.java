@@ -262,7 +262,7 @@ public class Datasource {
     private static final String QUERY_APPOINTMENT_STRING
             = "SELECT * FROM " + TABLE_APPOINTMENT
             + "  WHERE " + COLUMN_APPOINTMENT_TITLE + " = ?"
-            + "';";
+            + " AND " + COLUMN_APPOINTMENT_CUSTOMERID + " = ?;";
 
     private static PreparedStatement appointmentQuery = null;
 
@@ -277,7 +277,10 @@ public class Datasource {
     // globals
     private static Connection connection = null;
     public static String loggedInUser = null;
-    public static CustomerWithAddress customerBeingEdited = new CustomerWithAddress();
+    public static CustomerWithAddress customerBeingEdited
+            = new CustomerWithAddress();
+    public static AppointmentWithContact appointmentBeingEdited
+            = new AppointmentWithContact();
 
     // public methods
     public static boolean open() throws ClassNotFoundException {
