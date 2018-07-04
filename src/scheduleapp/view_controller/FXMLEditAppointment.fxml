@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="554.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLEditAppointmentController">
+       <children>
+      <Label layoutX="42.0" layoutY="43.0" text="Edit Appointment">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="122.0" text="Title" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="171.0" text="Description" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldDescription" layoutX="175.0" layoutY="172.0" prefHeight="25.0" prefWidth="506.0" />
+      <Label layoutX="70.0" layoutY="227.0" text="Location" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldLocation" layoutX="175.0" layoutY="226.0" prefHeight="25.0" prefWidth="506.0" />
+      <Label layoutX="70.0" layoutY="276.0" text="Start Date" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonSave" layoutX="320.0" layoutY="477.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="buttonCancel" layoutX="392.0" layoutY="477.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="382.0" layoutY="276.0" text="End Date" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="datePickerStart" layoutX="175.0" layoutY="277.0" />
+      <DatePicker fx:id="datePickerEnd" layoutX="507.0" layoutY="277.0" />
+      <Label layoutX="70.0" layoutY="326.0" text="Start Time" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="382.0" layoutY="326.0" text="End Time" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboCustomer" layoutX="175.0" layoutY="382.0" prefWidth="150.0" />
+      <Label layoutX="70.0" layoutY="381.0" text="Customer" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="382.0" layoutY="381.0" text="URL" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldUrl" layoutX="507.0" layoutY="382.0" prefHeight="25.0" prefWidth="174.0" />
+      <ComboBox fx:id="comboStartHour" layoutX="175.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <ComboBox fx:id="comboStartMinute" layoutX="257.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <Label layoutX="246.0" layoutY="326.0" text=":" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboEndHour" layoutX="507.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <ComboBox fx:id="comboEndMinute" layoutX="594.0" layoutY="327.0" prefHeight="25.0" prefWidth="65.0" />
+      <Label layoutX="578.0" layoutY="326.0" text=":" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldTitle" layoutX="175.0" layoutY="123.0" prefHeight="25.0" prefWidth="506.0" />
+   </children>
+</AnchorPane>
