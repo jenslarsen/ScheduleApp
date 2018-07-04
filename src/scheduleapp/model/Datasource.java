@@ -265,6 +265,14 @@ public class Datasource {
 
     private static PreparedStatement appointmentQuery = null;
 
+    private static String QUERY_PASSWORD_STRING
+            = "SELECT * "
+            + "FROM " + TABLE_USER + " "
+            + "WHERE " + COLUMN_USER_USERNAME + "= ? AND "
+            + COLUMN_USER_PASSWORD + "= ?;";
+
+    private static PreparedStatement passwordQuery = null;
+
     // globals
     private static Connection connection = null;
     public static String loggedInUser = null;
@@ -308,16 +316,13 @@ public class Datasource {
             return false;
         }
 
-        Statement statement = connection.createStatement();
-
-        String passwordQuery = "SELECT * "
-                + "FROM " + TABLE_USER + " "
-                + "WHERE " + COLUMN_USER_USERNAME + "='" + username + "' AND "
-                + COLUMN_USER_PASSWORD + "='" + password + "'";
+        passwordQuery = connection.prepareStatement(QUERY_PASSWORD_STRING);
+        passwordQuery.setString(1, username);
+        passwordQuery.setString(2, password);
 
         ResultSet result = null;
         try {
-            result = statement.executeQuery(passwordQuery);
+            result = passwordQuery.executeQuery();
         } catch (SQLException sQLException) {
             throw new LoginException("SQL Error checking password");
         }
@@ -326,12 +331,12 @@ public class Datasource {
         if (result.next()) {
             loggedInUser = username;
             // close connection
-            statement.close();
+            passwordQuery.close();
             Datasource.close();
             return true;
         } else {
             // close connection
-            statement.close();
+            passwordQuery.close();
             Datasource.close();
             return false;
         }
