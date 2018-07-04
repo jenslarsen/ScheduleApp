@@ -387,13 +387,10 @@ public class Datasource {
             return countryId;
         }
 
-        cityQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
-        cityQuery.setString(1, country);
+        countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
+        countryQuery.setString(1, country);
 
         try {
-
-            System.out.println("Checking for country: " + countryQuery);
-
             result = countryQuery.executeQuery();
 
             if (result.next()) {
