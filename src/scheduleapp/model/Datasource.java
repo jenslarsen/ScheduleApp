@@ -24,7 +24,7 @@ import java.util.List;
 public class Datasource {
 
     // data base info
-    public static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+    public static final String DB_DRIVER = "com.mysql.jdbc.Driver";
     public static final String DB_NAME = "U04H9n";
     public static final String DB_URL = "jdbc:mysql://52.206.157.109/" + DB_NAME;
     public static final String DB_USERNAME = "U04H9n";
