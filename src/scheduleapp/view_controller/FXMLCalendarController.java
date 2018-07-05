@@ -18,8 +18,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,6 +36,12 @@ import scheduleapp.model.Datasource;
 public class FXMLCalendarController {
 
     private List<AppointmentWithContact> appointments;
+
+    @FXML
+    private RadioButton radioMonth;
+
+    @FXML
+    private RadioButton radioWeek;
 
     @FXML
     private Button buttonAdd;
@@ -64,6 +72,9 @@ public class FXMLCalendarController {
 
     @FXML
     private Button buttonCustomers;
+
+    @FXML
+    private ToggleGroup calType = new ToggleGroup();
 
     @FXML
     private ObservableList<AppointmentWithContact> appointmentList
@@ -151,6 +162,9 @@ public class FXMLCalendarController {
     @FXML
     public void initialize() throws SQLException {
         loadAppointmentsWithContacts();
+
+        radioMonth.setToggleGroup(calType);
+        radioWeek.setToggleGroup(calType);
     }
 
     private boolean loadAppointmentsWithContacts() throws SQLException {

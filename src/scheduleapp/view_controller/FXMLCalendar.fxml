@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCalendarController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLCalendarController">
    <children>
       <Button fx:id="buttonAdd" layoutX="409.0" layoutY="529.0" mnemonicParsing="false" onAction="#addButtonClicked" text="Add">
          <font>
@@ -52,7 +52,7 @@
                </font></Button>
         </buttons>
       </ButtonBar>
-      <RadioButton layoutX="653.0" layoutY="50.0" mnemonicParsing="false" text="Month" />
-      <RadioButton layoutX="737.0" layoutY="50.0" mnemonicParsing="false" text="Week" />
+      <RadioButton fx:id="radioMonth" layoutX="667.0" layoutY="50.0" mnemonicParsing="false" text="This month" />
+      <RadioButton fx:id="radioWeek" layoutX="757.0" layoutY="50.0" mnemonicParsing="false" text="This week" />
    </children>
 </AnchorPane>
