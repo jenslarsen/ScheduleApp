@@ -135,8 +135,11 @@ public class Datasource {
            appointment.title, appointment.description, appointment.location,
            appointment.url, appointment.start, appointment.end
     FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId
+    	WHERE start
+    BETWEEN STR_TO_DATE('2018/06/01', '%Y/%m/%d')
+    AND DATE_ADD('2018/06/01', INTERVAL 1 MONTH);
      */
-    private static final String QUERY_APPOINTMENTSWITHCONTACTS_STRING
+    private static final String QUERY_MONTHAPPTSWITHCONTACTS_STRING
             = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
             + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ", "
@@ -146,12 +149,15 @@ public class Datasource {
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_LOCATION + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_URL + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_START + ", "
-            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_END
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_END + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
             + " FROM " + TABLE_APPOINTMENT + " INNER JOIN " + TABLE_CUSTOMER
             + " ON " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID
             + " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID
-            + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
-            + " = " + "?;";
+            + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT + " = ?"
+            + " AND " + COLUMN_APPOINTMENT_START
+            + " BETWEEN STR_TO_DATE(?,'%Y-%m-%d') "
+            + " AND DATE_ADD(?, INTERVAL 1 MONTH);";
 
     private static PreparedStatement queryAppointments = null;
 
@@ -950,13 +956,54 @@ public class Datasource {
         return appointments;
     }
 
-    public static List<AppointmentWithContact> getAppointmentsWithContacts() throws ClassNotFoundException, SQLException {
+    public static List<AppointmentWithContact> getWeekApptsWithContacts() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
 
         boolean open = Datasource.open();
 
-        queryAppointments = connection.prepareStatement(QUERY_APPOINTMENTSWITHCONTACTS_STRING);
+        queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
         queryAppointments.setString(1, Datasource.loggedInUser);
+
+        if (!open) {
+            System.err.println("Unable to open database connection when trying get appointments with contacts!");
+            return null;
+        }
+
+        try (ResultSet result = queryAppointments.executeQuery()) {
+
+            while (result.next()) {
+
+                AppointmentWithContact tempAppointment = new AppointmentWithContact();
+
+                tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
+                tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
+                tempAppointment.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
+                tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
+                tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
+                tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
+                tempAppointment.setContact(Datasource.loggedInUser);
+                tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
+                tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
+                tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
+
+                appointments.add(tempAppointment);
+            }
+        }
+
+        return appointments;
+    }
+
+    public static List<AppointmentWithContact> getMonthApptsWithContacts() throws ClassNotFoundException, SQLException {
+        List<AppointmentWithContact> appointments = new ArrayList<>();
+        Date todaysDate = new Date();
+        boolean open = Datasource.open();
+
+        queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
+        queryAppointments.setString(1, Datasource.loggedInUser);
+        queryAppointments.setTimestamp(2, new Timestamp(todaysDate.getTime()));
+        queryAppointments.setTimestamp(3, new Timestamp(todaysDate.getTime()));
+
+        System.out.println("Getting appointments....\n" + queryAppointments.toString());
 
         if (!open) {
             System.err.println("Unable to open database connection when trying get appointments with contacts!");
