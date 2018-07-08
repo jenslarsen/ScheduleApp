@@ -52,7 +52,7 @@
                </font></Button>
         </buttons>
       </ButtonBar>
-      <RadioButton fx:id="radioMonth" layoutX="667.0" layoutY="50.0" mnemonicParsing="false" text="This month" />
-      <RadioButton fx:id="radioWeek" layoutX="757.0" layoutY="50.0" mnemonicParsing="false" text="This week" />
+      <RadioButton fx:id="radioMonth" layoutX="586.0" layoutY="50.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="137.0" text="Upcoming month" />
+      <RadioButton fx:id="radioWeek" layoutX="723.0" layoutY="50.0" mnemonicParsing="false" text="Upcoming week" />
    </children>
 </AnchorPane>

@@ -161,18 +161,32 @@ public class FXMLCalendarController {
      */
     @FXML
     public void initialize() throws SQLException {
-        loadAppointmentsWithContacts();
 
         radioMonth.setToggleGroup(calType);
         radioWeek.setToggleGroup(calType);
+        calType.selectToggle(radioMonth);
+
+        loadAppointmentsWithContacts();
     }
 
-    private boolean loadAppointmentsWithContacts() throws SQLException {
+    private boolean loadAppointmentsWithContacts() {
         appointments = new ArrayList<>();
         appointmentList = FXCollections.observableArrayList();
 
         try {
-            appointments = Datasource.getAppointmentsWithContacts();
+            if (calType.getSelectedToggle().equals(radioWeek)) {
+                appointments = Datasource.getWeekApptsWithContacts();
+            } else if (calType.getSelectedToggle().equals(radioMonth)) {
+                appointments = Datasource.getMonthApptsWithContacts();
+            } else {
+                System.err.println("Bad things happened: no radio button selected?");
+                return false;
+            }
+
+            appointmentList.addAll(appointments);
+
+            Datasource.close();
+
         } catch (ClassNotFoundException | SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -181,10 +195,6 @@ public class FXMLCalendarController {
             alert.showAndWait();
             return false;
         }
-
-        appointmentList.addAll(appointments);
-
-        Datasource.close();
 
         // display in table
         tableColTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
