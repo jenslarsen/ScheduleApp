@@ -159,6 +159,26 @@ public class Datasource {
             + " BETWEEN STR_TO_DATE(?,'%Y-%m-%d') "
             + " AND DATE_ADD(?, INTERVAL 1 MONTH);";
 
+    private static final String QUERY_WEEKAPPTSWITHCONTACTS_STRING
+            = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ", "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_TITLE + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_DESCRIPTION + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_LOCATION + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_URL + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_START + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_END + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
+            + " FROM " + TABLE_APPOINTMENT + " INNER JOIN " + TABLE_CUSTOMER
+            + " ON " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID
+            + " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID
+            + " WHERE " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT + " = ?"
+            + " AND " + COLUMN_APPOINTMENT_START
+            + " BETWEEN STR_TO_DATE(?,'%Y-%m-%d') "
+            + " AND DATE_ADD(?, INTERVAL 1 WEEK);";
+
     private static PreparedStatement queryAppointments = null;
 
     // Add customer
@@ -958,11 +978,15 @@ public class Datasource {
 
     public static List<AppointmentWithContact> getWeekApptsWithContacts() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
-
+        Date todaysDate = new Date();
         boolean open = Datasource.open();
 
-        queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
+        queryAppointments = connection.prepareStatement(QUERY_WEEKAPPTSWITHCONTACTS_STRING);
         queryAppointments.setString(1, Datasource.loggedInUser);
+        queryAppointments.setTimestamp(2, new Timestamp(todaysDate.getTime()));
+        queryAppointments.setTimestamp(3, new Timestamp(todaysDate.getTime()));
+
+        System.out.println("Getting appointments....\n" + queryAppointments.toString());
 
         if (!open) {
             System.err.println("Unable to open database connection when trying get appointments with contacts!");
