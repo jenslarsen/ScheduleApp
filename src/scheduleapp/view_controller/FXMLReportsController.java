@@ -90,12 +90,4 @@ public class FXMLReportsController {
     private void reportsButtonClicked(ActionEvent event) {
 
     }
-
-    /**
-     * Initializes the controller class.
-     */
-    public void initialize() {
-        // TODO
-    }
-
 }
