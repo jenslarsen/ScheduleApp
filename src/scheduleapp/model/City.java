@@ -21,6 +21,12 @@ public class City {
     private Timestamp lastUpdate;
     private String lastUpdateBy;
 
+    /**
+     * Constructor to provide basic info
+     *
+     * @param city
+     * @param countryid
+     */
     public City(String city, int countryid) {
         this.city = city;
         this.countryid = countryid;
