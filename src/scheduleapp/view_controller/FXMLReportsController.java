@@ -41,11 +41,11 @@ public class FXMLReportsController {
         Desktop dt = Desktop.getDesktop();
         try {
             dt.open(new File("logins.log"));
-        } catch (IOException iOException) {
+        } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error loading logins.log");
-            alert.setContentText("Unable to open logins.log!");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
     }
