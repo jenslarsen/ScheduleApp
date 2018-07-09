@@ -188,23 +188,6 @@ public class FXMLLoginController extends Application {
         }
     }
 
-    private void switchToCustomerScreen() {
-        Parent main;
-        try {
-            main = FXMLLoader.load(getClass().getResource("FXMLCustomers.fxml"));
-            Scene scene = new Scene(main);
-            stage = (Stage) loginButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(errorTitle);
-            alert.setHeaderText(switchError);
-            alert.setContentText(unableToSwitch);
-            alert.showAndWait();
-        }
-    }
-
     private void switchToCalendarScreen() {
         Parent main;
         try {
