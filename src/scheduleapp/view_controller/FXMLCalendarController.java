@@ -76,7 +76,7 @@ public class FXMLCalendarController {
     private Button buttonCustomers;
 
     @FXML
-    private ToggleGroup calType = new ToggleGroup();
+    private final ToggleGroup calType = new ToggleGroup();
 
     @FXML
     private ObservableList<AppointmentWithContact> appointmentList
@@ -99,6 +99,9 @@ public class FXMLCalendarController {
         stage.setResizable(false);
 
         stage.showAndWait();
+
+        // reload appointments after the change
+        loadAppointmentsWithContacts();
     }
 
     @FXML
@@ -127,6 +130,8 @@ public class FXMLCalendarController {
         stage.setResizable(false);
 
         stage.showAndWait();
+
+        // reload appointments after the change
         loadAppointmentsWithContacts();
     }
 
@@ -159,7 +164,9 @@ public class FXMLCalendarController {
     }
 
     /**
-     * Initializes the controller class.
+     * Initializes the calendar view.
+     *
+     * @throws java.sql.SQLException
      */
     @FXML
     public void initialize() throws SQLException {
@@ -179,6 +186,13 @@ public class FXMLCalendarController {
         });
     }
 
+    /**
+     * Loads appointment and associated contacts from the database
+     *
+     * Detects if upcoming month or week is show before loading data
+     *
+     * @return true if successful
+     */
     private boolean loadAppointmentsWithContacts() {
         appointments = new ArrayList<>();
         appointmentList = FXCollections.observableArrayList();
