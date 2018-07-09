@@ -5,6 +5,8 @@
  */
 package scheduleapp.view_controller;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,6 +32,23 @@ public class FXMLReportsController {
 
     @FXML
     private Button buttonReports;
+
+    @FXML
+    private Button loginlogButton;
+
+    @FXML
+    void openLoginLog(ActionEvent event) {
+        Desktop dt = Desktop.getDesktop();
+        try {
+            dt.open(new File("logins.log"));
+        } catch (IOException iOException) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error loading logins.log");
+            alert.setContentText("Unable to open logins.log!");
+            alert.showAndWait();
+        }
+    }
 
     @FXML
     private void customersButtonClicked() {
