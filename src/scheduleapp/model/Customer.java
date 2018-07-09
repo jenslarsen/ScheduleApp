@@ -8,6 +8,7 @@ package scheduleapp.model;
 import java.sql.Timestamp;
 
 /**
+ * Models customer table in database
  *
  * @author Jens Larsen
  */
@@ -22,6 +23,12 @@ public class Customer {
     private Timestamp lastUpdate;
     private String lastUpdateBy;
 
+    /**
+     * Constructor to provide basic object info
+     *
+     * @param customerName
+     * @param addressID
+     */
     public Customer(String customerName, int addressID) {
         this.customerName = customerName;
         this.addressID = addressID;
