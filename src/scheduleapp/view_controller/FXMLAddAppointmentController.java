@@ -151,6 +151,13 @@ public class FXMLAddAppointmentController {
         stage.close();
     }
 
+    /**
+     * Loads customers into the drop down list and populates the time entry
+     * fields when the window is loaded
+     *
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public void initialize() throws ClassNotFoundException, SQLException {
 
         // load customers into dropdown
