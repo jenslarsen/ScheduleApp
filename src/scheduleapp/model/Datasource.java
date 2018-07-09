@@ -18,8 +18,30 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class holds static methods to manipulate the database and isolate the
- * database code from the rest of the package
+ * This class holds static methods to manipulate the database and was created to
+ * isolate the database code from the rest of the package
+ *
+ * User names and passwords to access the application:
+ *
+ * User: jens Password: panda
+ *
+ * User: jamie Password: hippo
+ *
+ * User: test Password: test
+ *
+ * Some assumptions about the database and its structure were made:
+ *
+ * - ID fields were set to auto-increment starting at ID 100.
+ *
+ * - The user that is logging into the application is the same as the contact
+ * listed on the appointment. Therefore, only appointments for the current
+ * logged in user are shown in the appointment list
+ *
+ * - The reminder table is not used - it doesn't seem necessary for this
+ * application
+ *
+ * - The address table does not have a state field so none of the address have
+ * one
  *
  * @author Jens Larsen
  */
@@ -269,7 +291,7 @@ public class Datasource {
 
     // globals
     /**
-     * Staic variable for the database connection
+     * Static variable for the database connection
      */
     private static Connection connection = null;
 
