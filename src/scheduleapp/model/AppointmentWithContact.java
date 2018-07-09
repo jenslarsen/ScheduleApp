@@ -8,7 +8,7 @@ package scheduleapp.model;
 import java.sql.Timestamp;
 
 /**
- * A object that combines Address and Contact fields
+ * An object that combines Address and Contact fields
  *
  * @author Jens Larsen
  */
