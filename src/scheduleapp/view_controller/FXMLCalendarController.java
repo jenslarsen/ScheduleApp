@@ -174,17 +174,7 @@ public class FXMLCalendarController {
         calType.selectedToggleProperty().addListener((
                 ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) -> {
             if (calType.getSelectedToggle() != null) {
-                try {
-                    if (calType.getSelectedToggle().equals(radioWeek)) {
-                        appointments = Datasource.getWeekApptsWithContacts();
-                    } else if (calType.getSelectedToggle().equals(radioMonth)) {
-                        appointments = Datasource.getMonthApptsWithContacts();
-                    } else {
-                        System.err.println("Bad things happened: no radio button selected?");
-                    }
-                } catch (ClassNotFoundException | SQLException e) {
-                    System.err.println("Error getting appointments: " + e.getMessage());
-                }
+                loadAppointmentsWithContacts();
             }
         });
     }
