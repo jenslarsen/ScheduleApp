@@ -27,7 +27,7 @@ import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
 
 /**
- * FXML Controller class
+ * FXML Controller class for editing appointments
  *
  * @author Jens Larsen
  */
@@ -153,6 +153,15 @@ public class FXMLEditAppointmentController {
         stage.close();
     }
 
+    /**
+     * Initializes the window on load
+     *
+     * Populates drop down menus for customer and time entry and loads
+     * appointment data into the fields
+     *
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public void initialize() throws ClassNotFoundException, SQLException {
 
         // load customers into dropdown
