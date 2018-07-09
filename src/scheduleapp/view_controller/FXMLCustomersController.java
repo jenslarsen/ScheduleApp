@@ -71,6 +71,11 @@ public class FXMLCustomersController {
     @FXML
     private ObservableList<CustomerWithAddress> customerList = FXCollections.observableArrayList();
 
+    /**
+     * Initializes window - calls method to populate tableView with customers
+     *
+     * @throws SQLException
+     */
     @FXML
     public void initialize() throws SQLException {
         loadCustomersFromDatabase();
