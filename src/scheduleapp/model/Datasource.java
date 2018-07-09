@@ -18,18 +18,40 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * This class holds static methods to manipulate the database and isolate the
+ * database code from the rest of the package
  *
  * @author Jens Larsen
  */
 public class Datasource {
 
     // data base info
+    /**
+     * Class name for the JDBC driver
+     */
     public static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+
+    /**
+     * Database name
+     */
     public static final String DB_NAME = "U04H9n";
+
+    /**
+     * Database URL
+     */
     public static final String DB_URL = "jdbc:mysql://52.206.157.109/" + DB_NAME;
+
+    /**
+     * Database username
+     */
     public static final String DB_USERNAME = "U04H9n";
+
+    /**
+     * Database password
+     */
     public static final String DB_PASSWORD = "53688238693";
 
+    // static final strings to hold table and column names
     // table names
     private static final String TABLE_USER = "user";
     private static final String TABLE_CUSTOMER = "customer";
@@ -37,7 +59,6 @@ public class Datasource {
     private static final String TABLE_CITY = "city";
     private static final String TABLE_COUNTRY = "country";
     private static final String TABLE_APPOINTMENT = "appointment";
-    private static final String TABLE_REMINDER = "reminder";
 
     // table columns
     private static final String COLUMN_USER_USERNAME = "userName";
@@ -86,25 +107,8 @@ public class Datasource {
     private static final String COLUMN_APPOINTMENT_CREATEDBY = "createdBy";
     private static final String COLUMN_APPOINTMENT_LASTUPDATE = "lastUpdate";
     private static final String COLUMN_APPOINTMENT_LASTUPDATEBY = "lastUpdateBy";
-    private static final String COLUMN_REMINDER_REMINDERID = "reminderId";
-    private static final String COLUMN_REMINDER_REMINDERDATE = "reminderDate";
-    private static final String COLUMN_REMINDER_SNOOZEINCREMENT = "snoozeIncrement";
-    private static final String COLUMN_REMINDER_SNOOZEINCREMENTTYPE = "snoozeIncrementType";
-    private static final String COLUMN_REMINDER_APPOINTMENTID = "appointmentId";
-    private static final String COLUMN_REMINDER_CREATEDBY = "createdBy";
-    private static final String COLUMN_REMINDER_CREATEDDATE = "createdDate";
-    private static final String COLUMN_REMINDER_REMINDERCOL = "remindercol";
 
     // static queries
-    /* Query Customers with Addresses
-    SELECT customer.customerName,customer.active,customer.customerId,
-	address.address,address.addressId,address.address2,
-    city.city,address.postalCode,address.phone, country.country
-    FROM (((customer INNER JOIN address on customer.addressId = address.addressId)
-    INNER JOIN city on address.cityId = city.cityId)
-    INNER JOIN country on city.countryId = country.countryId)
-    WHERE customer.active = 1;
-     */
     private static final String QUERY_CUSTOMERS_WITH_ADDRESSES
             = "SELECT " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME
             + "," + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_ACTIVE + ","
@@ -125,20 +129,6 @@ public class Datasource {
             + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRYID
             + ") WHERE " + TABLE_CUSTOMER + "." + "active = 1;";
 
-    // Query appointments
-    private static final String QUERY_APPOINTMENTS
-            = "SELECT * FROM " + TABLE_APPOINTMENT;
-
-    // Query appointments with Contacts
-    /*
-    SELECT appointment.appointmentId, appointment.customerId, customer.customerName,
-           appointment.title, appointment.description, appointment.location,
-           appointment.url, appointment.start, appointment.end
-    FROM appointment INNER JOIN customer ON appointment.customerId = customer.customerId
-    	WHERE start
-    BETWEEN STR_TO_DATE('2018/06/01', '%Y/%m/%d')
-    AND DATE_ADD('2018/06/01', INTERVAL 1 MONTH);
-     */
     private static final String QUERY_MONTHAPPTSWITHCONTACTS_STRING
             = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
@@ -181,11 +171,6 @@ public class Datasource {
 
     private static PreparedStatement queryAppointments = null;
 
-    // Add customer
-    /*
-    INSERT INTO customer (customerName, addressId, active,
-    createDate, createdBy, lastUpdate, lastUpdateBy)
-     */
     private static final String ADD_CUSTOMER_STRING
             = "INSERT INTO " + TABLE_CUSTOMER
             + " (" + COLUMN_CUSTOMER_CUSTOMERNAME + "," + COLUMN_CUSTOMER_ADDRESSID
@@ -203,11 +188,6 @@ public class Datasource {
 
     private static PreparedStatement customerQuery = null;
 
-    // Add Address
-    /*
-    INSERT INTO address (address, address2, cityId, postalCode, phone, createDate,
-    createdBy, lastUpdate, lastUpdateBy)
-     */
     private static final String ADD_ADDRESS_STRING
             = "INSERT INTO " + TABLE_ADDRESS
             + "(" + COLUMN_ADDRESS_ADDRESS + "," + COLUMN_ADDRESS_ADDRESS2 + ","
@@ -227,10 +207,6 @@ public class Datasource {
 
     private static PreparedStatement addressQuery = null;
 
-    // Add City
-    /*
-    INSERT INTO city (city,countryId,createDate,createdBy, lastUpdate, lastUpdateBy)
-     */
     private static final String ADD_CITY_STRING
             = "INSERT INTO " + TABLE_CITY
             + "(" + COLUMN_CITY_CITY + "," + COLUMN_CITY_COUNTRYID + ","
@@ -249,10 +225,6 @@ public class Datasource {
 
     private static PreparedStatement cityQuery = null;
 
-    // Add Country
-    /*
-    INSERT INTO country (country,createDate,createdBy, lastUpdate, lastUpdateBy)
-     */
     private static final String ADD_COUNTRY_STRING
             = "INSERT INTO " + TABLE_COUNTRY
             + "(" + COLUMN_COUNTRY_COUNTRY + "," + COLUMN_COUNTRY_CREATEDATE + ","
@@ -268,11 +240,6 @@ public class Datasource {
 
     private static PreparedStatement countryQuery = null;
 
-    // Add Appointment
-    /*
-    INSERT INTO appointment (customerId, title, description, location, contact,
-                            url, start, end, createdDate, createdBy, lastUpdate, lastUpdatedBy)
-     */
     private static final String ADD_APPOINTMENT_STRING
             = "INSERT INTO " + TABLE_APPOINTMENT
             + "(" + COLUMN_APPOINTMENT_CUSTOMERID + "," + COLUMN_APPOINTMENT_TITLE + ","
@@ -301,14 +268,35 @@ public class Datasource {
     private static PreparedStatement passwordQuery = null;
 
     // globals
+    /**
+     * Staic variable for the database connection
+     */
     private static Connection connection = null;
+
+    /**
+     * Static variable used to track the user that is currently logged in
+     */
     public static String loggedInUser = null;
+
+    /**
+     * Static variable used to track the customer that is currently being edited
+     */
     public static CustomerWithAddress customerBeingEdited
             = new CustomerWithAddress();
+
+    /**
+     * Static variable used to track the appointment that is currently being
+     * edited
+     */
     public static AppointmentWithContact appointmentBeingEdited
             = new AppointmentWithContact();
 
-    // public methods
+    /**
+     * Opens the database for access
+     *
+     * @return true is successful
+     * @throws ClassNotFoundException
+     */
     public static boolean open() throws ClassNotFoundException {
         try {
             Class.forName(DB_DRIVER);
@@ -326,6 +314,11 @@ public class Datasource {
         }
     }
 
+    /**
+     * Closes the database connection
+     *
+     * @throws SQLException
+     */
     public static void close() throws SQLException {
         try {
             if (connection != null) {
@@ -337,6 +330,20 @@ public class Datasource {
         }
     }
 
+    /**
+     * Method to check the entered username and password against the database of
+     * users
+     *
+     * @param username
+     * @param password
+     *
+     * @return true if the username and password combination is found in the
+     * database
+     *
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     * @throws LoginException
+     */
     public static boolean checkLogin(String username, String password)
             throws ClassNotFoundException, SQLException, LoginException {
         boolean open = Datasource.open();
@@ -372,6 +379,16 @@ public class Datasource {
         }
     }
 
+    /**
+     * Queries the database for a list of all customers and their associated
+     * addresses
+     *
+     * Only retrieves active customers
+     *
+     * @return ArrayList of CustomerWithAddress
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static List<CustomerWithAddress> getCustomersWithAddresses() throws ClassNotFoundException, SQLException {
 
         List<CustomerWithAddress> customers = new ArrayList<>();
@@ -406,10 +423,17 @@ public class Datasource {
                 customers.add(tempCustomer);
             }
         }
-
         return customers;
     }
 
+    /**
+     * Checks to see if a country exists in the database
+     *
+     * @param country
+     * @return countryId if the country is found, -1 if the country is not found
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static int countryExists(String country) throws ClassNotFoundException, SQLException {
         int countryId = -1;
 
@@ -439,6 +463,16 @@ public class Datasource {
         return countryId;
     }
 
+    /**
+     * Checks if and address exists in the database
+     *
+     * @param address
+     * @param address2
+     * @param city
+     * @return addressId if the address is found, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static int addressExists(String address, String address2, String city) throws ClassNotFoundException, SQLException {
         int addressId = -1;
 
@@ -471,6 +505,15 @@ public class Datasource {
         return addressId;
     }
 
+    /**
+     * Checks to see if a city and country combination exists in the database
+     *
+     * @param city
+     * @param country
+     * @return cityId if found, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static int cityExists(String city, String country) throws ClassNotFoundException, SQLException {
         int cityId = -1;
 
@@ -508,6 +551,15 @@ public class Datasource {
         return cityId;
     }
 
+    /**
+     * ???????? NEEDS TO BE FIXED ?????????????? Checks to see if a customer and
+     * address combination exists in the database
+     *
+     * @param name
+     * @param address
+     * @return customerId if the customer is found, otherwise -1
+     * @throws ClassNotFoundException
+     */
     public static int customerExists(String name, String address) throws ClassNotFoundException {
         int customerId = -1;
 
@@ -543,6 +595,14 @@ public class Datasource {
         return customerId;
     }
 
+    /**
+     * Adds a customer to the database
+     *
+     * @param customer
+     * @return the customerId of the new customer, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static int addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
         Date todaysDate = new Date();
         Timestamp createDate = new Timestamp(todaysDate.getTime());
@@ -586,6 +646,65 @@ public class Datasource {
         return customerId;
     }
 
+    /**
+     * Adds and city to the database
+     *
+     * @param city
+     * @return cityId of the new city, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static int addCity(City city) throws ClassNotFoundException, SQLException {
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
+        int cityId = -1;
+        ResultSet result;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Error opening datasource!");
+            return cityId;
+        }
+
+        cityInsert = connection.prepareStatement(ADD_CITY_STRING);
+
+        cityInsert.setString(1, city.getCity());
+        cityInsert.setInt(2, city.getCountryid());
+
+        cityInsert.setTimestamp(3, createDate);
+        cityInsert.setString(4, Datasource.loggedInUser);
+        cityInsert.setTimestamp(5, lastUpdate);
+        cityInsert.setString(6, Datasource.loggedInUser);
+
+        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+        cityQuery.setString(1, city.getCity());
+        cityQuery.setInt(2, city.getCountryid());
+
+        try {
+            cityInsert.execute();
+            result = cityQuery.executeQuery();
+            if (result.next()) {
+                cityId = result.getInt(COLUMN_CITY_CITYID);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Error adding city: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return cityId;
+    }
+
+    /**
+     * Adds an address to the database
+     *
+     * @param address
+     * @return addressId of the new address, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
         Date todaysDate = new Date();
         Timestamp createDate = new Timestamp(todaysDate.getTime());
@@ -633,6 +752,119 @@ public class Datasource {
         return addressId;
     }
 
+    /**
+     * Adds a country to the database
+     *
+     * @param country
+     * @return countryId if successful, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
+        int countryId = -1;
+        ResultSet result;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Error opening datasource!");
+            return countryId;
+        }
+
+        countryInsert = connection.prepareStatement(ADD_COUNTRY_STRING);
+
+        countryInsert.setString(1, country.getCountry());
+        countryInsert.setTimestamp(2, createDate);
+        countryInsert.setString(3, Datasource.loggedInUser);
+        countryInsert.setTimestamp(4, lastUpdate);
+        countryInsert.setString(5, Datasource.loggedInUser);
+
+        countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
+        countryQuery.setString(1, country.getCountry());
+
+        try {
+            countryInsert.execute();
+            result = countryQuery.executeQuery();
+            if (result.next()) {
+                countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Error adding country: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return countryId;
+    }
+
+    /**
+     * Adds a new appointment
+     *
+     * @param appointment
+     * @return appointmentId of the new appointment, otherwise -1
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static int addAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
+        Date todaysDate = new Date();
+        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        Timestamp lastUpdate = createDate;
+        int appointmentId = -1;
+        ResultSet result;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Error opening datasource!");
+            return appointmentId;
+        }
+
+        appointmentInsert = connection.prepareStatement(ADD_APPOINTMENT_STRING);
+
+        appointmentInsert.setInt(1, appointment.getCustomerID());
+        appointmentInsert.setString(2, appointment.getTitle());
+        appointmentInsert.setString(3, appointment.getDescription());
+        appointmentInsert.setString(4, appointment.getLocation());
+        appointmentInsert.setString(5, appointment.getContact());
+        appointmentInsert.setString(6, appointment.getUrl());
+        appointmentInsert.setTimestamp(7, (Timestamp) appointment.getStart());
+        appointmentInsert.setTimestamp(8, (Timestamp) appointment.getEnd());
+
+        appointmentInsert.setTimestamp(9, createDate);
+        appointmentInsert.setString(10, Datasource.loggedInUser);
+        appointmentInsert.setTimestamp(11, lastUpdate);
+        appointmentInsert.setString(12, Datasource.loggedInUser);
+
+        appointmentQuery = connection.prepareStatement(QUERY_APPOINTMENT_STRING);
+        appointmentQuery.setString(1, appointment.getTitle());
+        appointmentQuery.setInt(2, appointment.getCustomerID());
+
+        try {
+            appointmentInsert.execute();
+            result = appointmentQuery.executeQuery();
+            if (result.next()) {
+                appointmentId = result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQL Error adding appointment: " + e.getMessage());
+        }
+
+        Datasource.close();
+        return appointmentId;
+    }
+
+    /**
+     * Updates and existing address
+     *
+     * @param address
+     * @return true if the address was updated
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static boolean updateAddress(Address address) throws ClassNotFoundException, SQLException {
 
         int addressId = address.getAddressId();
@@ -684,6 +916,14 @@ public class Datasource {
         return true;
     }
 
+    /**
+     * Updates and existing customer
+     *
+     * @param customer
+     * @return true if successful
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static boolean updateCustomer(Customer customer) throws ClassNotFoundException, SQLException {
 
         int customerId = customer.getCustomerID();
@@ -729,167 +969,14 @@ public class Datasource {
         return true;
     }
 
-    public static int addCity(City city) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
-        Timestamp lastUpdate = createDate;
-        int cityId = -1;
-        ResultSet result;
-
-        boolean open = Datasource.open();
-
-        if (!open) {
-            System.err.println("Error opening datasource!");
-            return cityId;
-        }
-
-        cityInsert = connection.prepareStatement(ADD_CITY_STRING);
-
-        cityInsert.setString(1, city.getCity());
-        cityInsert.setInt(2, city.getCountryid());
-
-        cityInsert.setTimestamp(3, createDate);
-        cityInsert.setString(4, Datasource.loggedInUser);
-        cityInsert.setTimestamp(5, lastUpdate);
-        cityInsert.setString(6, Datasource.loggedInUser);
-
-        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
-        cityQuery.setString(1, city.getCity());
-        cityQuery.setInt(2, city.getCountryid());
-
-        try {
-            cityInsert.execute();
-            result = cityQuery.executeQuery();
-            if (result.next()) {
-                cityId = result.getInt(COLUMN_CITY_CITYID);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL Error adding city: " + e.getMessage());
-        }
-
-        Datasource.close();
-        return cityId;
-    }
-
-    public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
-        Timestamp lastUpdate = createDate;
-        int countryId = -1;
-        ResultSet result;
-
-        boolean open = Datasource.open();
-
-        if (!open) {
-            System.err.println("Error opening datasource!");
-            return countryId;
-        }
-
-        countryInsert = connection.prepareStatement(ADD_COUNTRY_STRING);
-
-        countryInsert.setString(1, country.getCountry());
-        countryInsert.setTimestamp(2, createDate);
-        countryInsert.setString(3, Datasource.loggedInUser);
-        countryInsert.setTimestamp(4, lastUpdate);
-        countryInsert.setString(5, Datasource.loggedInUser);
-
-        countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
-        countryQuery.setString(1, country.getCountry());
-
-        try {
-            countryInsert.execute();
-            result = countryQuery.executeQuery();
-            if (result.next()) {
-                countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL Error adding country: " + e.getMessage());
-        }
-
-        Datasource.close();
-        return countryId;
-    }
-
-    public static boolean inactivateCustomer(int customerId) throws SQLException, ClassNotFoundException {
-
-        final String inactivateCustomer
-                = "UPDATE " + TABLE_CUSTOMER + " "
-                + "SET " + COLUMN_CUSTOMER_ACTIVE + " = 0 "
-                + "WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId + ";";
-
-        boolean open = Datasource.open();
-
-        if (!open) {
-            System.err.println("Error opening datasource!");
-            return false;
-        }
-
-        try (Statement statement = connection.createStatement()) {
-            connection.prepareStatement(inactivateCustomer);
-            int updateCount = statement.executeUpdate(inactivateCustomer);
-            if (updateCount > 0) {
-                return true;
-            } else {
-                System.err.println("Something went wrong inactivating customer " + customerId);
-                return false;
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL Exception trying to inactivate customer " + customerId);
-            return false;
-        }
-    }
-
-    public static int addAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
-        Timestamp lastUpdate = createDate;
-        int appointmentId = -1;
-        ResultSet result;
-
-        boolean open = Datasource.open();
-
-        if (!open) {
-            System.err.println("Error opening datasource!");
-            return appointmentId;
-        }
-
-        appointmentInsert = connection.prepareStatement(ADD_APPOINTMENT_STRING);
-
-        appointmentInsert.setInt(1, appointment.getCustomerID());
-        appointmentInsert.setString(2, appointment.getTitle());
-        appointmentInsert.setString(3, appointment.getDescription());
-        appointmentInsert.setString(4, appointment.getLocation());
-        appointmentInsert.setString(5, appointment.getContact());
-        appointmentInsert.setString(6, appointment.getUrl());
-        appointmentInsert.setTimestamp(7, (Timestamp) appointment.getStart());
-        appointmentInsert.setTimestamp(8, (Timestamp) appointment.getEnd());
-
-        appointmentInsert.setTimestamp(9, createDate);
-        appointmentInsert.setString(10, Datasource.loggedInUser);
-        appointmentInsert.setTimestamp(11, lastUpdate);
-        appointmentInsert.setString(12, Datasource.loggedInUser);
-
-        appointmentQuery = connection.prepareStatement(QUERY_APPOINTMENT_STRING);
-        appointmentQuery.setString(1, appointment.getTitle());
-        appointmentQuery.setInt(2, appointment.getCustomerID());
-
-        try {
-            appointmentInsert.execute();
-            result = appointmentQuery.executeQuery();
-            if (result.next()) {
-                appointmentId = result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("SQL Error adding appointment: " + e.getMessage());
-        }
-
-        Datasource.close();
-        return appointmentId;
-    }
-
+    /**
+     * Updates and existing appointment
+     *
+     * @param appointment
+     * @return true if successful
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static boolean updateAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
 
         int appointmentId = appointment.getAppointmentID();
@@ -942,40 +1029,52 @@ public class Datasource {
         return true;
     }
 
-    public static List<Appointment> getAppointments() throws ClassNotFoundException, SQLException {
-        List<Appointment> appointments = new ArrayList<>();
+    /**
+     * Makes a customer inactive in the database Inactive customers are not
+     * loaded in the customer list
+     *
+     * @param customerId
+     * @return true if successful
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
+    public static boolean inactivateCustomer(int customerId) throws SQLException, ClassNotFoundException {
+
+        final String inactivateCustomer
+                = "UPDATE " + TABLE_CUSTOMER + " "
+                + "SET " + COLUMN_CUSTOMER_ACTIVE + " = 0 "
+                + "WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId + ";";
 
         boolean open = Datasource.open();
 
         if (!open) {
-            System.err.println("Unable to open database connection when trying get appointments!");
-            return null;
+            System.err.println("Error opening datasource!");
+            return false;
         }
 
-        try (Statement statement = connection.createStatement();
-                ResultSet result = statement.executeQuery(QUERY_APPOINTMENTS)) {
-
-            while (result.next()) {
-
-                Appointment tempAppointment = new Appointment();
-
-                tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
-                tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
-                tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
-                tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
-                tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
-                tempAppointment.setContact(result.getString(COLUMN_APPOINTMENT_CONTACT));
-                tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
-                tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
-                tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
-
-                appointments.add(tempAppointment);
+        try (Statement statement = connection.createStatement()) {
+            connection.prepareStatement(inactivateCustomer);
+            int updateCount = statement.executeUpdate(inactivateCustomer);
+            if (updateCount > 0) {
+                return true;
+            } else {
+                System.err.println("Something went wrong inactivating customer " + customerId);
+                return false;
             }
+        } catch (SQLException e) {
+            System.err.println("SQL Exception trying to inactivate customer " + customerId);
+            return false;
         }
-
-        return appointments;
     }
 
+    /**
+     * Gets a list of apppointments for the upcoming 7 days with associated
+     * contacts
+     *
+     * @return array list of AppointmentWithContac
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static List<AppointmentWithContact> getWeekApptsWithContacts() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
         Date todaysDate = new Date();
@@ -985,8 +1084,6 @@ public class Datasource {
         queryAppointments.setString(1, Datasource.loggedInUser);
         queryAppointments.setTimestamp(2, new Timestamp(todaysDate.getTime()));
         queryAppointments.setTimestamp(3, new Timestamp(todaysDate.getTime()));
-
-        System.out.println("Getting appointments....\n" + queryAppointments.toString());
 
         if (!open) {
             System.err.println("Unable to open database connection when trying get appointments with contacts!");
@@ -1017,6 +1114,13 @@ public class Datasource {
         return appointments;
     }
 
+    /**
+     * Gets a list of appointments for the upcoming 30 days with associated
+     * contacts
+     *
+     * @return @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static List<AppointmentWithContact> getMonthApptsWithContacts() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
         Date todaysDate = new Date();
