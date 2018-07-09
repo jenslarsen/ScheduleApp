@@ -27,7 +27,7 @@ import scheduleapp.model.Datasource;
 import scheduleapp.model.LoginException;
 
 /**
- * FXML Login Controller class
+ * FXML Login Controller class Loads at application to handle user login
  *
  * @author Jens Larsen
  */
@@ -79,6 +79,11 @@ public class FXMLLoginController extends Application {
         stage.show();
     }
 
+    /**
+     * Main method - commented line here to test locale change to FR
+     *
+     * @param args
+     */
     public static void main(String[] args) {
 
         // uncomment this line to test French locale
@@ -86,6 +91,11 @@ public class FXMLLoginController extends Application {
         launch(args);
     }
 
+    /**
+     * Load when window is loaded
+     *
+     * Detects system language from the locale and sets text strings accordingly
+     */
     @FXML
     public void initialize() {
 
