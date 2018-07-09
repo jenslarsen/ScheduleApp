@@ -6,11 +6,17 @@
 package scheduleapp.model;
 
 /**
+ * Custom exception to handle problems during login
  *
  * @author Jens Larsen
  */
 public class LoginException extends Exception {
 
+    /**
+     * Calls super message handler
+     *
+     * @param message
+     */
     public LoginException(String message) {
         super(message);
     }
