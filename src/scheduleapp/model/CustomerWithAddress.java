@@ -6,6 +6,7 @@
 package scheduleapp.model;
 
 /**
+ * An object to store related customer and address info
  *
  * @author Jens Larsen
  */
