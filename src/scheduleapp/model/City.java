@@ -8,8 +8,9 @@ package scheduleapp.model;
 import java.sql.Timestamp;
 
 /**
+ * Models city table in database
  *
- * @author dasuperman
+ * @author Jens Larsen
  */
 public class City {
 
