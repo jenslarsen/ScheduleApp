@@ -35,13 +35,13 @@ import java.util.List;
  *
  * - The user that is logging into the application is the same as the contact
  * listed on the appointment. Therefore, only appointments for the current
- * logged in user are shown in the appointment list
+ * logged in user are shown in the appointment list.
  *
  * - The reminder table is not used - it doesn't seem necessary for this
- * application
+ * application.
  *
  * - The address table does not have a state field so none of the address have
- * one
+ * one.
  *
  * @author Jens Larsen
  */
@@ -207,6 +207,14 @@ public class Datasource {
             = "SELECT * FROM " + TABLE_CUSTOMER + " "
             + " WHERE " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ? "
             + " AND " + COLUMN_CUSTOMER_ADDRESSID + " = ?;";
+
+    private static final String QUERY_CUSTOMER_ADDRESS_STRING
+            = "SELECT * FROM " + TABLE_CUSTOMER + " "
+            + "INNER JOIN " + TABLE_ADDRESS + " "
+            + "WHERE " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME
+            + " = " + "?"
+            + " AND " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
+            + " = ?;";
 
     private static PreparedStatement customerQuery = null;
 
@@ -574,8 +582,8 @@ public class Datasource {
     }
 
     /**
-     * ???????? NEEDS TO BE FIXED ?????????????? Checks to see if a customer and
-     * address combination exists in the database
+     * Checks to see if a customer and address combination exists in the
+     * database
      *
      * @param name
      * @param address
@@ -584,14 +592,6 @@ public class Datasource {
      */
     public static int customerExists(String name, String address) throws ClassNotFoundException {
         int customerId = -1;
-
-        String customerQuery
-                = "SELECT * FROM " + TABLE_CUSTOMER + " "
-                + "INNER JOIN " + TABLE_ADDRESS + " "
-                + "WHERE " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME
-                + " = " + "'" + name + "'"
-                + " AND " + TABLE_ADDRESS + "." + COLUMN_ADDRESS_ADDRESS
-                + " = " + "'" + address + "';";
 
         ResultSet result;
 
@@ -602,9 +602,13 @@ public class Datasource {
             return customerId;
         }
 
-        try (Statement statement = connection.createStatement()) {
+        try {
+            customerQuery = connection.prepareStatement(QUERY_CUSTOMER_ADDRESS_STRING);
 
-            result = statement.executeQuery(customerQuery);
+            customerQuery.setString(1, name);
+            customerQuery.setString(2, address);
+
+            result = customerQuery.executeQuery();
 
             if (result.next()) {
                 customerId = result.getInt(COLUMN_CUSTOMER_CUSTOMERID);
@@ -880,6 +884,8 @@ public class Datasource {
     }
 
     /**
+     * >>>>>>>>>>>>> NEEDS TO BE FIXED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     *
      * Updates and existing address
      *
      * @param address
@@ -939,6 +945,8 @@ public class Datasource {
     }
 
     /**
+     * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NEEDS TO BE FIXED >>>>>>>>>>>>>>>>>>>>>>>>
+     *
      * Updates and existing customer
      *
      * @param customer
@@ -992,6 +1000,8 @@ public class Datasource {
     }
 
     /**
+     * >>>>>>>>>>>>>>>>>>>>>>>>> NEEEDS TO BE FIXED >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     *
      * Updates and existing appointment
      *
      * @param appointment
@@ -1052,6 +1062,9 @@ public class Datasource {
     }
 
     /**
+     * >>>>>>>>>>>>>>>>>>>>> NEEEDS TO BE FIXED
+     * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+     *
      * Makes a customer inactive in the database Inactive customers are not
      * loaded in the customer list
      *
@@ -1090,7 +1103,7 @@ public class Datasource {
     }
 
     /**
-     * Gets a list of apppointments for the upcoming 7 days with associated
+     * Gets a list of appointments for the upcoming 7 days with associated
      * contacts
      *
      * @return array list of AppointmentWithContac
