@@ -8,6 +8,7 @@ package scheduleapp.model;
 import java.sql.Timestamp;
 
 /**
+ * Models country table in database
  *
  * @author Jens Larsen
  */
@@ -20,6 +21,11 @@ public class Country {
     private Timestamp lastUpdate;
     private String lastUpdateBy;
 
+    /**
+     * Constructor to provide the country
+     *
+     * @param country
+     */
     public Country(String country) {
         this.country = country;
     }
@@ -71,5 +77,4 @@ public class Country {
     public void setLastUpdateBy(String lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
     }
-
 }
