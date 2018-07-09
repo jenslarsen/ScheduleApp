@@ -173,6 +173,24 @@ public class FXMLCustomersController {
         }
     }
 
+    @FXML
+    private void reportsButtonClicked(ActionEvent event) {
+        Parent main;
+        try {
+            main = FXMLLoader.load(getClass().getResource("FXMLReports.fxml"));
+            Scene scene = new Scene(main);
+            Stage stage = (Stage) buttonCustomers.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error switching screens");
+            alert.setContentText("Unable to switch to report screen!");
+            alert.showAndWait();
+        }
+    }
+
     void loadCustomersFromDatabase() throws SQLException {
         customers = new ArrayList<>();
         customerList = FXCollections.observableArrayList();

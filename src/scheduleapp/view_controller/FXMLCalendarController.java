@@ -13,6 +13,7 @@ import java.util.List;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -153,6 +154,24 @@ public class FXMLCalendarController {
             alert.setTitle("Error");
             alert.setHeaderText("Error switching screens");
             alert.setContentText("Unable to switch to customer screen!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void reportsButtonClicked(ActionEvent event) {
+        Parent main;
+        try {
+            main = FXMLLoader.load(getClass().getResource("FXMLReports.fxml"));
+            Scene scene = new Scene(main);
+            Stage stage = (Stage) buttonCustomers.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error switching screens");
+            alert.setContentText("Unable to switch to report screen!");
             alert.showAndWait();
         }
     }

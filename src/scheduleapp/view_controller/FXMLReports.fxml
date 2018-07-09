@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLReportsController">
+    <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="304.0">
+        <buttons>
+          <Button fx:id="buttonCalendar" mnemonicParsing="false" onAction="#calendarButtonClicked" text="Calendar">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font></Button>
+            <Button fx:id="buttonCustomers" mnemonicParsing="false" onAction="#customersButtonClicked" prefHeight="26.0" prefWidth="125.0" text="Customers">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font></Button>
+            <Button fx:id="buttonReports" layoutX="154.0" layoutY="16.0" minWidth="33.0" mnemonicParsing="false" onAction="#reportsButtonClicked" prefHeight="29.0" prefWidth="143.0" text="Reports">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font>
+            </Button>
+        </buttons>
+      </ButtonBar>
+</AnchorPane>

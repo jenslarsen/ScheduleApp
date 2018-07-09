@@ -114,7 +114,7 @@ public class FXMLLoginController extends Application {
             usernameText = "nom d'utilisateur";
             signinText = "Se connecter";
             switchError = "Ce n'est pas bon...";
-            unableToSwitch = "Erreur lors du passage à l'écran du client";
+            unableToSwitch = "Erreur lors du passage à l'écran du calendar";
         } else { // default to English
             loginText = "Login";
             errorTitle = "Error";
@@ -125,7 +125,7 @@ public class FXMLLoginController extends Application {
             usernameText = "username";
             signinText = "Sign in";
             switchError = "This isn't good...";
-            unableToSwitch = "Error switching to customer screen!";
+            unableToSwitch = "Error switching to calendar screen!";
         }
 
         // update on screen controls
@@ -201,6 +201,7 @@ public class FXMLLoginController extends Application {
             alert.setTitle(errorTitle);
             alert.setHeaderText(switchError);
             alert.setContentText(unableToSwitch);
+            System.err.println(e.getMessage());
             alert.showAndWait();
         }
     }
