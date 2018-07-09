@@ -146,6 +146,9 @@ public class FXMLAddAppointmentController {
             return;
         }
         Datasource.addAppointment(newAppointment);
+
+        Stage stage = (Stage) buttonSave.getScene().getWindow();
+        stage.close();
     }
 
     public void initialize() throws ClassNotFoundException, SQLException {
