@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -167,6 +169,24 @@ public class FXMLCalendarController {
         calType.selectToggle(radioMonth);
 
         loadAppointmentsWithContacts();
+
+        // add a listener for when the user selects another calendar view
+        calType.selectedToggleProperty().addListener((
+                ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) -> {
+            if (calType.getSelectedToggle() != null) {
+                try {
+                    if (calType.getSelectedToggle().equals(radioWeek)) {
+                        appointments = Datasource.getWeekApptsWithContacts();
+                    } else if (calType.getSelectedToggle().equals(radioMonth)) {
+                        appointments = Datasource.getMonthApptsWithContacts();
+                    } else {
+                        System.err.println("Bad things happened: no radio button selected?");
+                    }
+                } catch (ClassNotFoundException | SQLException e) {
+                    System.err.println("Error getting appointments: " + e.getMessage());
+                }
+            }
+        });
     }
 
     private boolean loadAppointmentsWithContacts() {
