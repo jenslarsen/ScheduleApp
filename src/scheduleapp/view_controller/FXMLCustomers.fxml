@@ -38,7 +38,7 @@
             <Image url="@images/contacts.png" />
          </image>
       </ImageView>
-      <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="258.0">
+      <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="304.0">
         <buttons>
           <Button fx:id="buttonCalendar" mnemonicParsing="false" onAction="#calendarButtonClicked" text="Calendar">
                <font>
@@ -48,6 +48,11 @@
                <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font></Button>
+            <Button fx:id="buttonReports" layoutX="154.0" layoutY="16.0" minWidth="33.0" mnemonicParsing="false" onAction="#reportsButtonClicked" prefHeight="29.0" prefWidth="143.0" text="Reports">
+               <font>
+                  <Font name="Fira Sans Regular" size="13.0" />
+               </font>
+            </Button>
         </buttons>
       </ButtonBar>
    </children>
