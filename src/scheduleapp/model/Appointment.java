@@ -9,8 +9,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
+ * Models appointment table in the database
  *
- * @author jlarsen
+ * @author Jens Larsen
  */
 public class Appointment {
 
