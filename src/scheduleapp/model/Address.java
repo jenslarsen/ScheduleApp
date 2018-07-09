@@ -8,6 +8,7 @@ package scheduleapp.model;
 import java.sql.Timestamp;
 
 /**
+ * Models Address table in database
  *
  * @author Jens Larsen
  */
@@ -24,6 +25,15 @@ public class Address {
     private Timestamp lastUpdate;
     private String lastUpdatedBy;
 
+    /**
+     * Creates an address with basic info provided
+     *
+     * @param address
+     * @param address2
+     * @param cityId
+     * @param postalCode
+     * @param phone
+     */
     public Address(String address, String address2, int cityId, String postalCode, String phone) {
         this.address = address;
         this.address2 = address2;
