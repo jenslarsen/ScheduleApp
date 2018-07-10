@@ -103,7 +103,7 @@ public class Appointment {
         this.url = url;
     }
 
-    public Date getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
@@ -111,7 +111,7 @@ public class Appointment {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
