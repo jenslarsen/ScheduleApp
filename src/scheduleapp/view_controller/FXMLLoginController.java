@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -88,6 +89,8 @@ public class FXMLLoginController extends Application {
 
         // uncomment this line to test French locale
         //Locale.setDefault(new Locale("fr", "FR"));
+        // get and store the system time zone
+        Datasource.timeZone = ZoneId.systemDefault();
         launch(args);
     }
 
