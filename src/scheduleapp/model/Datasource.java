@@ -304,6 +304,23 @@ public class Datasource {
 
     private static PreparedStatement inactivateCustomer = null;
 
+    private static String UPDATE_APPOINTMENT_STRING
+            = "UPDATE " + TABLE_APPOINTMENT
+            + " SET "
+            + COLUMN_APPOINTMENT_TITLE + " = ?"
+            + COLUMN_APPOINTMENT_CUSTOMERID + " = ?"
+            + COLUMN_APPOINTMENT_DESCRIPTION + " = ?"
+            + COLUMN_APPOINTMENT_LOCATION + " = ?"
+            + COLUMN_APPOINTMENT_CONTACT + " = ?"
+            + COLUMN_APPOINTMENT_URL + " = ?"
+            + COLUMN_APPOINTMENT_START + " = ?"
+            + COLUMN_APPOINTMENT_END + " = ?"
+            + COLUMN_APPOINTMENT_LASTUPDATE + " = ?"
+            + COLUMN_APPOINTMENT_LASTUPDATEBY + " = ?"
+            + " WHERE " + COLUMN_APPOINTMENT_APPOINTMENTID + " = ?";
+
+    private static PreparedStatement updateAppointment = null;
+
     // globals
     /**
      * Static variable for the database connection
@@ -1007,8 +1024,6 @@ public class Datasource {
     }
 
     /**
-     * >>>>>>>>>>>>>>>>>>>>>>>>> NEEEDS TO BE FIXED >>>>>>>>>>>>>>>>>>>>>>>>>>>>
-     *
      * Updates and existing appointment
      *
      * @param appointment
@@ -1025,22 +1040,9 @@ public class Datasource {
             return false;
         }
 
-        String lastUpdate = LocalDateTime.now().toString();
+        Date todaysDate = new Date();
+        Timestamp lastUpdate = new Timestamp(todaysDate.getTime());
         String lastUpdateBy = loggedInUser;
-
-        String updateAppointment = "UPDATE " + TABLE_APPOINTMENT
-                + " SET "
-                + COLUMN_APPOINTMENT_TITLE + " = " + "'" + appointment.getTitle() + "'" + ", "
-                + COLUMN_APPOINTMENT_CUSTOMERID + " = " + appointment.getCustomerID() + ", "
-                + COLUMN_APPOINTMENT_DESCRIPTION + " = " + "'" + appointment.getDescription() + "'" + ", "
-                + COLUMN_APPOINTMENT_LOCATION + " = " + "'" + appointment.getLocation() + "'" + ", "
-                + COLUMN_APPOINTMENT_CONTACT + " = " + "'" + appointment.getContact() + "'" + ", "
-                + COLUMN_APPOINTMENT_URL + " = " + "'" + appointment.getUrl() + "'" + ", "
-                + COLUMN_APPOINTMENT_START + " = " + "'" + appointment.getStart() + "'" + ", "
-                + COLUMN_APPOINTMENT_END + " = " + "'" + appointment.getEnd() + "'" + ", "
-                + COLUMN_APPOINTMENT_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
-                + COLUMN_APPOINTMENT_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
-                + " WHERE " + COLUMN_APPOINTMENT_APPOINTMENTID + " = " + appointmentId;
 
         boolean open = Datasource.open();
 
@@ -1049,10 +1051,21 @@ public class Datasource {
             return false;
         }
 
-        try (Statement statement = connection.createStatement()) {
-            System.err.println("Updating Appointment: " + updateAppointment);
-            connection.prepareStatement(updateAppointment);
-            int updateCount = statement.executeUpdate(updateAppointment);
+        try {
+            updateAppointment = connection.prepareStatement(UPDATE_APPOINTMENT_STRING);
+            updateAppointment.setString(1, appointment.getTitle());
+            updateAppointment.setInt(2, appointment.getCustomerID());
+            updateAppointment.setString(3, appointment.getDescription());
+            updateAppointment.setString(4, appointment.getLocation());
+            updateAppointment.setString(5, appointment.getContact());
+            updateAppointment.setString(6, appointment.getUrl());
+            updateAppointment.setTimestamp(7, appointment.getStart());
+            updateAppointment.setTimestamp(8, appointment.getEnd());
+            updateAppointment.setTimestamp(9, lastUpdate);
+            updateAppointment.setString(10, lastUpdateBy);
+            updateAppointment.setInt(11, appointmentId);
+
+            int updateCount = updateAppointment.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
@@ -1088,6 +1101,8 @@ public class Datasource {
 
         try {
             inactivateCustomer = connection.prepareStatement(INACTIVATE_CUSTOMER_STRING);
+            inactivateCustomer.setInt(1, customerId);
+
             int updateCount = inactivateCustomer.executeUpdate();
             if (updateCount > 0) {
                 return true;
