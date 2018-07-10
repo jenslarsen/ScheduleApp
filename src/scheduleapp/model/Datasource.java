@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -344,6 +345,8 @@ public class Datasource {
      */
     public static AppointmentWithContact appointmentBeingEdited
             = new AppointmentWithContact();
+
+    public static ZoneId timeZone;
 
     /**
      * Opens the database for access
