@@ -297,6 +297,13 @@ public class Datasource {
 
     private static PreparedStatement passwordQuery = null;
 
+    private static final String INACTIVATE_CUSTOMER_STRING
+            = "UPDATE " + TABLE_CUSTOMER + " "
+            + "SET " + COLUMN_CUSTOMER_ACTIVE + " = 0 "
+            + "WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = ?;";
+
+    private static PreparedStatement inactivateCustomer = null;
+
     // globals
     /**
      * Static variable for the database connection
@@ -1062,11 +1069,8 @@ public class Datasource {
     }
 
     /**
-     * >>>>>>>>>>>>>>>>>>>>> NEEEDS TO BE FIXED
-     * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-     *
-     * Makes a customer inactive in the database Inactive customers are not
-     * loaded in the customer list
+     * Makes a customer inactive in the database. Inactive customers are not
+     * loaded in the customer list.
      *
      * @param customerId
      * @return true if successful
@@ -1075,11 +1079,6 @@ public class Datasource {
      */
     public static boolean inactivateCustomer(int customerId) throws SQLException, ClassNotFoundException {
 
-        final String inactivateCustomer
-                = "UPDATE " + TABLE_CUSTOMER + " "
-                + "SET " + COLUMN_CUSTOMER_ACTIVE + " = 0 "
-                + "WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId + ";";
-
         boolean open = Datasource.open();
 
         if (!open) {
@@ -1087,9 +1086,9 @@ public class Datasource {
             return false;
         }
 
-        try (Statement statement = connection.createStatement()) {
-            connection.prepareStatement(inactivateCustomer);
-            int updateCount = statement.executeUpdate(inactivateCustomer);
+        try {
+            inactivateCustomer = connection.prepareStatement(INACTIVATE_CUSTOMER_STRING);
+            int updateCount = inactivateCustomer.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
