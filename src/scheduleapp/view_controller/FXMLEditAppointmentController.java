@@ -6,8 +6,8 @@
 package scheduleapp.view_controller;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,15 +111,15 @@ public class FXMLEditAppointmentController {
         }
 
         try {
-            String startString = datePickerStart.getValue() + " "
+            String startString = datePickerStart.getValue() + "T"
                     + comboStartHour.getValue() + ":" + comboStartMinute.getValue() + ":00";
+            System.out.println("Start :" + startString);
+            editAppointment.setStart(LocalDateTime.parse(startString));
 
-            editAppointment.setStart(Timestamp.valueOf(startString));
-
-            String endString = datePickerEnd.getValue() + " "
+            String endString = datePickerEnd.getValue() + "T"
                     + comboEndHour.getValue() + ":" + comboEndMinute.getValue() + ":00";
-
-            editAppointment.setEnd(Timestamp.valueOf(endString));
+            System.out.println("End: :" + endString);
+            editAppointment.setEnd(LocalDateTime.parse(endString));
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
@@ -130,9 +130,9 @@ public class FXMLEditAppointmentController {
         }
 
         editAppointment.setContact(Datasource.loggedInUser);
-        editAppointment.setCreateDate(new Timestamp(System.currentTimeMillis()));
+        editAppointment.setCreateDate(LocalDateTime.now());
         editAppointment.setCreatedBy(Datasource.loggedInUser);
-        editAppointment.setLastUpdate((Timestamp) editAppointment.getCreateDate());
+        editAppointment.setLastUpdate(editAppointment.getCreateDate());
         editAppointment.setLastUpdateBy(Datasource.loggedInUser);
 
         int customerIndex = comboCustomer.getSelectionModel().getSelectedIndex();
@@ -147,6 +147,7 @@ public class FXMLEditAppointmentController {
             alert.showAndWait();
             return;
         }
+
         Datasource.updateAppointment(editAppointment);
 
         Stage stage = (Stage) buttonSave.getScene().getWindow();
@@ -176,7 +177,7 @@ public class FXMLEditAppointmentController {
         // populate time dropdowns
         ObservableList<String> hours = FXCollections.observableArrayList(
                 "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
-                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"
+                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00"
         );
 
         ObservableList<String> mins = FXCollections.observableArrayList(
@@ -192,16 +193,18 @@ public class FXMLEditAppointmentController {
         textFieldDescription.setText(Datasource.appointmentBeingEdited.getDescription());
         textFieldLocation.setText(Datasource.appointmentBeingEdited.getLocation());
         datePickerStart.setValue(
-                Datasource.appointmentBeingEdited.getStart()
-                        .toLocalDateTime().toLocalDate());
+                Datasource.appointmentBeingEdited.getStart().toLocalDate());
         datePickerEnd.setValue(
-                Datasource.appointmentBeingEdited.getEnd()
-                        .toLocalDateTime().toLocalDate());
+                Datasource.appointmentBeingEdited.getEnd().toLocalDate());
 
-        comboStartHour.getSelectionModel().select(Datasource.appointmentBeingEdited.getStart().getHours());
-        comboStartMinute.getSelectionModel().select(Datasource.appointmentBeingEdited.getStart().getMinutes());
-        comboEndHour.getSelectionModel().select(Datasource.appointmentBeingEdited.getEnd().getHours());
-        comboEndMinute.getSelectionModel().select(Datasource.appointmentBeingEdited.getEnd().getMinutes());
+        comboStartHour.getSelectionModel().select(Datasource.appointmentBeingEdited
+                .getStart().getHour());
+        comboStartMinute.getSelectionModel().select(Datasource.appointmentBeingEdited
+                .getStart().getMinute());
+        comboEndHour.getSelectionModel().select(Datasource.appointmentBeingEdited
+                .getEnd().getHour());
+        comboEndMinute.getSelectionModel().select(Datasource.appointmentBeingEdited
+                .getEnd().getMinute());
 
         String customerName = Datasource.appointmentBeingEdited.getCustomerName();
 

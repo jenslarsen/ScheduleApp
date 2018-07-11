@@ -5,7 +5,7 @@
  */
 package scheduleapp.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Models Address table in database
@@ -20,9 +20,9 @@ public class Address {
     private int cityId;
     private String postalCode;
     private String phone;
-    private Timestamp createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    private Timestamp lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdatedBy;
 
     /**
@@ -90,11 +90,11 @@ public class Address {
         this.phone = phone;
     }
 
-    public Timestamp getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -106,11 +106,11 @@ public class Address {
         this.createdBy = createdBy;
     }
 
-    public Timestamp getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

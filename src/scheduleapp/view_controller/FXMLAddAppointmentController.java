@@ -6,8 +6,8 @@
 package scheduleapp.view_controller;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -109,15 +109,15 @@ public class FXMLAddAppointmentController {
         }
 
         try {
-            String startString = datePickerStart.getValue() + " "
+            String startString = datePickerStart.getValue() + "T"
                     + comboStartHour.getValue() + ":" + comboStartMinute.getValue() + ":00";
 
-            newAppointment.setStart(Timestamp.valueOf(startString));
+            newAppointment.setStart(LocalDateTime.parse(startString));
 
-            String endString = datePickerEnd.getValue() + " "
+            String endString = datePickerEnd.getValue() + "T"
                     + comboEndHour.getValue() + ":" + comboEndMinute.getValue() + ":00";
 
-            newAppointment.setEnd(Timestamp.valueOf(endString));
+            newAppointment.setEnd(LocalDateTime.parse(endString));
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
@@ -128,9 +128,9 @@ public class FXMLAddAppointmentController {
         }
 
         newAppointment.setContact(Datasource.loggedInUser);
-        newAppointment.setCreateDate(new Timestamp(System.currentTimeMillis()));
+        newAppointment.setCreateDate(LocalDateTime.now());
         newAppointment.setCreatedBy(Datasource.loggedInUser);
-        newAppointment.setLastUpdate((Timestamp) newAppointment.getCreateDate());
+        newAppointment.setLastUpdate(newAppointment.getCreateDate());
         newAppointment.setLastUpdateBy(Datasource.loggedInUser);
 
         int customerIndex = comboCustomer.getSelectionModel().getSelectedIndex();
@@ -172,7 +172,7 @@ public class FXMLAddAppointmentController {
         // populate time dropdowns
         ObservableList<String> hours = FXCollections.observableArrayList(
                 "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12",
-                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"
+                "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "00"
         );
 
         ObservableList<String> mins = FXCollections.observableArrayList(

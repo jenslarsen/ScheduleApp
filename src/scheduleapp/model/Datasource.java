@@ -308,15 +308,15 @@ public class Datasource {
     private static String UPDATE_APPOINTMENT_STRING
             = "UPDATE " + TABLE_APPOINTMENT
             + " SET "
-            + COLUMN_APPOINTMENT_TITLE + " = ?"
-            + COLUMN_APPOINTMENT_CUSTOMERID + " = ?"
-            + COLUMN_APPOINTMENT_DESCRIPTION + " = ?"
-            + COLUMN_APPOINTMENT_LOCATION + " = ?"
-            + COLUMN_APPOINTMENT_CONTACT + " = ?"
-            + COLUMN_APPOINTMENT_URL + " = ?"
-            + COLUMN_APPOINTMENT_START + " = ?"
-            + COLUMN_APPOINTMENT_END + " = ?"
-            + COLUMN_APPOINTMENT_LASTUPDATE + " = ?"
+            + COLUMN_APPOINTMENT_TITLE + " = ?" + ", "
+            + COLUMN_APPOINTMENT_CUSTOMERID + " = ?" + ", "
+            + COLUMN_APPOINTMENT_DESCRIPTION + " = ?" + ", "
+            + COLUMN_APPOINTMENT_LOCATION + " = ?" + ", "
+            + COLUMN_APPOINTMENT_CONTACT + " = ?" + ", "
+            + COLUMN_APPOINTMENT_URL + " = ?" + ", "
+            + COLUMN_APPOINTMENT_START + " = ?" + ", "
+            + COLUMN_APPOINTMENT_END + " = ?" + ", "
+            + COLUMN_APPOINTMENT_LASTUPDATE + " = ?" + ", "
             + COLUMN_APPOINTMENT_LASTUPDATEBY + " = ?"
             + " WHERE " + COLUMN_APPOINTMENT_APPOINTMENTID + " = ?";
 
@@ -883,8 +883,8 @@ public class Datasource {
         appointmentInsert.setString(4, appointment.getLocation());
         appointmentInsert.setString(5, appointment.getContact());
         appointmentInsert.setString(6, appointment.getUrl());
-        appointmentInsert.setTimestamp(7, (Timestamp) appointment.getStart());
-        appointmentInsert.setTimestamp(8, (Timestamp) appointment.getEnd());
+        appointmentInsert.setTimestamp(7, Timestamp.valueOf(appointment.getStart()));
+        appointmentInsert.setTimestamp(8, Timestamp.valueOf(appointment.getEnd()));
 
         appointmentInsert.setTimestamp(9, createDate);
         appointmentInsert.setString(10, Datasource.loggedInUser);
@@ -1062,11 +1062,13 @@ public class Datasource {
             updateAppointment.setString(4, appointment.getLocation());
             updateAppointment.setString(5, appointment.getContact());
             updateAppointment.setString(6, appointment.getUrl());
-            updateAppointment.setTimestamp(7, appointment.getStart());
-            updateAppointment.setTimestamp(8, appointment.getEnd());
+            updateAppointment.setTimestamp(7, Timestamp.valueOf(appointment.getStart()));
+            updateAppointment.setTimestamp(8, Timestamp.valueOf(appointment.getEnd()));
             updateAppointment.setTimestamp(9, lastUpdate);
             updateAppointment.setString(10, lastUpdateBy);
             updateAppointment.setInt(11, appointmentId);
+
+            System.out.println("Update appointment: " + updateAppointment.toString());
 
             int updateCount = updateAppointment.executeUpdate();
             if (updateCount > 0) {
@@ -1156,8 +1158,10 @@ public class Datasource {
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
-                tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
-                tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
+                Timestamp start = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(start.toLocalDateTime());
+                Timestamp end = result.getTimestamp(COLUMN_APPOINTMENT_END);
+                tempAppointment.setEnd(end.toLocalDateTime());
 
                 appointments.add(tempAppointment);
             }
@@ -1204,8 +1208,10 @@ public class Datasource {
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
-                tempAppointment.setStart(result.getTimestamp(COLUMN_APPOINTMENT_START));
-                tempAppointment.setEnd(result.getTimestamp(COLUMN_APPOINTMENT_END));
+                Timestamp start = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(start.toLocalDateTime());
+                Timestamp end = result.getTimestamp(COLUMN_APPOINTMENT_END);
+                tempAppointment.setEnd(end.toLocalDateTime());
 
                 appointments.add(tempAppointment);
             }

@@ -5,7 +5,7 @@
  */
 package scheduleapp.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Models country table in database
@@ -16,9 +16,9 @@ public class Country {
 
     private int countryId;
     private String country;
-    private Timestamp createDate;
+    private LocalDateTime createDate;
     private String createdBy;
-    private Timestamp lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdateBy;
 
     /**
@@ -46,11 +46,11 @@ public class Country {
         this.country = country;
     }
 
-    public Timestamp getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -62,11 +62,11 @@ public class Country {
         this.createdBy = createdBy;
     }
 
-    public Timestamp getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
