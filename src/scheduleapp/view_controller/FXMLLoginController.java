@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
+import java.util.TimeZone;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
@@ -89,6 +90,9 @@ public class FXMLLoginController extends Application {
 
         // uncomment this line to test French locale
         //Locale.setDefault(new Locale("fr", "FR"));
+        // this line is used to set the time zone
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/Copenhagen"));
+
         // get and store the system time zone
         Datasource.timeZone = ZoneId.systemDefault();
         launch(args);
