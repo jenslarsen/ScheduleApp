@@ -111,7 +111,7 @@ public class FXMLCalendarController {
         int index = tableViewCalendar.getSelectionModel().getSelectedIndex();
 
         if (index < 0) {
-            return;
+            return;   // don't do anything if no appointment is selected
         }
 
         Datasource.appointmentBeingEdited = appointments.get(index);
