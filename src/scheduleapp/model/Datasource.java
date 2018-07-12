@@ -15,7 +15,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -491,7 +490,7 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static int countryExists(String country) throws ClassNotFoundException, SQLException {
+    public static int countryExists(String country) throws ClassNotFoundException {
         int countryId = -1;
 
         ResultSet result;
@@ -503,10 +502,10 @@ public class Datasource {
             return countryId;
         }
 
-        countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
-        countryQuery.setString(1, country);
-
         try {
+            countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
+            countryQuery.setString(1, country);
+
             result = countryQuery.executeQuery();
 
             if (result.next()) {
@@ -530,7 +529,7 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static int addressExists(String address, String address2, String city) throws ClassNotFoundException, SQLException {
+    public static int addressExists(String address, String address2, String city) throws ClassNotFoundException {
         int addressId = -1;
 
         ResultSet result;
@@ -542,13 +541,14 @@ public class Datasource {
             return addressId;
         }
 
-        addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
-
-        addressQuery.setString(1, address);
-        addressQuery.setString(2, address2);
-        addressQuery.setString(3, city);
-
         try {
+
+            addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
+
+            addressQuery.setString(1, address);
+            addressQuery.setString(2, address2);
+            addressQuery.setString(3, city);
+
             result = addressQuery.executeQuery();
 
             if (result.next()) {
@@ -657,9 +657,10 @@ public class Datasource {
      * @throws SQLException
      */
     public static int addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
+
         int customerId = -1;
         ResultSet result;
 
@@ -708,10 +709,12 @@ public class Datasource {
      * @throws SQLException
      */
     public static int addCity(City city) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
+
         int cityId = -1;
+
         ResultSet result;
 
         boolean open = Datasource.open();
@@ -759,9 +762,10 @@ public class Datasource {
      * @throws SQLException
      */
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
+
         int addressId = -1;
         ResultSet result;
 
@@ -814,9 +818,10 @@ public class Datasource {
      * @throws SQLException
      */
     public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
+
         int countryId = -1;
         ResultSet result;
 
@@ -862,9 +867,10 @@ public class Datasource {
      * @throws SQLException
      */
     public static int addAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
-        Date todaysDate = new Date();
-        Timestamp createDate = new Timestamp(todaysDate.getTime());
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
+
         int appointmentId = -1;
         ResultSet result;
 
@@ -1043,8 +1049,9 @@ public class Datasource {
             return false;
         }
 
-        Date todaysDate = new Date();
-        Timestamp lastUpdate = new Timestamp(todaysDate.getTime());
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp lastUpdate = Timestamp.valueOf(todaysDate);
+
         String lastUpdateBy = loggedInUser;
 
         boolean open = Datasource.open();
@@ -1131,13 +1138,14 @@ public class Datasource {
      */
     public static List<AppointmentWithContact> getWeekApptsWithContacts() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
-        Date todaysDate = new Date();
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp tsTodaysDate = Timestamp.valueOf(todaysDate);
         boolean open = Datasource.open();
 
         queryAppointments = connection.prepareStatement(QUERY_WEEKAPPTSWITHCONTACTS_STRING);
         queryAppointments.setString(1, Datasource.loggedInUser);
-        queryAppointments.setTimestamp(2, new Timestamp(todaysDate.getTime()));
-        queryAppointments.setTimestamp(3, new Timestamp(todaysDate.getTime()));
+        queryAppointments.setTimestamp(2, tsTodaysDate);
+        queryAppointments.setTimestamp(3, tsTodaysDate);
 
         if (!open) {
             System.err.println("Unable to open database connection when trying get appointments with contacts!");
@@ -1158,10 +1166,12 @@ public class Datasource {
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
-                Timestamp start = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(start.toLocalDateTime());
-                Timestamp end = result.getTimestamp(COLUMN_APPOINTMENT_END);
-                tempAppointment.setEnd(end.toLocalDateTime());
+
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(tsStart.toLocalDateTime());
+
+                Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
+                tempAppointment.setEnd(tsEnd.toLocalDateTime());
 
                 appointments.add(tempAppointment);
             }
@@ -1179,13 +1189,15 @@ public class Datasource {
      */
     public static List<AppointmentWithContact> getMonthApptsWithContacts() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
-        Date todaysDate = new Date();
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp tsTodaysDate = Timestamp.valueOf(todaysDate
+        );
         boolean open = Datasource.open();
 
         queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
         queryAppointments.setString(1, Datasource.loggedInUser);
-        queryAppointments.setTimestamp(2, new Timestamp(todaysDate.getTime()));
-        queryAppointments.setTimestamp(3, new Timestamp(todaysDate.getTime()));
+        queryAppointments.setTimestamp(2, tsTodaysDate);
+        queryAppointments.setTimestamp(3, tsTodaysDate);
 
         System.out.println("Getting appointments....\n" + queryAppointments.toString());
 
@@ -1208,10 +1220,12 @@ public class Datasource {
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
-                Timestamp start = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(start.toLocalDateTime());
-                Timestamp end = result.getTimestamp(COLUMN_APPOINTMENT_END);
-                tempAppointment.setEnd(end.toLocalDateTime());
+
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(tsStart.toLocalDateTime());
+
+                Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
+                tempAppointment.setEnd(tsEnd.toLocalDateTime());
 
                 appointments.add(tempAppointment);
             }
