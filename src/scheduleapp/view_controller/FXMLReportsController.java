@@ -15,7 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 /**
@@ -38,7 +38,7 @@ public class FXMLReportsController {
     private Button loginlogButton;
 
     @FXML
-    private TextArea textAreaReports;
+    private ScrollPane scrollPaneReport;
 
     @FXML
     void openLoginLog(ActionEvent event) {
