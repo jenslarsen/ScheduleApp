@@ -488,7 +488,6 @@ public class Datasource {
      * @param country
      * @return countryId if the country is found, -1 if the country is not found
      * @throws ClassNotFoundException
-     * @throws SQLException
      */
     public static int countryExists(String country) throws ClassNotFoundException {
         int countryId = -1;
@@ -527,9 +526,9 @@ public class Datasource {
      * @param city
      * @return addressId if the address is found, otherwise -1
      * @throws ClassNotFoundException
-     * @throws SQLException
      */
-    public static int addressExists(String address, String address2, String city) throws ClassNotFoundException {
+    public static int addressExists(String address, String address2, String city)
+            throws ClassNotFoundException {
         int addressId = -1;
 
         ResultSet result;
@@ -569,9 +568,8 @@ public class Datasource {
      * @param country
      * @return cityId if found, otherwise -1
      * @throws ClassNotFoundException
-     * @throws SQLException
      */
-    public static int cityExists(String city, String country) throws ClassNotFoundException, SQLException {
+    public static int cityExists(String city, String country) throws ClassNotFoundException {
         int cityId = -1;
 
         ResultSet result;
@@ -589,12 +587,12 @@ public class Datasource {
             return -1;     // unable to add city if country does not exist
         }
 
-        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
-
-        cityQuery.setString(1, city);
-        cityQuery.setInt(2, countryId);
-
         try {
+
+            cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+
+            cityQuery.setString(1, city);
+            cityQuery.setInt(2, countryId);
             result = cityQuery.executeQuery();
 
             if (result.next()) {
@@ -656,7 +654,8 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static int addCustomer(Customer customer) throws ClassNotFoundException, SQLException {
+    public static int addCustomer(Customer customer)
+            throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
         Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
@@ -671,21 +670,21 @@ public class Datasource {
             return customerId;
         }
 
-        customerInsert = connection.prepareStatement(ADD_CUSTOMER_STRING);
-
-        customerInsert.setString(1, customer.getCustomerName());
-        customerInsert.setInt(2, customer.getAddressID());
-        customerInsert.setInt(3, 1); // set active
-        customerInsert.setTimestamp(4, createDate);
-        customerInsert.setString(5, Datasource.loggedInUser);
-        customerInsert.setTimestamp(6, lastUpdate);
-        customerInsert.setString(7, Datasource.loggedInUser);
-
-        customerQuery = connection.prepareStatement(QUERY_CUSTOMER_STRING);
-        customerQuery.setString(1, customer.getCustomerName());
-        customerQuery.setInt(2, customer.getAddressID());
-
         try {
+            customerInsert = connection.prepareStatement(ADD_CUSTOMER_STRING);
+
+            customerInsert.setString(1, customer.getCustomerName());
+            customerInsert.setInt(2, customer.getAddressID());
+            customerInsert.setInt(3, 1); // set active
+            customerInsert.setTimestamp(4, createDate);
+            customerInsert.setString(5, Datasource.loggedInUser);
+            customerInsert.setTimestamp(6, lastUpdate);
+            customerInsert.setString(7, Datasource.loggedInUser);
+
+            customerQuery = connection.prepareStatement(QUERY_CUSTOMER_STRING);
+            customerQuery.setString(1, customer.getCustomerName());
+            customerQuery.setInt(2, customer.getAddressID());
+
             customerInsert.execute();
             result = customerQuery.executeQuery();
             if (result.next()) {
@@ -724,21 +723,21 @@ public class Datasource {
             return cityId;
         }
 
-        cityInsert = connection.prepareStatement(ADD_CITY_STRING);
-
-        cityInsert.setString(1, city.getCity());
-        cityInsert.setInt(2, city.getCountryid());
-
-        cityInsert.setTimestamp(3, createDate);
-        cityInsert.setString(4, Datasource.loggedInUser);
-        cityInsert.setTimestamp(5, lastUpdate);
-        cityInsert.setString(6, Datasource.loggedInUser);
-
-        cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
-        cityQuery.setString(1, city.getCity());
-        cityQuery.setInt(2, city.getCountryid());
-
         try {
+
+            cityInsert = connection.prepareStatement(ADD_CITY_STRING);
+
+            cityInsert.setString(1, city.getCity());
+            cityInsert.setInt(2, city.getCountryid());
+
+            cityInsert.setTimestamp(3, createDate);
+            cityInsert.setString(4, Datasource.loggedInUser);
+            cityInsert.setTimestamp(5, lastUpdate);
+            cityInsert.setString(6, Datasource.loggedInUser);
+
+            cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
+            cityQuery.setString(1, city.getCity());
+            cityQuery.setInt(2, city.getCountryid());
             cityInsert.execute();
             result = cityQuery.executeQuery();
             if (result.next()) {
@@ -759,7 +758,6 @@ public class Datasource {
      * @param address
      * @return addressId of the new address, otherwise -1
      * @throws ClassNotFoundException
-     * @throws SQLException
      */
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
@@ -776,25 +774,25 @@ public class Datasource {
             return addressId;
         }
 
-        addressInsert = connection.prepareStatement(ADD_ADDRESS_STRING);
-
-        addressInsert.setString(1, address.getAddress());
-        addressInsert.setString(2, address.getAddress2());
-        addressInsert.setInt(3, address.getCityId());
-        addressInsert.setString(4, address.getPostalCode());
-        addressInsert.setString(5, address.getPhone());
-
-        addressInsert.setTimestamp(6, createDate);
-        addressInsert.setString(7, Datasource.loggedInUser);
-        addressInsert.setTimestamp(8, lastUpdate);
-        addressInsert.setString(9, Datasource.loggedInUser);
-
-        addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
-        addressQuery.setString(1, address.getAddress());
-        addressQuery.setString(2, address.getAddress2());
-        addressQuery.setInt(3, address.getCityId());
-
         try {
+            addressInsert = connection.prepareStatement(ADD_ADDRESS_STRING);
+
+            addressInsert.setString(1, address.getAddress());
+            addressInsert.setString(2, address.getAddress2());
+            addressInsert.setInt(3, address.getCityId());
+            addressInsert.setString(4, address.getPostalCode());
+            addressInsert.setString(5, address.getPhone());
+
+            addressInsert.setTimestamp(6, createDate);
+            addressInsert.setString(7, Datasource.loggedInUser);
+            addressInsert.setTimestamp(8, lastUpdate);
+            addressInsert.setString(9, Datasource.loggedInUser);
+
+            addressQuery = connection.prepareStatement(QUERY_ADDRESS_STRING);
+            addressQuery.setString(1, address.getAddress());
+            addressQuery.setString(2, address.getAddress2());
+            addressQuery.setInt(3, address.getCityId());
+
             addressInsert.execute();
             result = addressQuery.executeQuery();
             if (result.next()) {
@@ -817,7 +815,8 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static int addCountry(Country country) throws ClassNotFoundException, SQLException {
+    public static int addCountry(Country country)
+            throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
         Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
@@ -832,18 +831,19 @@ public class Datasource {
             return countryId;
         }
 
-        countryInsert = connection.prepareStatement(ADD_COUNTRY_STRING);
-
-        countryInsert.setString(1, country.getCountry());
-        countryInsert.setTimestamp(2, createDate);
-        countryInsert.setString(3, Datasource.loggedInUser);
-        countryInsert.setTimestamp(4, lastUpdate);
-        countryInsert.setString(5, Datasource.loggedInUser);
-
-        countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
-        countryQuery.setString(1, country.getCountry());
-
         try {
+
+            countryInsert = connection.prepareStatement(ADD_COUNTRY_STRING);
+
+            countryInsert.setString(1, country.getCountry());
+            countryInsert.setTimestamp(2, createDate);
+            countryInsert.setString(3, Datasource.loggedInUser);
+            countryInsert.setTimestamp(4, lastUpdate);
+            countryInsert.setString(5, Datasource.loggedInUser);
+
+            countryQuery = connection.prepareStatement(QUERY_COUNTRY_STRING);
+            countryQuery.setString(1, country.getCountry());
+
             countryInsert.execute();
             result = countryQuery.executeQuery();
             if (result.next()) {
@@ -866,7 +866,8 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static int addAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
+    public static int addAppointment(Appointment appointment)
+            throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
         Timestamp createDate = Timestamp.valueOf(todaysDate);
         Timestamp lastUpdate = createDate;
@@ -880,28 +881,28 @@ public class Datasource {
             System.err.println("Error opening datasource!");
             return appointmentId;
         }
-
-        appointmentInsert = connection.prepareStatement(ADD_APPOINTMENT_STRING);
-
-        appointmentInsert.setInt(1, appointment.getCustomerID());
-        appointmentInsert.setString(2, appointment.getTitle());
-        appointmentInsert.setString(3, appointment.getDescription());
-        appointmentInsert.setString(4, appointment.getLocation());
-        appointmentInsert.setString(5, appointment.getContact());
-        appointmentInsert.setString(6, appointment.getUrl());
-        appointmentInsert.setTimestamp(7, Timestamp.valueOf(appointment.getStart()));
-        appointmentInsert.setTimestamp(8, Timestamp.valueOf(appointment.getEnd()));
-
-        appointmentInsert.setTimestamp(9, createDate);
-        appointmentInsert.setString(10, Datasource.loggedInUser);
-        appointmentInsert.setTimestamp(11, lastUpdate);
-        appointmentInsert.setString(12, Datasource.loggedInUser);
-
-        appointmentQuery = connection.prepareStatement(QUERY_APPOINTMENT_STRING);
-        appointmentQuery.setString(1, appointment.getTitle());
-        appointmentQuery.setInt(2, appointment.getCustomerID());
-
         try {
+
+            appointmentInsert = connection.prepareStatement(ADD_APPOINTMENT_STRING);
+
+            appointmentInsert.setInt(1, appointment.getCustomerID());
+            appointmentInsert.setString(2, appointment.getTitle());
+            appointmentInsert.setString(3, appointment.getDescription());
+            appointmentInsert.setString(4, appointment.getLocation());
+            appointmentInsert.setString(5, appointment.getContact());
+            appointmentInsert.setString(6, appointment.getUrl());
+            appointmentInsert.setTimestamp(7, Timestamp.valueOf(appointment.getStart()));
+            appointmentInsert.setTimestamp(8, Timestamp.valueOf(appointment.getEnd()));
+
+            appointmentInsert.setTimestamp(9, createDate);
+            appointmentInsert.setString(10, Datasource.loggedInUser);
+            appointmentInsert.setTimestamp(11, lastUpdate);
+            appointmentInsert.setString(12, Datasource.loggedInUser);
+
+            appointmentQuery = connection.prepareStatement(QUERY_APPOINTMENT_STRING);
+            appointmentQuery.setString(1, appointment.getTitle());
+            appointmentQuery.setInt(2, appointment.getCustomerID());
+
             appointmentInsert.execute();
             result = appointmentQuery.executeQuery();
             if (result.next()) {
