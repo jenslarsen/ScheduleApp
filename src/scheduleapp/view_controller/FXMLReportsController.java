@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -41,6 +42,9 @@ public class FXMLReportsController {
     private ScrollPane scrollPaneReport;
 
     @FXML
+    private Text textReport;
+
+    @FXML
     void openLoginLog(ActionEvent event) {
         Desktop dt = Desktop.getDesktop();
         try {
@@ -48,7 +52,7 @@ public class FXMLReportsController {
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Error loading logins.log");
+            alert.setHeaderText("Error opening logins.log");
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
@@ -93,5 +97,10 @@ public class FXMLReportsController {
     @FXML
     private void reportsButtonClicked(ActionEvent event) {
         // don't do anything - already on the reports screen
+    }
+
+    @FXML
+    private void initialize() {
+        textReport.setText("Click a report to display it in this window");
     }
 }

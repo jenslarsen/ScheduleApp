@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLReportsController">
     <ButtonBar layoutX="14.0" layoutY="646.0" prefHeight="40.0" prefWidth="304.0">
@@ -33,7 +34,7 @@
                   <Font name="Fira Sans Regular" size="13.0" />
                </font>
             </Button>
-         <Button mnemonicParsing="false" text="Consultant schedules">
+         <Button fx:id="buttonConsultantSchedule" mnemonicParsing="false" onAction="#displaySchedule" text="Consultant schedules">
              <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font>
@@ -55,5 +56,8 @@
          <Image url="@images/reports.png" />
       </image>
    </ImageView>
-   <ScrollPane fx:id="scrollPaneReport" layoutX="204.0" layoutY="60.0" prefHeight="525.0" prefWidth="639.0" />
+   <ScrollPane fx:id="scrollPaneReport" layoutX="204.0" layoutY="60.0" prefHeight="525.0" prefWidth="639.0">
+      <content>
+         <Text fx:id="textReport" strokeType="OUTSIDE" strokeWidth="0.0" />
+      </content></ScrollPane>
 </AnchorPane>
