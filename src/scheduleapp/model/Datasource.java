@@ -321,6 +321,18 @@ public class Datasource {
 
     private static PreparedStatement updateAppointment = null;
 
+    private static String UPDATE_ADDRESS_STRING = "UPDATE " + TABLE_ADDRESS
+            + " SET " + COLUMN_ADDRESS_ADDRESS + " = ?" + ", "
+            + COLUMN_ADDRESS_ADDRESS2 + " = ?" + ", "
+            + COLUMN_ADDRESS_CITYID + " = ?" + ", "
+            + COLUMN_ADDRESS_POSTALCODE + " = ?" + ", "
+            + COLUMN_ADDRESS_PHONE + " = ?" + ", "
+            + COLUMN_ADDRESS_LASTUPDATE + " = ?" + ", "
+            + COLUMN_ADDRESS_LASTUPDATEBY + " = ?"
+            + " WHERE " + COLUMN_ADDRESS_ADDRESSID + " = ?;";
+
+    private static PreparedStatement updateAddress = null;
+
     // globals
     /**
      * Static variable for the database connection
@@ -918,8 +930,6 @@ public class Datasource {
     }
 
     /**
-     * >>>>>>>>>>>>> NEEDS TO BE FIXED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-     *
      * Updates and existing address
      *
      * @param address
@@ -927,7 +937,11 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static boolean updateAddress(Address address) throws ClassNotFoundException, SQLException {
+    public static boolean updateAddress(Address address)
+            throws ClassNotFoundException, SQLException {
+
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp lastUpdate = Timestamp.valueOf(todaysDate);
 
         int addressId = address.getAddressId();
 
@@ -936,24 +950,6 @@ public class Datasource {
             return false;
         }
 
-        String address1 = address.getAddress();
-        String address2 = address.getAddress2();
-        int cityId = address.getCityId();
-        String postalCode = address.getPostalCode();
-        String phone = address.getPhone();
-        String lastUpdate = LocalDateTime.now().toString();
-        String lastUpdateBy = loggedInUser;
-
-        String updateAddress = "UPDATE " + TABLE_ADDRESS
-                + " SET " + COLUMN_ADDRESS_ADDRESS + " = " + "'" + address1 + "'" + ", "
-                + COLUMN_ADDRESS_ADDRESS2 + " = " + "'" + address2 + "'" + ", "
-                + COLUMN_ADDRESS_CITYID + " = " + cityId + ", "
-                + COLUMN_ADDRESS_POSTALCODE + " = " + "'" + postalCode + "'" + ", "
-                + COLUMN_ADDRESS_PHONE + " = " + "'" + phone + "'" + ", "
-                + COLUMN_ADDRESS_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
-                + COLUMN_ADDRESS_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
-                + " WHERE " + COLUMN_ADDRESS_ADDRESSID + " = " + addressId;
-
         boolean open = Datasource.open();
 
         if (!open) {
@@ -961,8 +957,17 @@ public class Datasource {
             return false;
         }
 
-        try (Statement statement = connection.createStatement()) {
-            int updateCount = statement.executeUpdate(updateAddress);
+        try {
+            updateAddress.setString(1, address.getAddress());
+            updateAddress.setString(2, address.getAddress2());
+            updateAddress.setInt(3, address.getCityId());
+            updateAddress.setString(4, address.getPostalCode());
+            updateAddress.setString(5, address.getPhone());
+            updateAddress.setTimestamp(6, lastUpdate);
+            updateAddress.setString(7, loggedInUser);
+            updateAddress.setInt(8, addressId);
+
+            int updateCount = updateAddress.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
