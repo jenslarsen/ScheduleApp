@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 /**
@@ -35,6 +36,9 @@ public class FXMLReportsController {
 
     @FXML
     private Button loginlogButton;
+
+    @FXML
+    private TextArea textAreaReports;
 
     @FXML
     void openLoginLog(ActionEvent event) {
@@ -88,6 +92,6 @@ public class FXMLReportsController {
 
     @FXML
     private void reportsButtonClicked(ActionEvent event) {
-
+        // don't do anything - already on the reports screen
     }
 }
