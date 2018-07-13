@@ -304,7 +304,7 @@ public class Datasource {
 
     private static PreparedStatement inactivateCustomer = null;
 
-    private static String UPDATE_APPOINTMENT_STRING
+    private static final String UPDATE_APPOINTMENT_STRING
             = "UPDATE " + TABLE_APPOINTMENT
             + " SET "
             + COLUMN_APPOINTMENT_TITLE + " = ?" + ", "
@@ -321,7 +321,7 @@ public class Datasource {
 
     private static PreparedStatement updateAppointment = null;
 
-    private static String UPDATE_ADDRESS_STRING = "UPDATE " + TABLE_ADDRESS
+    private static final String UPDATE_ADDRESS_STRING = "UPDATE " + TABLE_ADDRESS
             + " SET " + COLUMN_ADDRESS_ADDRESS + " = ?" + ", "
             + COLUMN_ADDRESS_ADDRESS2 + " = ?" + ", "
             + COLUMN_ADDRESS_CITYID + " = ?" + ", "
@@ -332,6 +332,14 @@ public class Datasource {
             + " WHERE " + COLUMN_ADDRESS_ADDRESSID + " = ?;";
 
     private static PreparedStatement updateAddress = null;
+
+    private static String UPDATE_CUSTOMER_STRING = "UPDATE " + TABLE_CUSTOMER
+            + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ?" + "'" + ", "
+            + COLUMN_CUSTOMER_LASTUPDATE + " = ?" + ", "
+            + COLUMN_CUSTOMER_LASTUPDATEBY + " = ?"
+            + " WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = ?;";
+
+    private static PreparedStatement updateCustomer = null;
 
     // globals
     /**
@@ -770,6 +778,7 @@ public class Datasource {
      * @param address
      * @return addressId of the new address, otherwise -1
      * @throws ClassNotFoundException
+     * @throws java.sql.SQLException
      */
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
@@ -958,6 +967,8 @@ public class Datasource {
         }
 
         try {
+            connection.prepareStatement(UPDATE_ADDRESS_STRING);
+
             updateAddress.setString(1, address.getAddress());
             updateAddress.setString(2, address.getAddress2());
             updateAddress.setInt(3, address.getCityId());
@@ -993,7 +1004,11 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static boolean updateCustomer(Customer customer) throws ClassNotFoundException, SQLException {
+    public static boolean updateCustomer(Customer customer)
+            throws ClassNotFoundException, SQLException {
+
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp lastUpdate = Timestamp.valueOf(todaysDate);
 
         int customerId = customer.getCustomerID();
 
@@ -1002,17 +1017,6 @@ public class Datasource {
             return false;
         }
 
-        String customerName = customer.getCustomerName();
-        boolean active = true;
-        String lastUpdate = LocalDateTime.now().toString();
-        String lastUpdateBy = loggedInUser;
-
-        String updateCustomer = "UPDATE " + TABLE_CUSTOMER
-                + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = " + "'" + customerName + "'" + ", "
-                + COLUMN_CUSTOMER_LASTUPDATE + " = " + "'" + lastUpdate + "'" + ", "
-                + COLUMN_CUSTOMER_LASTUPDATEBY + " = " + "'" + lastUpdateBy + "'"
-                + " WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = " + customerId;
-
         boolean open = Datasource.open();
 
         if (!open) {
@@ -1020,9 +1024,14 @@ public class Datasource {
             return false;
         }
 
-        try (Statement statement = connection.createStatement()) {
-            connection.prepareStatement(updateCustomer);
-            int updateCount = statement.executeUpdate(updateCustomer);
+        try {
+            updateCustomer = connection.prepareStatement(UPDATE_CUSTOMER_STRING);
+            updateCustomer.setString(1, customer.getCustomerName());
+            updateCustomer.setTimestamp(2, lastUpdate);
+            updateCustomer.setString(3, loggedInUser);
+            updateCustomer.setInt(4, customerId);
+
+            int updateCount = updateCustomer.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
