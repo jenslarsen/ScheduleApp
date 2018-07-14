@@ -113,13 +113,34 @@ public class FXMLEditAppointmentController {
         try {
             String startString = datePickerStart.getValue() + "T"
                     + comboStartHour.getValue() + ":" + comboStartMinute.getValue() + ":00";
-            System.out.println("Start :" + startString);
-            editAppointment.setStart(LocalDateTime.parse(startString));
+
+            LocalDateTime ldtStart = LocalDateTime.parse(startString);
+            editAppointment.setStart(ldtStart);
 
             String endString = datePickerEnd.getValue() + "T"
                     + comboEndHour.getValue() + ":" + comboEndMinute.getValue() + ":00";
-            System.out.println("End: :" + endString);
-            editAppointment.setEnd(LocalDateTime.parse(endString));
+
+            LocalDateTime ldtEnd = LocalDateTime.parse(endString);
+            editAppointment.setEnd(ldtEnd);
+
+            if (ldtStart.isAfter(ldtEnd)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Time entry error");
+                alert.setHeaderText("Problem with appointment times");
+                alert.setContentText("Start date and time must be before end date and time");
+                alert.showAndWait();
+                return;
+            }
+
+            if (ldtStart.toLocalTime().isBefore(Datasource.BUS_OPEN)
+                    || ldtEnd.toLocalTime().isAfter(Datasource.BUS_CLOSE)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Time entry error");
+                alert.setHeaderText("Problem with appointment times");
+                alert.setContentText("Appointments must be within business hours");
+                alert.showAndWait();
+                return;
+            }
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
