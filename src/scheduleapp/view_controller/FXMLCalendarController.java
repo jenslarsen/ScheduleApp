@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -137,7 +139,30 @@ public class FXMLCalendarController {
     }
 
     @FXML
-    private void deleteButtonClicked() {
+    private void deleteButtonClicked() throws ClassNotFoundException {
+        int index = tableViewCalendar.getSelectionModel().getSelectedIndex();
+
+        if (index < 0) {
+            return;   // don't do anything if no appointment is selected
+        }
+
+        Datasource.appointmentBeingEdited = appointments.get(index);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete appointment" + " "
+                + Datasource.appointmentBeingEdited.getTitle());
+        alert.setContentText("Are you sure?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() != ButtonType.OK) {
+            return;
+        }
+
+        Datasource.deleteAppointment(Datasource.appointmentBeingEdited.getAppointmentID());
+
+        // reload appointments after the change
+        loadAppointmentsWithContacts();
     }
 
     @FXML
