@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -34,15 +35,17 @@ import java.util.List;
  *
  * - ID fields were set to auto-increment starting at ID 100.
  *
- * - The user that is logging into the application is the same as the contact
- * listed on the appointment. Therefore, only appointments for the current
- * logged in user are shown in the appointment list.
+ * - The user that is logging into the application (consultant) is the same as
+ * the contact listed on the appointment. Therefore, only appointments for the
+ * current logged in user are shown in the appointment list.
  *
  * - The reminder table is not used - it doesn't seem necessary for this
  * application.
  *
  * - The address table does not have a state field so none of the address have
  * one.
+ *
+ * - Business hours are between 8am and 5pm local time.
  *
  * @author Jens Larsen
  */
@@ -382,7 +385,16 @@ public class Datasource {
     public static AppointmentWithContact appointmentBeingEdited
             = new AppointmentWithContact();
 
+    /**
+     * Static variable to store the current timezone
+     */
     public static ZoneId timeZone;
+
+    /**
+     * Static variables to store the business operating hours
+     */
+    public static final LocalTime BUS_OPEN = LocalTime.parse("08:00");
+    public static final LocalTime BUS_CLOSE = LocalTime.parse("17:00:00");
 
     /**
      * Opens the database for access
