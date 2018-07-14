@@ -179,7 +179,7 @@ public class FXMLCalendarController {
     @FXML
     private void calendarButtonClicked() {
         // already on the calendar screen - don't do anything!
-        // maybe make this a radio button or tab instead to be more clear??    }
+        // maybe make this a radio button or tab instead to be more clear??
     }
 
     /**
@@ -197,6 +197,7 @@ public class FXMLCalendarController {
         loadAppointmentsWithContacts();
 
         // add a listener for when the user selects another calendar view
+        // use a lambda funtion to make this code much simpler
         calType.selectedToggleProperty().addListener((
                 ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) -> {
             if (calType.getSelectedToggle() != null) {
