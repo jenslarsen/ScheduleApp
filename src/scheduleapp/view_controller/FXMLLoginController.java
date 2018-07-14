@@ -92,6 +92,7 @@ public class FXMLLoginController extends Application {
         //Locale.setDefault(new Locale("fr", "FR"));
         // this line is used to set the time zone
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Copenhagen"));
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Los Angeles"));
 
         // get and store the system time zone
         Datasource.timeZone = ZoneId.systemDefault();
