@@ -453,7 +453,7 @@ public class Datasource {
         ResultSet result = null;
         try {
             result = passwordQuery.executeQuery();
-        } catch (SQLException sQLException) {
+        } catch (SQLException SQLException) {
             throw new LoginException("SQL Error checking password");
         }
 
@@ -482,7 +482,8 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static List<CustomerWithAddress> getCustomersWithAddresses() throws ClassNotFoundException, SQLException {
+    public static List<CustomerWithAddress> getCustomersWithAddresses()
+            throws ClassNotFoundException, SQLException {
 
         List<CustomerWithAddress> customers = new ArrayList<>();
 
@@ -746,7 +747,7 @@ public class Datasource {
      */
     public static int addCity(City city) throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
-        Timestamp createDate = Timestamp.valueOf(todaysDate);
+        Timestamp createDate = Datasource.convertLTDtoTimestamp(todaysDate);
         Timestamp lastUpdate = createDate;
 
         int cityId = -1;
@@ -799,7 +800,7 @@ public class Datasource {
      */
     public static int addAddress(Address address) throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
-        Timestamp createDate = Timestamp.valueOf(todaysDate);
+        Timestamp createDate = convertLTDtoTimestamp(todaysDate);
         Timestamp lastUpdate = createDate;
 
         int addressId = -1;
@@ -907,8 +908,11 @@ public class Datasource {
     public static int addAppointment(Appointment appointment)
             throws ClassNotFoundException, SQLException {
         LocalDateTime todaysDate = LocalDateTime.now();
-        Timestamp createDate = Timestamp.valueOf(todaysDate);
+        Timestamp createDate = convertLTDtoTimestamp(todaysDate);
         Timestamp lastUpdate = createDate;
+
+        Timestamp start = Datasource.convertLTDtoTimestamp(appointment.getStart());
+        Timestamp end = Datasource.convertLTDtoTimestamp(appointment.getEnd());
 
         int appointmentId = -1;
         ResultSet result;
@@ -929,8 +933,8 @@ public class Datasource {
             appointmentInsert.setString(4, appointment.getLocation());
             appointmentInsert.setString(5, appointment.getContact());
             appointmentInsert.setString(6, appointment.getUrl());
-            appointmentInsert.setTimestamp(7, Timestamp.valueOf(appointment.getStart()));
-            appointmentInsert.setTimestamp(8, Timestamp.valueOf(appointment.getEnd()));
+            appointmentInsert.setTimestamp(7, start);
+            appointmentInsert.setTimestamp(8, end);
 
             appointmentInsert.setTimestamp(9, createDate);
             appointmentInsert.setString(10, Datasource.loggedInUser);
@@ -967,7 +971,7 @@ public class Datasource {
             throws ClassNotFoundException, SQLException {
 
         LocalDateTime todaysDate = LocalDateTime.now();
-        Timestamp lastUpdate = Timestamp.valueOf(todaysDate);
+        Timestamp lastUpdate = Datasource.convertLTDtoTimestamp(todaysDate);
 
         int addressId = address.getAddressId();
 
@@ -1021,9 +1025,8 @@ public class Datasource {
      */
     public static boolean updateCustomer(Customer customer)
             throws ClassNotFoundException, SQLException {
-
         LocalDateTime todaysDate = LocalDateTime.now();
-        Timestamp lastUpdate = Timestamp.valueOf(todaysDate);
+        Timestamp lastUpdate = Datasource.convertLTDtoTimestamp(todaysDate);
 
         int customerId = customer.getCustomerID();
 
@@ -1070,7 +1073,14 @@ public class Datasource {
      * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static boolean updateAppointment(Appointment appointment) throws ClassNotFoundException, SQLException {
+    public static boolean updateAppointment(Appointment appointment)
+            throws ClassNotFoundException, SQLException {
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp createDate = convertLTDtoTimestamp(todaysDate);
+        Timestamp lastUpdate = createDate;
+
+        Timestamp start = Datasource.convertLTDtoTimestamp(appointment.getStart());
+        Timestamp end = Datasource.convertLTDtoTimestamp(appointment.getEnd());
 
         int appointmentId = appointment.getAppointmentID();
 
@@ -1078,9 +1088,6 @@ public class Datasource {
             System.err.println("Error with appointmentId! Unable to update appointment.");
             return false;
         }
-
-        LocalDateTime todaysDate = LocalDateTime.now();
-        Timestamp lastUpdate = Timestamp.valueOf(todaysDate);
 
         String lastUpdateBy = loggedInUser;
 
@@ -1099,13 +1106,11 @@ public class Datasource {
             updateAppointment.setString(4, appointment.getLocation());
             updateAppointment.setString(5, appointment.getContact());
             updateAppointment.setString(6, appointment.getUrl());
-            updateAppointment.setTimestamp(7, Timestamp.valueOf(appointment.getStart()));
-            updateAppointment.setTimestamp(8, Timestamp.valueOf(appointment.getEnd()));
+            updateAppointment.setTimestamp(7, start);
+            updateAppointment.setTimestamp(8, end);
             updateAppointment.setTimestamp(9, lastUpdate);
             updateAppointment.setString(10, lastUpdateBy);
             updateAppointment.setInt(11, appointmentId);
-
-            System.out.println("Update appointment: " + updateAppointment.toString());
 
             int updateCount = updateAppointment.executeUpdate();
             if (updateCount > 0) {
@@ -1198,11 +1203,11 @@ public class Datasource {
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
 
-                Timestamp ts = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(ts.toLocalDateTime());
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(convertTimestampToLTD(tsStart));
 
                 Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
-                tempAppointment.setEnd(tsEnd.toLocalDateTime());
+                tempAppointment.setEnd(convertTimestampToLTD(tsEnd));
 
                 appointments.add(tempAppointment);
             }
@@ -1250,11 +1255,11 @@ public class Datasource {
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
 
-                Timestamp ts = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(ts.toLocalDateTime());
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(convertTimestampToLTD(tsStart));
 
                 Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
-                tempAppointment.setEnd(tsEnd.toLocalDateTime());
+                tempAppointment.setEnd(convertTimestampToLTD(tsEnd));
 
                 appointments.add(tempAppointment);
             }
@@ -1293,11 +1298,11 @@ public class Datasource {
                 tempAppointment.setContact(COLUMN_APPOINTMENT_CONTACT);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
 
-                Timestamp ts = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(ts.toLocalDateTime());
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(convertTimestampToLTD(tsStart));
 
                 Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
-                tempAppointment.setEnd(tsEnd.toLocalDateTime());
+                tempAppointment.setEnd(convertTimestampToLTD(tsEnd));
 
                 appointments.add(tempAppointment);
             }
