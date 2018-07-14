@@ -151,6 +151,22 @@ public class Datasource {
             + " = " + TABLE_COUNTRY + "." + COLUMN_COUNTRY_COUNTRYID
             + ") WHERE " + TABLE_CUSTOMER + "." + "active = 1;";
 
+    private static final String QUERY_APPTOINTMENTSWITHCONTACTS_STRING
+            = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ", "
+            + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERNAME + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_TITLE + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_DESCRIPTION + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_LOCATION + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_URL + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_START + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_END + ", "
+            + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CONTACT
+            + " FROM " + TABLE_APPOINTMENT + " INNER JOIN " + TABLE_CUSTOMER
+            + " ON " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID
+            + " = " + TABLE_CUSTOMER + "." + COLUMN_CUSTOMER_CUSTOMERID + ";";
+
     private static final String QUERY_MONTHAPPTSWITHCONTACTS_STRING
             = "SELECT " + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_APPOINTMENTID + ", "
             + TABLE_APPOINTMENT + "." + COLUMN_APPOINTMENT_CUSTOMERID + ", "
@@ -333,7 +349,7 @@ public class Datasource {
 
     private static PreparedStatement updateAddress = null;
 
-    private static String UPDATE_CUSTOMER_STRING = "UPDATE " + TABLE_CUSTOMER
+    private static final String UPDATE_CUSTOMER_STRING = "UPDATE " + TABLE_CUSTOMER
             + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ?" + "'" + ", "
             + COLUMN_CUSTOMER_LASTUPDATE + " = ?" + ", "
             + COLUMN_CUSTOMER_LASTUPDATEBY + " = ?"
@@ -995,8 +1011,6 @@ public class Datasource {
     }
 
     /**
-     * >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NEEDS TO BE FIXED >>>>>>>>>>>>>>>>>>>>>>>>
-     *
      * Updates and existing customer
      *
      * @param customer
@@ -1117,7 +1131,8 @@ public class Datasource {
      * @throws SQLException
      * @throws ClassNotFoundException
      */
-    public static boolean inactivateCustomer(int customerId) throws SQLException, ClassNotFoundException {
+    public static boolean inactivateCustomer(int customerId)
+            throws SQLException, ClassNotFoundException {
 
         boolean open = Datasource.open();
 
@@ -1214,8 +1229,6 @@ public class Datasource {
         queryAppointments.setTimestamp(2, tsTodaysDate);
         queryAppointments.setTimestamp(3, tsTodaysDate);
 
-        System.out.println("Getting appointments....\n" + queryAppointments.toString());
-
         if (!open) {
             System.err.println("Unable to open database connection when trying get appointments with contacts!");
             return null;
@@ -1246,6 +1259,48 @@ public class Datasource {
             }
         }
 
+        return appointments;
+    }
+
+    public static List<AppointmentWithContact> getAppointmentsWithContacts()
+            throws ClassNotFoundException, SQLException {
+        List<AppointmentWithContact> appointments = new ArrayList<>();
+        AppointmentWithContact tempAppointment = new AppointmentWithContact();
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Unable to open database connection when trying get appointments with contacts!");
+            return null;
+        }
+
+        try {
+            queryAppointments = connection.prepareStatement(QUERY_APPTOINTMENTSWITHCONTACTS_STRING);
+
+            ResultSet result = queryAppointments.executeQuery();
+
+            while (result.next()) {
+
+                tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
+                tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
+                tempAppointment.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
+                tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
+                tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
+                tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
+                tempAppointment.setContact(Datasource.loggedInUser);
+                tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
+
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(tsStart.toLocalDateTime());
+
+                Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
+                tempAppointment.setEnd(tsEnd.toLocalDateTime());
+
+                appointments.add(tempAppointment);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
         return appointments;
     }
 }
