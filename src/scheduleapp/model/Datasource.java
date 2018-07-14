@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1197,8 +1198,8 @@ public class Datasource {
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
 
-                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(tsStart.toLocalDateTime());
+                Timestamp ts = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(ts.toLocalDateTime());
 
                 Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
                 tempAppointment.setEnd(tsEnd.toLocalDateTime());
@@ -1249,8 +1250,8 @@ public class Datasource {
                 tempAppointment.setContact(Datasource.loggedInUser);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
 
-                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(tsStart.toLocalDateTime());
+                Timestamp ts = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(ts.toLocalDateTime());
 
                 Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
                 tempAppointment.setEnd(tsEnd.toLocalDateTime());
@@ -1277,6 +1278,8 @@ public class Datasource {
         try {
             queryAppointments = connection.prepareStatement(QUERY_APPTOINTMENTSWITHCONTACTS_STRING);
 
+            System.out.println(queryAppointments.toString());
+
             ResultSet result = queryAppointments.executeQuery();
 
             while (result.next()) {
@@ -1287,11 +1290,11 @@ public class Datasource {
                 tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
                 tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
                 tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
-                tempAppointment.setContact(Datasource.loggedInUser);
+                tempAppointment.setContact(COLUMN_APPOINTMENT_CONTACT);
                 tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
 
-                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
-                tempAppointment.setStart(tsStart.toLocalDateTime());
+                Timestamp ts = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(ts.toLocalDateTime());
 
                 Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
                 tempAppointment.setEnd(tsEnd.toLocalDateTime());
@@ -1302,5 +1305,23 @@ public class Datasource {
             return null;
         }
         return appointments;
+    }
+
+    // utility methods for time zone conversion
+    public static Timestamp convertLTDtoTimestamp(LocalDateTime ldt) {
+        ZonedDateTime zdt = ldt.atZone(timeZone);
+        ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
+        ldt = utc.toLocalDateTime();
+        return Timestamp.valueOf(ldt);
+    }
+
+    public static LocalDateTime convertTimestampToLTD(Timestamp ts) {
+        ZonedDateTime zdt
+                = ts.toLocalDateTime().atZone(ZoneId.of("UTC"));
+
+        ZonedDateTime newZdt
+                = zdt.withZoneSameInstant(timeZone);
+
+        return newZdt.toLocalDateTime();
     }
 }
