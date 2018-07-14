@@ -189,6 +189,8 @@ public class FXMLEditAppointmentController {
         // load customers into dropdown
         customers = Datasource.getCustomersWithAddresses();
         List<String> listOfCustomers = new ArrayList();
+
+        // lambda to populate the customer combobox
         customers.forEach((customer) -> {
             listOfCustomers.add(customer.getCustomerName());
         });
@@ -220,12 +222,15 @@ public class FXMLEditAppointmentController {
 
         comboStartHour.getSelectionModel().select(Datasource.appointmentBeingEdited
                 .getStart().getHour());
-        comboStartMinute.getSelectionModel().select(Datasource.appointmentBeingEdited
-                .getStart().getMinute());
         comboEndHour.getSelectionModel().select(Datasource.appointmentBeingEdited
                 .getEnd().getHour());
-        comboEndMinute.getSelectionModel().select(Datasource.appointmentBeingEdited
-                .getEnd().getMinute());
+
+        comboStartMinute.getSelectionModel()
+                .select(Integer.toString(Datasource.appointmentBeingEdited
+                        .getStart().getMinute()));
+        comboEndMinute.getSelectionModel()
+                .select(Integer.toString(Datasource.appointmentBeingEdited
+                        .getEnd().getMinute()));
 
         String customerName = Datasource.appointmentBeingEdited.getCustomerName();
 
