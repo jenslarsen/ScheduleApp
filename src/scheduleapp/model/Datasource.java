@@ -1324,6 +1324,30 @@ public class Datasource {
         return appointments;
     }
 
+    public static boolean deleteAppointment(int appointmentID) throws ClassNotFoundException {
+        boolean result = false;
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Error opening datasource!");
+        }
+
+        try {
+            PreparedStatement apptDelete
+                    = connection.prepareStatement(
+                            "DELETE FROM appointment WHERE appointmentId = ?;");
+            apptDelete.setInt(1, appointmentID);
+
+            result = apptDelete.execute();
+        } catch (SQLException e) {
+            System.err.println("SQL error deleting appointment!");
+            System.err.println(e.getMessage());
+            return result;
+        }
+        return result;
+    }
+
     // utility methods for time zone conversion
     public static Timestamp convertLTDtoTimestamp(LocalDateTime ldt) {
         ZonedDateTime zdt = ldt.atZone(timeZone);
