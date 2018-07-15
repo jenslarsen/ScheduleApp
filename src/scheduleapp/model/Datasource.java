@@ -1482,6 +1482,24 @@ public class Datasource {
         return users;
     }
 
+    public static AppointmentWithContact appointmentNigh() throws ClassNotFoundException, SQLException {
+        List<AppointmentWithContact> appointments = getWeekApptsWithContacts();
+
+        LocalDateTime loginTime = LocalDateTime.now();
+        LocalDateTime loginTimePlus15 = loginTime.plusMinutes(15);
+        LocalDateTime loginTimeMinus15 = loginTime.minusMinutes(15);
+
+        for (AppointmentWithContact appointment : appointments) {
+            if (appointment.getStart().getDayOfYear() == loginTime.getDayOfYear()) {
+                LocalDateTime start = appointment.getStart();
+                if (start.isBefore(loginTimePlus15) || start.isAfter(loginTimeMinus15)) {
+                    return appointment;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Utility method for time zone conversion. Converts the passed
      * LocalDateTime to a Timestamp in UTC to be inserted into the database
