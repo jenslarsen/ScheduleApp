@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="scheduleapp.view_controller.FXMLAddCustomerController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduleapp.view_controller.FXMLAddCustomerController">
    <children>
       <Label layoutX="42.0" layoutY="43.0" text="Add Customer">
          <font>
@@ -38,18 +37,24 @@
          </font>
       </Label>
       <TextField fx:id="textFieldCity" layoutX="150.0" layoutY="217.0" />
-      <Label layoutX="361.0" layoutY="267.0" text="Country" textAlignment="RIGHT">
+      <Label layoutX="360.0" layoutY="218.0" text="Postal Code" textAlignment="RIGHT">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="textFieldCountry" layoutX="465.0" layoutY="266.0" />
+      <TextField fx:id="textFieldPostalCode" layoutX="465.0" layoutY="217.0" />
       <Label layoutX="70.0" layoutY="267.0" text="Phone" textAlignment="RIGHT">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Label>
       <TextField fx:id="textFieldPhone" layoutX="150.0" layoutY="266.0" />
+      <Label layoutX="361.0" layoutY="267.0" text="Country" textAlignment="RIGHT">
+         <font>
+            <Font name="Fira Sans Regular" size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldCountry" layoutX="465.0" layoutY="266.0" />
       <Button fx:id="buttonSave" layoutX="329.0" layoutY="332.0" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save">
          <font>
             <Font name="Fira Sans Regular" size="18.0" />
@@ -60,11 +65,5 @@
             <Font name="Fira Sans Regular" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="360.0" layoutY="218.0" text="Postal Code" textAlignment="RIGHT">
-         <font>
-            <Font name="Fira Sans Regular" size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textFieldPostalCode" layoutX="465.0" layoutY="217.0" />
    </children>
 </AnchorPane>
