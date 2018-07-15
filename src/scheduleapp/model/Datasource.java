@@ -1501,6 +1501,40 @@ public class Datasource {
     }
 
     /**
+     * Check the consultants schedule to see if a proposed appointment would be
+     * a conflict.
+     *
+     * @param newStart start date & time of the new appointment
+     * @param newEnd end date & time of the new appointment
+     * @return true if there is a conflict
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static boolean appointmentConflict(
+            LocalDateTime newStart, LocalDateTime newEnd)
+            throws ClassNotFoundException, SQLException {
+
+        List<AppointmentWithContact> appointments = getAppointmentsWithContacts();
+
+        for (AppointmentWithContact appointment : appointments) {
+            if (newStart.isAfter(appointment.getStart())
+                    && newStart.isBefore(appointment.getEnd())) {
+                return true;
+            } else if (newStart.equals(appointment.getStart())
+                    && newStart.isBefore(appointment.getEnd())) {
+                return true;
+            } else if (newStart.isAfter(appointment.getStart())
+                    && newStart.equals(appointment.getEnd())) {
+                return true;
+            } else if (newStart.equals(appointment.getStart())
+                    && newStart.equals(appointment.getEnd())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Utility method for time zone conversion. Converts the passed
      * LocalDateTime to a Timestamp in UTC to be inserted into the database
      *
