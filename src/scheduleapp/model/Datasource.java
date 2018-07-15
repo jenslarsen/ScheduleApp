@@ -1482,6 +1482,13 @@ public class Datasource {
         return users;
     }
 
+    /**
+     * Checks if an appointment on the consultants schedule is within 15 mintues
+     *
+     * @return AppointmentWithContact for the nearby appointment
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static AppointmentWithContact appointmentNigh() throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = getWeekApptsWithContacts();
 
