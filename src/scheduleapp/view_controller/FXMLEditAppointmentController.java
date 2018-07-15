@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import scheduleapp.model.Appointment;
 import scheduleapp.model.CustomerWithAddress;
 import scheduleapp.model.Datasource;
+import scheduleapp.model.TimeEntryException;
 
 /**
  * FXML Controller class for editing appointments
@@ -124,28 +125,28 @@ public class FXMLEditAppointmentController {
             editAppointment.setEnd(ldtEnd);
 
             if (ldtStart.isAfter(ldtEnd)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Time entry error");
-                alert.setHeaderText("Problem with appointment times");
-                alert.setContentText("Start date and time must be before end date and time");
-                alert.showAndWait();
-                return;
+                throw new TimeEntryException(
+                        "Start date and time must be before end date and time");
             }
 
             if (ldtStart.toLocalTime().isBefore(Datasource.BUS_OPEN)
                     || ldtEnd.toLocalTime().isAfter(Datasource.BUS_CLOSE)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Time entry error");
-                alert.setHeaderText("Problem with appointment times");
-                alert.setContentText("Appointments must be within business hours");
-                alert.showAndWait();
-                return;
+                throw new TimeEntryException(
+                        "Appointments must be within business hours");
             }
+
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
             alert.setHeaderText("You must enter a start and end dates and times");
-            alert.setContentText("Some fields are empty");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+        } catch (TimeEntryException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Time entry error");
+            alert.setHeaderText("Problem with appointment times");
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
             return;
         }
