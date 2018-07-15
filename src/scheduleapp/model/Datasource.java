@@ -277,7 +277,7 @@ public class Datasource {
             = "SELECT * FROM " + TABLE_CITY
             + " WHERE " + COLUMN_CITY_CITY + " = ?"
             + " AND " + COLUMN_CITY_COUNTRYID + " = ?"
-            + "';";
+            + ";";
 
     private static PreparedStatement cityQuery = null;
 
@@ -360,7 +360,7 @@ public class Datasource {
     private static PreparedStatement updateAddress = null;
 
     private static final String UPDATE_CUSTOMER_STRING = "UPDATE " + TABLE_CUSTOMER
-            + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ?" + "'" + ", "
+            + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ?" + ", "
             + COLUMN_CUSTOMER_LASTUPDATE + " = ?" + ", "
             + COLUMN_CUSTOMER_LASTUPDATEBY + " = ?"
             + " WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = ?;";
