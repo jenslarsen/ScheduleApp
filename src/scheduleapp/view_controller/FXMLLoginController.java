@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import scheduleapp.model.AppointmentWithContact;
 import scheduleapp.model.Datasource;
 import scheduleapp.model.LoginException;
 
@@ -49,6 +50,8 @@ public class FXMLLoginController extends Application {
     private String usernameText;
     private String signinText;
     private String unableToSwitch;
+    private String infoTitle;
+    private String upcomingAppt;
 
     @FXML
     private Button loginButton;
@@ -123,6 +126,8 @@ public class FXMLLoginController extends Application {
             signinText = "Se connecter";
             switchError = "Ce n'est pas bon...";
             unableToSwitch = "Erreur lors du passage à l'écran du calendar";
+            infoTitle = "Information";
+            upcomingAppt = "Prochain rendez-vous";
         } else { // default to English
             loginText = "Login";
             errorTitle = "Error";
@@ -134,6 +139,8 @@ public class FXMLLoginController extends Application {
             signinText = "Sign in";
             switchError = "This isn't good...";
             unableToSwitch = "Error switching to calendar screen!";
+            infoTitle = "Information";
+            upcomingAppt = "Upcoming appointment";
         }
 
         // update on screen controls
@@ -178,14 +185,26 @@ public class FXMLLoginController extends Application {
                 logFile.append(LocalDateTime.now().toString() + " " + userName
                         + " logged in\n");
             } catch (IOException e) {
-                System.out.println("Unable to open log file for writing!");
+                System.err.println("Unable to open log file for writing!");
             } finally {
                 try {
                     logFile.close();
                 } catch (IOException ex) {
-                    System.out.println("Unable to close log file!");
+                    System.err.println("Unable to close log file!");
                 }
             }
+
+            // check for an upcoming appoint withing 15 minutes
+            AppointmentWithContact appointment = Datasource.appointmentNigh();
+
+            if (appointment != null) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle(upcomingAppt);
+                alert.setHeaderText(appointment.getStart().toString());
+                alert.setContentText(appointment.getTitle());
+                alert.showAndWait();
+            }
+
             switchToCalendarScreen();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
