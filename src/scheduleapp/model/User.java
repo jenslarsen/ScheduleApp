@@ -5,22 +5,23 @@
  */
 package scheduleapp.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
+ * Models user table in the database
  *
  * @author Jens Larsen
  */
 public class User {
 
     private int userId;
-    private String username;
+    private String userName;
     private String password;
     private boolean active;
     private String createBy;
-    private Timestamp createDate;
-    private Timestamp lastUpdate;
-    private String lastUpdatedBy;
+    private LocalDateTime createDate;
+    private String lastUpdate;
+    private String lateUpdatedBy;
 
     public int getUserId() {
         return userId;
@@ -30,12 +31,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -62,27 +63,27 @@ public class User {
         this.createBy = createBy;
     }
 
-    public Timestamp getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Timestamp getLastUpdate() {
+    public String getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(String lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    public String getLastUpdatedBy() {
-        return lastUpdatedBy;
+    public String getLateUpdatedBy() {
+        return lateUpdatedBy;
     }
 
-    public void setLastUpdatedBy(String lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
+    public void setLateUpdatedBy(String lateUpdatedBy) {
+        this.lateUpdatedBy = lateUpdatedBy;
     }
 }
