@@ -640,14 +640,13 @@ public class Datasource {
             return cityId;
         }
 
-        int countryId = Datasource.cityExists(city, country);
+        int countryId = Datasource.countryExists(country);
 
         if (countryId < 1) {
             return -1;     // unable to add city if country does not exist
         }
 
         try {
-
             cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
 
             cityQuery.setString(1, city);
@@ -797,8 +796,10 @@ public class Datasource {
             cityQuery = connection.prepareStatement(QUERY_CITY_STRING);
             cityQuery.setString(1, city.getCity());
             cityQuery.setInt(2, city.getCountryid());
+
             cityInsert.execute();
             result = cityQuery.executeQuery();
+
             if (result.next()) {
                 cityId = result.getInt(COLUMN_CITY_CITYID);
             }
@@ -892,7 +893,6 @@ public class Datasource {
         }
 
         try {
-
             countryInsert = connection.prepareStatement(ADD_COUNTRY_STRING);
 
             countryInsert.setString(1, country.getCountry());
@@ -906,6 +906,7 @@ public class Datasource {
 
             countryInsert.execute();
             result = countryQuery.executeQuery();
+
             if (result.next()) {
                 countryId = result.getInt(COLUMN_COUNTRY_COUNTRYID);
             }
