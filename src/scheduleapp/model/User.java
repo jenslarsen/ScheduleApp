@@ -5,7 +5,6 @@
  */
 package scheduleapp.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -21,7 +20,7 @@ public class User {
     private boolean active;
     private String createBy;
     private LocalDateTime createDate;
-    private Timestamp lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdatedBy;
 
     public int getUserId() {
@@ -72,11 +71,11 @@ public class User {
         this.createDate = createDate;
     }
 
-    public Timestamp getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Timestamp lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
