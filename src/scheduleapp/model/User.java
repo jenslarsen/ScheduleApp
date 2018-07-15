@@ -21,7 +21,7 @@ public class User {
     private String createBy;
     private LocalDateTime createDate;
     private String lastUpdate;
-    private String lateUpdatedBy;
+    private String lastUpdatedBy;
 
     public int getUserId() {
         return userId;
@@ -80,10 +80,10 @@ public class User {
     }
 
     public String getLateUpdatedBy() {
-        return lateUpdatedBy;
+        return lastUpdatedBy;
     }
 
-    public void setLateUpdatedBy(String lateUpdatedBy) {
-        this.lateUpdatedBy = lateUpdatedBy;
+    public void setLateUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
     }
 }
