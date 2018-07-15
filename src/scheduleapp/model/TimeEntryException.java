@@ -6,6 +6,7 @@
 package scheduleapp.model;
 
 /**
+ * Custom exception to handle time entry problems
  *
  * @author Jens Larsen
  */
