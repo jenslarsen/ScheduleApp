@@ -1241,11 +1241,65 @@ public class Datasource {
      * @return @throws ClassNotFoundException
      * @throws SQLException
      */
-    public static List<AppointmentWithContact> getMonthApptsWithContacts() throws ClassNotFoundException, SQLException {
+    public static List<AppointmentWithContact> getMonthApptsWithContacts()
+            throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
         LocalDateTime todaysDate = LocalDateTime.now();
         Timestamp tsTodaysDate = Timestamp.valueOf(todaysDate
         );
+        boolean open = Datasource.open();
+
+        queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
+        queryAppointments.setString(1, Datasource.loggedInUser);
+        queryAppointments.setTimestamp(2, tsTodaysDate);
+        queryAppointments.setTimestamp(3, tsTodaysDate);
+
+        if (!open) {
+            System.err.println("Unable to open database connection when trying get appointments with contacts!");
+            return null;
+        }
+
+        try (ResultSet result = queryAppointments.executeQuery()) {
+
+            while (result.next()) {
+
+                AppointmentWithContact tempAppointment = new AppointmentWithContact();
+
+                tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
+                tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
+                tempAppointment.setCustomerName(result.getString(COLUMN_CUSTOMER_CUSTOMERNAME));
+                tempAppointment.setTitle(result.getString(COLUMN_APPOINTMENT_TITLE));
+                tempAppointment.setDescription(result.getString(COLUMN_APPOINTMENT_DESCRIPTION));
+                tempAppointment.setLocation(result.getString(COLUMN_APPOINTMENT_LOCATION));
+                tempAppointment.setContact(Datasource.loggedInUser);
+                tempAppointment.setUrl(result.getString(COLUMN_APPOINTMENT_URL));
+
+                Timestamp tsStart = result.getTimestamp(COLUMN_APPOINTMENT_START);
+                tempAppointment.setStart(convertTimestampToLTD(tsStart));
+
+                Timestamp tsEnd = result.getTimestamp(COLUMN_APPOINTMENT_END);
+                tempAppointment.setEnd(convertTimestampToLTD(tsEnd));
+
+                appointments.add(tempAppointment);
+            }
+        }
+        return appointments;
+    }
+
+    /**
+     * Gets a list of appointments for the upcoming 30 days with associated
+     * contacts for the provided user
+     *
+     * @param user
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static List<AppointmentWithContact> getMonthApptsWithContacts(User user)
+            throws ClassNotFoundException, SQLException {
+        List<AppointmentWithContact> appointments = new ArrayList<>();
+        LocalDateTime todaysDate = LocalDateTime.now();
+        Timestamp tsTodaysDate = Timestamp.valueOf(todaysDate);
         boolean open = Datasource.open();
 
         queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
