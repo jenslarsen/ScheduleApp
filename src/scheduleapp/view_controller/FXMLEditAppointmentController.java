@@ -225,12 +225,18 @@ public class FXMLEditAppointmentController {
         comboEndHour.getSelectionModel().select(Datasource.appointmentBeingEdited
                 .getEnd().getHour());
 
-        comboStartMinute.getSelectionModel()
-                .select(Integer.toString(Datasource.appointmentBeingEdited
-                        .getStart().getMinute()));
-        comboEndMinute.getSelectionModel()
-                .select(Integer.toString(Datasource.appointmentBeingEdited
-                        .getEnd().getMinute()));
+        int startMin = Datasource.appointmentBeingEdited.getStart().getMinute();
+        if (startMin == 0) {
+            comboStartMinute.getSelectionModel().select("00");
+        } else {
+            comboStartMinute.getSelectionModel().select(Integer.toString(startMin));
+        }
+        int endMin = Datasource.appointmentBeingEdited.getEnd().getMinute();
+        if (endMin == 0) {
+            comboEndMinute.getSelectionModel().select("00");
+        } else {
+            comboEndMinute.getSelectionModel().select(Integer.toString(endMin));
+        }
 
         String customerName = Datasource.appointmentBeingEdited.getCustomerName();
 
