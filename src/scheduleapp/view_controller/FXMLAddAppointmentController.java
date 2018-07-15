@@ -8,6 +8,7 @@ package scheduleapp.view_controller;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,6 +134,11 @@ public class FXMLAddAppointmentController {
                         "Appointments must be within business hours");
             }
 
+            if (Datasource.appointmentConflict(ldtStart, ldtEnd)) {
+                throw new TimeEntryException(
+                        "Conflicts with an existing appointment!");
+            }
+
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
@@ -140,7 +146,7 @@ public class FXMLAddAppointmentController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
             return;
-        } catch (TimeEntryException e) {
+        } catch (TimeEntryException | DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
             alert.setHeaderText("Problem with appointment times");
