@@ -8,6 +8,8 @@ package scheduleapp.view_controller;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import scheduleapp.model.AppointmentWithContact;
+import scheduleapp.model.Datasource;
+import scheduleapp.model.User;
 
 /**
  * FXML Controller class
@@ -100,7 +105,36 @@ public class FXMLReportsController {
     }
 
     @FXML
+    private void displaySchedule() throws ClassNotFoundException, SQLException {
+        List<User> users = Datasource.getUsers();
+
+        StringBuilder report = new StringBuilder();
+
+        for (User user : users) {
+            report.append("Upcoming appointments for ")
+                    .append(user.getUserName())
+                    .append("\n\n");
+
+            List<AppointmentWithContact> appointments
+                    = Datasource.getMonthApptsWithContacts(user);
+
+            // lambda for clarity and simper code
+            appointments.forEach((appointment) -> {
+                report.append("\t")
+                        .append(appointment.getStart())
+                        .append(" to ")
+                        .append(appointment.getEnd())
+                        .append(" ")
+                        .append(appointment.getTitle()).append("\n");
+            });
+            report.append("\n");
+        }
+
+        textReport.setText(report.toString());
+    }
+
+    @FXML
     private void initialize() {
-        textReport.setText("Click a report to display it in this window");
+        textReport.setText("Click a report button below to display it in this window");
     }
 }
