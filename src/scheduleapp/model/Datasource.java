@@ -367,7 +367,6 @@ public class Datasource {
 
     private static PreparedStatement updateCustomer = null;
 
-    // globals
     /**
      * Static variable for the database connection
      */
@@ -399,7 +398,7 @@ public class Datasource {
     /**
      * Static variable to store the business open time
      */
-    public static final LocalTime BUS_OPEN = LocalTime.parse("08:00");
+    public static final LocalTime BUS_OPEN = LocalTime.parse("08:00:00");
 
     /**
      * Static variable to store the business close time
