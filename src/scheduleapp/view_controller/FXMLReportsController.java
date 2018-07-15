@@ -9,6 +9,8 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +41,9 @@ public class FXMLReportsController {
 
     @FXML
     private Button buttonReports;
+
+    @FXML
+    private Button buttonApptTypes;
 
     @FXML
     private Button loginlogButton;
@@ -128,6 +133,94 @@ public class FXMLReportsController {
                         .append(appointment.getTitle()).append("\n");
             });
             report.append("\n");
+        }
+
+        textReport.setText(report.toString());
+    }
+
+    @FXML
+    void displayApptTypes(ActionEvent event) throws ClassNotFoundException, SQLException {
+
+        List<AppointmentWithContact> appointments = Datasource.getAppointmentsWithContacts();
+        List<Integer> months = new ArrayList<>();
+
+        StringBuilder report = new StringBuilder();
+        for (AppointmentWithContact appointment : appointments) {
+            int monthNumber = appointment.getStart().getMonthValue();
+            if (!months.contains(monthNumber)) {
+                months.add(monthNumber);
+            }
+        }
+
+        for (Integer month : months) {
+
+            String monthName;
+            switch (month) {
+                case 1:
+                    monthName = "January";
+                    break;
+                case 2:
+                    monthName = "February";
+                    break;
+                case 3:
+                    monthName = "March";
+                    break;
+                case 4:
+                    monthName = "April";
+                    break;
+                case 5:
+                    monthName = "May";
+                    break;
+                case 6:
+                    monthName = "June";
+                    break;
+                case 7:
+                    monthName = "July";
+                    break;
+                case 8:
+                    monthName = "August";
+                    break;
+                case 9:
+                    monthName = "September";
+                    break;
+                case 10:
+                    monthName = "October";
+                    break;
+                case 11:
+                    monthName = "November";
+                    break;
+                case 12:
+                    monthName = "December";
+                    break;
+                default:
+                    monthName = "Invalid month";
+                    break;
+            }
+
+            HashMap<String, Integer> typesMap = new HashMap<>();
+
+            report.append("\nAppointment types for ")
+                    .append(monthName).append("\n\n");
+
+            // lambda for clarity
+            appointments.forEach((appointment) -> {
+                if (appointment.getStart().getMonthValue() == month) {
+                    if (typesMap.containsKey(appointment.getDescription())) {
+                        Integer currentNumber = typesMap.get(appointment.getDescription());
+                        typesMap.put(appointment.getDescription(), currentNumber + 1);
+                    } else {
+                        typesMap.put(appointment.getDescription(), 1);
+                    }
+                }
+            });
+
+            // lambda for clarity
+            typesMap.keySet().forEach((type) -> {
+                report.append(type)
+                        .append(": ")
+                        .append(typesMap.get(type))
+                        .append("\n");
+            });
         }
 
         textReport.setText(report.toString());

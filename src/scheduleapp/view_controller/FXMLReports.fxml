@@ -29,7 +29,7 @@
       </ButtonBar>
    <ButtonBar layoutX="73.0" layoutY="598.0" prefHeight="40.0" prefWidth="806.0">
      <buttons>
-       <Button mnemonicParsing="false" text="Appointment types by month">
+       <Button fx:id="buttonApptTypes" mnemonicParsing="false" onAction="#displayApptTypes" text="Appointment types by month">
            <font>
                   <Font name="Fira Sans Regular" size="13.0" />
                </font>
