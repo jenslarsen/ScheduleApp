@@ -392,14 +392,18 @@ public class Datasource {
             = new AppointmentWithContact();
 
     /**
-     * Static variable to store the current timezone
+     * Static variable to store the current time zone
      */
     public static ZoneId timeZone;
 
     /**
-     * Static variables to store the business operating hours
+     * Static variable to store the business open time
      */
     public static final LocalTime BUS_OPEN = LocalTime.parse("08:00");
+
+    /**
+     * Static variable to store the business close time
+     */
     public static final LocalTime BUS_CLOSE = LocalTime.parse("17:00:00");
 
     /**
@@ -1340,6 +1344,13 @@ public class Datasource {
         return appointments;
     }
 
+    /**
+     * Gets all the appointments in the database with associated contacts.
+     *
+     * @return ArrayList of AppointmentWithContact
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static List<AppointmentWithContact> getAppointmentsWithContacts()
             throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
@@ -1385,6 +1396,14 @@ public class Datasource {
         return appointments;
     }
 
+    /**
+     * Deletes an appointment from the database based on the passed appointment
+     * ID
+     *
+     * @param appointmentID
+     * @return true if successful, false if not
+     * @throws ClassNotFoundException
+     */
     public static boolean deleteAppointment(int appointmentID) throws ClassNotFoundException {
         boolean result = false;
 
@@ -1409,7 +1428,14 @@ public class Datasource {
         return result;
     }
 
-    public static List<User> getUsers() throws ClassNotFoundException {
+    /**
+     * Gets all the users in the database
+     *
+     * @return an ArrayList of User
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public static List<User> getUsers() throws ClassNotFoundException, SQLException {
         List<User> users = new ArrayList<>();
 
         boolean open = Datasource.open();
@@ -1452,10 +1478,18 @@ public class Datasource {
                     + e.getMessage());
             return null;
         }
+
+        Datasource.close();
         return users;
     }
 
-// utility methods for time zone conversion
+    /**
+     * Utility method for time zone conversion. Converts the passed
+     * LocalDateTime to a Timestamp in UTC to be inserted into the database
+     *
+     * @param ldt
+     * @return a UTC Timestamp
+     */
     public static Timestamp convertLTDtoTimestamp(LocalDateTime ldt) {
         ZonedDateTime zdt = ldt.atZone(timeZone);
         ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
@@ -1463,6 +1497,13 @@ public class Datasource {
         return Timestamp.valueOf(ldt);
     }
 
+    /**
+     * Utility method for time zone conversion. Converts the passed Timestamp to
+     * a LocalDateTime in the time zone stored in Datasource.timeZone
+     *
+     * @param ts
+     * @return a converted LocalDateTime
+     */
     public static LocalDateTime convertTimestampToLTD(Timestamp ts) {
         ZonedDateTime zdt
                 = ts.toLocalDateTime().atZone(ZoneId.of("UTC"));
