@@ -23,7 +23,7 @@ import scheduleapp.model.Datasource;
 /**
  * FXML Controller class
  *
- * @author dasuperman
+ * @author Jens Larsen
  */
 public class FXMLEditCustomerController {
 
@@ -103,19 +103,15 @@ public class FXMLEditCustomerController {
         int countryId = Datasource.countryExists(country);
 
         if (countryId < 1) {            /// country isn't in the dateabase
-            System.out.println("Couldn't find " + country + " in the database");
             Country countryToAdd = new Country(country);
             countryId = Datasource.addCountry(countryToAdd);
-            System.out.println("Added " + country + " with ID " + countryId);
         }
 
         int cityId = Datasource.cityExists(city, country);
 
         if (cityId < 1) {            /// city isn't in the dateabase
-            System.out.println("Couldn't find " + city + " in the database");
             City cityToAdd = new City(city, countryId);
             cityId = Datasource.addCity(cityToAdd);
-            System.out.println("Added " + city + " with ID " + cityId);
         }
 
         Address addressToUpdate = new Address(address, address2, cityId, postalCode, phone);
@@ -141,8 +137,6 @@ public class FXMLEditCustomerController {
             stage.close();
             return;
         }
-
-        System.out.println("Updated " + name + " with ID " + customerId);
 
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
