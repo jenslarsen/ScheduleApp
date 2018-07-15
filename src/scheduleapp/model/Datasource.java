@@ -87,8 +87,14 @@ public class Datasource {
     private static final String TABLE_APPOINTMENT = "appointment";
 
     // table columns
+    private static final String COLUMN_USER_USERID = "userId";
     private static final String COLUMN_USER_USERNAME = "userName";
     private static final String COLUMN_USER_PASSWORD = "password";
+    private static final String COLUMN_USER_ACTIVE = "active";
+    private static final String COLUMN_USER_CREATEBY = "createBy";
+    private static final String COLUMN_USER_CREATEDATE = "createDate";
+    private static final String COLUMN_USER_LASTUPDATE = "lastUpdate";
+    private static final String COLUMN_USER_LASTUPDATEDBY = "lastUpdatedBy";
     private static final String COLUMN_CUSTOMER_CUSTOMERID = "customerId";
     private static final String COLUMN_CUSTOMER_CUSTOMERNAME = "customerName";
     private static final String COLUMN_CUSTOMER_ADDRESSID = "addressId";
@@ -1283,7 +1289,6 @@ public class Datasource {
     public static List<AppointmentWithContact> getAppointmentsWithContacts()
             throws ClassNotFoundException, SQLException {
         List<AppointmentWithContact> appointments = new ArrayList<>();
-        AppointmentWithContact tempAppointment = new AppointmentWithContact();
 
         boolean open = Datasource.open();
 
@@ -1293,13 +1298,13 @@ public class Datasource {
         }
 
         try {
-            queryAppointments = connection.prepareStatement(QUERY_APPTOINTMENTSWITHCONTACTS_STRING);
-
-            System.out.println(queryAppointments.toString());
+            queryAppointments
+                    = connection.prepareStatement(QUERY_APPTOINTMENTSWITHCONTACTS_STRING);
 
             ResultSet result = queryAppointments.executeQuery();
 
             while (result.next()) {
+                AppointmentWithContact tempAppointment = new AppointmentWithContact();
 
                 tempAppointment.setAppointmentID(result.getInt(COLUMN_APPOINTMENT_APPOINTMENTID));
                 tempAppointment.setCustomerID(result.getInt(COLUMN_APPOINTMENT_CUSTOMERID));
@@ -1319,6 +1324,8 @@ public class Datasource {
                 appointments.add(tempAppointment);
             }
         } catch (SQLException e) {
+            System.err.println("SQL Error getting appointments with contacts: "
+                    + e.getMessage());
             return null;
         }
         return appointments;
@@ -1348,7 +1355,53 @@ public class Datasource {
         return result;
     }
 
-    // utility methods for time zone conversion
+    public static List<User> getUsers() throws ClassNotFoundException {
+        List<User> users = new ArrayList<>();
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Unable to open database connection when trying get users!");
+            return null;
+        }
+
+        try {
+            PreparedStatement queryUsers
+                    = connection.prepareStatement("SELECT * FROM " + TABLE_USER);
+
+            ResultSet result = queryUsers.executeQuery();
+
+            while (result.next()) {
+                User tempUser = new User();
+                boolean active;
+
+                int iActive = result.getInt(COLUMN_USER_ACTIVE);
+                active = iActive > 0;
+
+                tempUser.setActive(active);
+                tempUser.setCreateBy(result.getString(COLUMN_USER_CREATEBY));
+                tempUser.setCreateDate(Datasource.
+                        convertTimestampToLTD(result.
+                                getTimestamp(COLUMN_USER_CREATEDATE)));
+                tempUser.setLastUpdate(Datasource.
+                        convertTimestampToLTD(result.
+                                getTimestamp(COLUMN_USER_LASTUPDATE)));
+                tempUser.setLastUpdatedBy(result.getString(COLUMN_USER_LASTUPDATEDBY));
+                tempUser.setPassword(result.getString(COLUMN_USER_PASSWORD));
+                tempUser.setUserId(result.getInt(COLUMN_USER_USERID));
+                tempUser.setUserName(result.getString(COLUMN_USER_USERNAME));
+
+                users.add(tempUser);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error getting users: "
+                    + e.getMessage());
+            return null;
+        }
+        return users;
+    }
+
+// utility methods for time zone conversion
     public static Timestamp convertLTDtoTimestamp(LocalDateTime ldt) {
         ZonedDateTime zdt = ldt.atZone(timeZone);
         ZonedDateTime utc = zdt.withZoneSameInstant(ZoneId.of("UTC"));
