@@ -1303,7 +1303,7 @@ public class Datasource {
         boolean open = Datasource.open();
 
         queryAppointments = connection.prepareStatement(QUERY_MONTHAPPTSWITHCONTACTS_STRING);
-        queryAppointments.setString(1, Datasource.loggedInUser);
+        queryAppointments.setString(1, user.getUserName());
         queryAppointments.setTimestamp(2, tsTodaysDate);
         queryAppointments.setTimestamp(3, tsTodaysDate);
 
