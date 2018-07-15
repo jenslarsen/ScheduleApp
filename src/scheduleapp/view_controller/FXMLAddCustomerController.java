@@ -101,25 +101,21 @@ public class FXMLAddCustomerController {
         int countryId = Datasource.countryExists(country);
 
         if (countryId < 1) {            /// country isn't in the dateabase
-            System.out.println("Couldn't find " + country + " in the database");
             Country countryToAdd = new Country(country);
             countryId = Datasource.addCountry(countryToAdd);
-            System.out.println("Added " + country + " with ID " + countryId);
         }
 
         int cityId = Datasource.cityExists(city, country);
 
         if (cityId < 1) {            /// city isn't in the dateabase
-            System.out.println("Couldn't find " + city + " in the database");
             City cityToAdd = new City(city, countryId);
             cityId = Datasource.addCity(cityToAdd);
-            System.out.println("Added " + city + " with ID " + cityId);
         }
 
         Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
         int addressId = Datasource.addAddress(addressToAdd);
         if (addressId == -1) {
-            System.out.println("Adding address failed!");
+            System.err.println("Adding address failed!");
             Stage stage = (Stage) buttonSave.getScene().getWindow();
             stage.close();
             return;
@@ -128,13 +124,11 @@ public class FXMLAddCustomerController {
         Customer customerToAdd = new Customer(name, addressId);
         int customerId = Datasource.addCustomer(customerToAdd);
         if (customerId == -1) {
-            System.out.println("Adding customer failed!");
+            System.err.println("Adding customer failed!");
             Stage stage = (Stage) buttonSave.getScene().getWindow();
             stage.close();
             return;
         }
-
-        System.out.println("Added " + name + " with ID " + customerId);
 
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
