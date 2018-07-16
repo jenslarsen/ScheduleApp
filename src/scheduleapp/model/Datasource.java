@@ -31,7 +31,12 @@ import java.util.List;
  *
  * User: test Password: test
  *
- * Some assumptions about the database and its structure were made:
+ * Some assumptions about the project, database, and its structure were made:
+ *
+ * - main method is in FXMLLoginController.java
+ *
+ * - commented lines exist in the main method to change the locale and time
+ * zone.
  *
  * - ID fields were set to auto-increment starting at ID 100.
  *
@@ -46,6 +51,10 @@ import java.util.List;
  * one.
  *
  * - Business hours are between 8am and 5pm local time.
+ *
+ * - Logins are logged to a file in the base directory called logins.log. There
+ * is also a button on the reports screen to open this file with the default
+ * text editor.
  *
  * @author Jens Larsen
  */
