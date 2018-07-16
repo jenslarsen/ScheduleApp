@@ -1483,6 +1483,32 @@ public class Datasource {
         return users;
     }
 
+    public static List<Country> getCountries() throws ClassNotFoundException, SQLException {
+        List<Country> countries = new ArrayList<>();
+
+        boolean open = Datasource.open();
+
+        if (!open) {
+            System.err.println("Unable to open database connection when trying get countries!");
+            return null;
+        }
+
+        try {
+            PreparedStatement queryCountries
+                    = connection.prepareStatement("SELECT * FROM " + TABLE_COUNTRY);
+
+            ResultSet result = queryCountries.executeQuery();
+            while (result.next()) {
+                Country tempCountry = new Country(result.getString(COLUMN_COUNTRY_COUNTRY));
+                countries.add(tempCountry);
+            }
+        } catch (SQLException e) {
+        }
+
+        Datasource.close();
+        return countries;
+    }
+
     /**
      * Checks if an appointment on the consultants schedule is within 15 mintues
      *
