@@ -117,8 +117,12 @@ public class FXMLEditCustomerController {
         Address addressToUpdate = new Address(address, address2, cityId, postalCode, phone);
         addressToUpdate.setAddressId(addressId);
 
-        boolean addressUpdateSuccessful = Datasource.updateAddress(addressToUpdate);
-
+        boolean addressUpdateSuccessful = false;
+        try {
+            addressUpdateSuccessful = Datasource.updateAddress(addressToUpdate);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e.getMessage());
+        }
         if (addressUpdateSuccessful != true) {
             System.out.println("Updating address failed!");
             Stage stage = (Stage) buttonSave.getScene().getWindow();

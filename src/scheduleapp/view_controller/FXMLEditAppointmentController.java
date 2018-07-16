@@ -8,6 +8,7 @@ package scheduleapp.view_controller;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -142,7 +143,7 @@ public class FXMLEditAppointmentController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
             return;
-        } catch (TimeEntryException e) {
+        } catch (TimeEntryException | DateTimeParseException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Time entry error");
             alert.setHeaderText("Problem with appointment times");
