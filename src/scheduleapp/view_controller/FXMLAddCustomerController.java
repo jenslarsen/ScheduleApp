@@ -114,7 +114,7 @@ public class FXMLAddCustomerController {
 
         Address addressToAdd = new Address(address, address2, cityId, postalCode, phone);
         int addressId = Datasource.addAddress(addressToAdd);
-        if (addressId == -1) {
+        if (addressId < 1) {
             System.err.println("Adding address failed!");
             Stage stage = (Stage) buttonSave.getScene().getWindow();
             stage.close();
@@ -123,7 +123,7 @@ public class FXMLAddCustomerController {
 
         Customer customerToAdd = new Customer(name, addressId);
         int customerId = Datasource.addCustomer(customerToAdd);
-        if (customerId == -1) {
+        if (customerId < 1) {
             System.err.println("Adding customer failed!");
             Stage stage = (Stage) buttonSave.getScene().getWindow();
             stage.close();
@@ -132,6 +132,5 @@ public class FXMLAddCustomerController {
 
         Stage stage = (Stage) buttonSave.getScene().getWindow();
         stage.close();
-
     }
 }
