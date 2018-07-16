@@ -345,7 +345,7 @@ public class Datasource {
             + COLUMN_APPOINTMENT_LASTUPDATEBY + " = ?"
             + " WHERE " + COLUMN_APPOINTMENT_APPOINTMENTID + " = ?";
 
-    private static PreparedStatement updateAppointment = null;
+    private static PreparedStatement appointmentUpdate = null;
 
     private static final String UPDATE_ADDRESS_STRING = "UPDATE " + TABLE_ADDRESS
             + " SET " + COLUMN_ADDRESS_ADDRESS + " = ?" + ", "
@@ -357,7 +357,7 @@ public class Datasource {
             + COLUMN_ADDRESS_LASTUPDATEBY + " = ?"
             + " WHERE " + COLUMN_ADDRESS_ADDRESSID + " = ?;";
 
-    private static PreparedStatement updateAddress = null;
+    private static PreparedStatement addressUpdate = null;
 
     private static final String UPDATE_CUSTOMER_STRING = "UPDATE " + TABLE_CUSTOMER
             + " SET " + COLUMN_CUSTOMER_CUSTOMERNAME + " = ?" + ", "
@@ -365,7 +365,7 @@ public class Datasource {
             + COLUMN_CUSTOMER_LASTUPDATEBY + " = ?"
             + " WHERE " + COLUMN_CUSTOMER_CUSTOMERID + " = ?;";
 
-    private static PreparedStatement updateCustomer = null;
+    private static PreparedStatement customerUpdate = null;
 
     /**
      * Static variable for the database connection
@@ -1010,18 +1010,18 @@ public class Datasource {
         }
 
         try {
-            connection.prepareStatement(UPDATE_ADDRESS_STRING);
+            addressUpdate = connection.prepareStatement(UPDATE_ADDRESS_STRING);
 
-            updateAddress.setString(1, address.getAddress());
-            updateAddress.setString(2, address.getAddress2());
-            updateAddress.setInt(3, address.getCityId());
-            updateAddress.setString(4, address.getPostalCode());
-            updateAddress.setString(5, address.getPhone());
-            updateAddress.setTimestamp(6, lastUpdate);
-            updateAddress.setString(7, loggedInUser);
-            updateAddress.setInt(8, addressId);
+            addressUpdate.setString(1, address.getAddress());
+            addressUpdate.setString(2, address.getAddress2());
+            addressUpdate.setInt(3, address.getCityId());
+            addressUpdate.setString(4, address.getPostalCode());
+            addressUpdate.setString(5, address.getPhone());
+            addressUpdate.setTimestamp(6, lastUpdate);
+            addressUpdate.setString(7, loggedInUser);
+            addressUpdate.setInt(8, addressId);
 
-            int updateCount = updateAddress.executeUpdate();
+            int updateCount = addressUpdate.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
@@ -1065,13 +1065,13 @@ public class Datasource {
         }
 
         try {
-            updateCustomer = connection.prepareStatement(UPDATE_CUSTOMER_STRING);
-            updateCustomer.setString(1, customer.getCustomerName());
-            updateCustomer.setTimestamp(2, lastUpdate);
-            updateCustomer.setString(3, loggedInUser);
-            updateCustomer.setInt(4, customerId);
+            customerUpdate = connection.prepareStatement(UPDATE_CUSTOMER_STRING);
+            customerUpdate.setString(1, customer.getCustomerName());
+            customerUpdate.setTimestamp(2, lastUpdate);
+            customerUpdate.setString(3, loggedInUser);
+            customerUpdate.setInt(4, customerId);
 
-            int updateCount = updateCustomer.executeUpdate();
+            int updateCount = customerUpdate.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
@@ -1121,20 +1121,20 @@ public class Datasource {
         }
 
         try {
-            updateAppointment = connection.prepareStatement(UPDATE_APPOINTMENT_STRING);
-            updateAppointment.setString(1, appointment.getTitle());
-            updateAppointment.setInt(2, appointment.getCustomerID());
-            updateAppointment.setString(3, appointment.getDescription());
-            updateAppointment.setString(4, appointment.getLocation());
-            updateAppointment.setString(5, appointment.getContact());
-            updateAppointment.setString(6, appointment.getUrl());
-            updateAppointment.setTimestamp(7, start);
-            updateAppointment.setTimestamp(8, end);
-            updateAppointment.setTimestamp(9, lastUpdate);
-            updateAppointment.setString(10, lastUpdateBy);
-            updateAppointment.setInt(11, appointmentId);
+            appointmentUpdate = connection.prepareStatement(UPDATE_APPOINTMENT_STRING);
+            appointmentUpdate.setString(1, appointment.getTitle());
+            appointmentUpdate.setInt(2, appointment.getCustomerID());
+            appointmentUpdate.setString(3, appointment.getDescription());
+            appointmentUpdate.setString(4, appointment.getLocation());
+            appointmentUpdate.setString(5, appointment.getContact());
+            appointmentUpdate.setString(6, appointment.getUrl());
+            appointmentUpdate.setTimestamp(7, start);
+            appointmentUpdate.setTimestamp(8, end);
+            appointmentUpdate.setTimestamp(9, lastUpdate);
+            appointmentUpdate.setString(10, lastUpdateBy);
+            appointmentUpdate.setInt(11, appointmentId);
 
-            int updateCount = updateAppointment.executeUpdate();
+            int updateCount = appointmentUpdate.executeUpdate();
             if (updateCount > 0) {
                 return true;
             } else {
